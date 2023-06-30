@@ -1,0 +1,68 @@
+@import './base.css';
+body {
+	margin: 0pt;
+	padding: 0pt;
+	text-align: center;
+}
+
+#app {
+	max-width: 8in;
+	margin: 0 auto;
+
+	font-weight: normal;
+}
+
+header {
+	padding: 2rem;
+}
+
+h1 {
+	font-size: 0.5in;
+	line-height: 0.8in;
+}
+.logo {
+	margin-right: 0.3in;
+	height: 0.8in;
+}
+h1, .logo {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+input, button {
+	color: var(--color-text);
+	background-color: var(--color-accent4);
+	border: none;
+	text-align: center;
+	border-radius: 8pt;
+	padding: 6pt;
+	font-size: inherit;
+}
+input {
+	min-width: 3in;
+	max-width: calc(100% - 16pt);
+}
+button {
+	cursor: pointer;
+	padding-left: 12pt;
+	padding-right: 12pt;
+	margin-left: 12pt;
+	margin-right: 12pt;
+}
+button[disabled] {
+	cursor: default;
+	color: var(--color-accent3);
+	background-color: var(--color-accent4);
+}
+.suggest {
+	background-color: var(--color-accent1);
+}
+.stop {
+	background-color: var(--color-accent5);
+}
+.go {
+	background-color: var(--color-accent2);
+}
+input:focus, button:focus {
+	outline: 2pt solid var(--color-text);
+}
