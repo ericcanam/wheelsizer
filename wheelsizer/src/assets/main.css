@@ -2,6 +2,10 @@
 body {
 	margin: 0pt;
 	padding: 0pt;
+
+	min-height: calc(100vh - 24pt);
+	padding-bottom: 24pt;
+
 	text-align: center;
 }
 
@@ -24,9 +28,26 @@ h1 {
 	margin-right: 0.3in;
 	height: 0.8in;
 }
+.arrow {
+	width: 24pt;
+	margin-left: 6pt;
+	margin-right: 6pt;
+	margin-bottom: calc(0.375in + 6pt);
+	vertical-align: middle;
+}
 h1, .logo {
 	display: inline-block;
 	vertical-align: middle;
+}
+
+p {
+	max-width: 5in;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div.fall {
+	display: inline-block;
 }
 
 input, button {
@@ -39,8 +60,15 @@ input, button {
 	font-size: inherit;
 }
 input {
-	min-width: 3in;
+	/* min-width: 3in; */
 	max-width: calc(100% - 16pt);
+}
+.errorlight {
+	outline: 2pt solid var(--color-accent5);
+}
+
+.inputlabel {
+	margin-right: 16pt;
 }
 button {
 	cursor: pointer;

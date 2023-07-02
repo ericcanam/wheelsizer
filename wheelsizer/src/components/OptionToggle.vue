@@ -1,5 +1,6 @@
 <script setup>
-    defineProps({
+    
+    const props = defineProps({
         inputname:{
             type: String,
             required: true
@@ -7,10 +8,6 @@
         options:{
             type:Array,
             required: true
-        },
-        multiple:{
-            type:Boolean,
-            default:false
         },
         disabled:{
             type:Boolean,
@@ -22,17 +19,18 @@
         }
     });
 
-    
+    defineEmits(['valChange']);
 </script>
 
 <template>
     <div class="optionslider">
         <div class="optwrap" v-for="option in options">
-            <input :type="multiple ? 'checkbox' : 'radio'" 
+            <input type="radio"
+                    @change="$emit('valChange', $event.target.value)"
                     :id = "inputname+'_'+option"
                     :value="option"
-                    :name="inputname+(multiple ? '_'+option : '')"
-                    :checked="!multiple && defaultoption===option" />
+                    :name="inputname"
+                    :checked="defaultoption===option" />
             <label :for="inputname+'_'+option"><div class="opt">
                 {{ option }}
             </div></label>

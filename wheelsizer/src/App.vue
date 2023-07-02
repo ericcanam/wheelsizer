@@ -4,8 +4,10 @@
     import Step from './components/Step.vue';
 
     // import pages:
-    import Info from './components/pages/Info.vue';
-    import OEM from './components/pages/OEM.vue';
+    import Info from './pages/Info.vue';
+    import OEM from './pages/OEM.vue';
+	import Report from './pages/Report.vue';
+	import Save from './pages/Save.vue';
 
 	const cid = ref(1);
 
@@ -14,9 +16,10 @@
     }
 
     const pages = [
-        {n: 1, comp: Info, title: "Car Info", svg: "car.svg"},
-        {n: 2, comp: OEM, title: "OEM Specs", svg: "wheel.svg"},
-        {n: 3, title: "New Specs", svg: "star.svg"}
+        {comp: Info, title: "Car Info", svg: "car.svg"},
+        {comp: OEM, title: "OEM Specs", svg: "wheel.svg"},
+        {comp: Report, title: "New Specs", svg: "star.svg"},
+		{comp: Save, title: "Save", svg: "Save.svg"}
     ];
 
 	
@@ -28,14 +31,18 @@
 	const backRef = ref();
 
 	function formnext(e){
+
 		
 		e.preventDefault();
 		submitRef.value.blur();
 		let form = e.target;
-		let formData = new FormData(form);
-		let val = childComponentRef.value.validate();
-		if(!val){ // false means no errors
-			for (let [inputName, value] of formData) {
+		let formdata = new FormData(form);
+		let formobj = {};
+		for(let [inputName, value] of formdata){
+			formobj[inputName] = value;
+		}
+		if(childComponentRef.value.validate(formobj)){
+			for (let [inputName, value] of formdata) {
 				appdata[inputName] = value;
 			}
 			cid.value++;
@@ -59,8 +66,10 @@
 		<img alt="Wheel Sizer" class="logo" src="./assets/logo.svg" />
     	<h1>Wheel Sizer</h1>
 		<div class="row">
-			<Step v-for="page in pages"
-        		:title="page.title" :svg="page.svg" :status="gs(page.n, cid)" />
+			<div v-for="(page, n) in pages" class="fall">
+				<Step :title="page.title" :svg="page.svg" :status="gs(n+1, cid)" />
+				<img v-if="n+1<pages.length" alt="&gt;" class="arrow" src="./assets/arrow.svg" />
+			</div>
 		</div>
 	</header>
 	<main>
@@ -72,7 +81,7 @@
 			</div>
 			<div class="row">
 				<button @click="formback" ref="backRef" :disabled="cid==1">Back</button><!--
-				--><button ref="submitRef" type="submit" class="suggest">Next</button>
+				--><button ref="submitRef" type="submit" :disabled="cid==pages.length" class="suggest">Next</button>
 			</div>
 		</form>
 	</main>
