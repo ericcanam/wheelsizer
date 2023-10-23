@@ -2,8 +2,9 @@
     import { ref } from 'vue';
 
     import TextBar from '../components/TextBar.vue';
+    import OptionToggle from '../components/OptionToggle.vue';
 
-    import { assertNotEmpty } from './validator.js';
+    import { isEmpty } from './validator.js';
 
     defineProps(['ad']);
 
@@ -11,21 +12,33 @@
         cartitle: ref()
     };
 
-    function validate(d){
-        return assertNotEmpty(d.cartitle, fields.cartitle);
+    function validate(){
+        
+        // car title
+        return !isEmpty(fields.cartitle);
     }
 
     defineExpose({
-        validate
-    })
+        validate,
+        fields
+    });
 </script>
 
 <template>
     <h2>Give your car a name:</h2>
     <TextBar inputname="cartitle" :ref="fields.cartitle" :length=20
-        placeholder="The Shitbox" />
+        placeholder="e.g., 2003 Mitsubishi Lancer" />
+
+    
+    <h2>Let's talk shop:</h2>
+
+    <!-- Stagger -->
+    <p>Are your wheels staggered? In other words, are your wheels or tires different from front to back?</p>
+    <OptionToggle inputname="staggered" :options="['Yes', 'No']" defaultoption="No"
+         />
+
+
+    <!-- Drive Wheel -->
+    <p>Which are the driven wheels?</p>
+    <OptionToggle inputname="drivewheels" :options="['Front', 'Rear', 'All']" defaultoption="Front" />
 </template>
-
-<style scope>
-
-</style>

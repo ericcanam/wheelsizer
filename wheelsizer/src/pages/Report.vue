@@ -2,7 +2,7 @@
     import TextBar from '../components/TextBar.vue';
 
     // nothing to validate before moving on
-    function validate(d){
+    function validate(){
         return true;
     }
 

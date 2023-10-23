@@ -10,48 +10,67 @@
             type: Number,
             required: true
         },
-        disabled:{
-            type:Boolean,
-            default:false
-        },
         placeholder:{
             type:String,
-            default:null
+            default:''
+        },
+        type:{
+            type:String,
+            default:"text"
         }
     });
 
     const inputElement = ref();
+    const errorLine = ref();
 
-    function value(){
-        return inputElement.value;
+    function getValue(){
+        return {value: inputElement.value.value, validity: inputElement.value.validity};
     }
 
     function setError(status){
-        if(status){
-            inputElement.value.classList.add("errorlight");
-        }else{
-            inputElement.value.classList.remove("errorlight");
+        inputElement.value.classList.add("errorlight");
+        if(errorLine.value.innerHTML != ""){
+            errorLine.value.innerHTML += "<br />";
         }
+        errorLine.value.innerHTML += status;
+    }
+    function unsetError(){
+        inputElement.value.classList.remove("errorlight");
+        errorLine.value.innerHTML = "";
     }
 
-    defineEmits(['valChange']);
-
     defineExpose({
-        value,
-        setError
+        getValue,
+        setError,
+        unsetError
     });
 </script>
 
 <template>
     <div class="textfield">
-        <input @change="$emit('valChange', $event.target.value)"
+        <input 
             ref = "inputElement"
             :name="inputname"
             :style="'width: '+(length*12)+'pt;'"
-            type="text" :placeholder="placeholder" />
+            :type="type" :placeholder="placeholder"
+            step="any" />
+        <div class="errorline" ref="errorLine"></div>
     </div>
 </template>
 
 <style scoped>
-    
+    input {
+        padding: 6pt;
+    }
+    div.textfield{
+        display:inline-block;
+        vertical-align: middle;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: calc(100% - 12pt);
+    }
+    button {
+        margin-left: 2pt;
+        margin-right: 2pt;
+    }
 </style>

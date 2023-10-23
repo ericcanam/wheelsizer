@@ -50,26 +50,38 @@ div.fall {
 	display: inline-block;
 }
 
-input, button {
+input, button, div.multitextfield {
+	padding: 6pt;
 	color: var(--color-text);
 	background-color: var(--color-accent4);
 	border: none;
 	text-align: center;
 	border-radius: 8pt;
-	padding: 6pt;
 	font-size: inherit;
-}
-input {
-	/* min-width: 3in; */
-	max-width: calc(100% - 16pt);
 }
 .errorlight {
 	outline: 2pt solid var(--color-accent5);
 }
+.errorline {
+	color: var(--color-accent5);
+}
 
 .inputlabel {
+	vertical-align: middle;
 	margin-right: 16pt;
 }
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+  /* Firefox */
+}
+
 button {
 	cursor: pointer;
 	padding-left: 12pt;
@@ -93,4 +105,9 @@ button[disabled] {
 }
 input:focus, button:focus {
 	outline: 2pt solid var(--color-text);
+}
+
+table {
+	margin-left: auto;
+	margin-right: auto;
 }

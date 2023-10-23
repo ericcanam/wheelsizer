@@ -16,23 +16,31 @@
     }
 
     const pages = [
-        {comp: Info, title: "Car Info", svg: "car.svg"},
+        {comp: Info, title: "Car Info", svg: "nametag.svg"},
         {comp: OEM, title: "OEM Specs", svg: "wheel.svg"},
         {comp: Report, title: "New Specs", svg: "star.svg"},
 		{comp: Save, title: "Save", svg: "Save.svg"}
     ];
 
 	
-	var appdata = {
-	};
+	var appdata = ref({
+	});
 
 	const childComponentRef = ref();
 	const submitRef = ref();
 	const backRef = ref();
 
+	function clearErrors(){
+		// clears errors in all the child component's fields
+		for(const field in childComponentRef.value.fields){
+			if(childComponentRef.value.fields[field].value != undefined){
+				childComponentRef.value.fields[field].value.unsetError();
+			}
+		}
+	}
+
 	function formnext(e){
 
-		
 		e.preventDefault();
 		submitRef.value.blur();
 		let form = e.target;
@@ -41,10 +49,13 @@
 		for(let [inputName, value] of formdata){
 			formobj[inputName] = value;
 		}
-		if(childComponentRef.value.validate(formobj)){
+		//console.log(formobj);
+		clearErrors();
+		if(childComponentRef.value.validate()){
 			for (let [inputName, value] of formdata) {
-				appdata[inputName] = value;
+				appdata.value[inputName] = value;
 			}
+			//console.log( pages[cid.value].comp );
 			cid.value++;
 		}else{
 
@@ -54,6 +65,8 @@
 	function formback(e){
 		e.preventDefault();
 		backRef.value.blur();
+		
+		clearErrors();
 
 		if(cid.value>1){
 			cid.value--;
@@ -64,7 +77,7 @@
 <template>
 	<header>
 		<img alt="Wheel Sizer" class="logo" src="./assets/logo.svg" />
-    	<h1>Wheel Sizer</h1>
+    	<h1>Wheelhub</h1>
 		<div class="row">
 			<div v-for="(page, n) in pages" class="fall">
 				<Step :title="page.title" :svg="page.svg" :status="gs(n+1, cid)" />
@@ -73,7 +86,7 @@
 		</div>
 	</header>
 	<main>
-		<form id="sform" @submit="formnext">
+		<form id="sform" @submit="formnext" novalidate>
 			<div class="row">
 					<KeepAlive>
 						<component :is="pages[cid-1].comp" ref="childComponentRef" :ad="appdata" />
