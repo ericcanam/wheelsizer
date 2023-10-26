@@ -1,8 +1,9 @@
 <script setup>
     import TextBar from '../components/TextBar.vue';
 
+    var props = defineProps(['ad']);
 </script>
 
 <template>
-    <h2>Balls</h2>
+    NOT YET
 </template>

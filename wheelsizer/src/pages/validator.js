@@ -24,14 +24,21 @@ function allNumeric(field){
             field.value.setError(vals[formval].errName+" should be a decimal number.", formval);
             err = true;
             continue;
-        }
-        if(nv==""){
-            field.value.setError("", formval);
+        }else if(validity.stepMismatch){
+            field.value.setError(vals[formval].errName+" should be a multiple of "+vals[formval].step+".", formval);
+            err = true;
+            continue;
+        }else if(validity.rangeOverflow){
+            field.value.setError(vals[formval].errName+" should be no more than "+vals[formval].max+".", formval);
+            err = true;
+            continue;
+        }else if(validity.rangeUnderflow){
+            field.value.setError(vals[formval].errName+" should be no less than "+vals[formval].min+".", formval);
             err = true;
             continue;
         }
-        if(nv<=0){
-            field.value.setError(vals[formval].errName+" should be greater than zero.", formval);
+        if(nv==""){
+            field.value.setError("", formval);
             err = true;
             continue;
         }
@@ -44,15 +51,20 @@ function isNumeric(field){
     let nv = val.value;
     let validity = val.validity;
     if(validity.badInput){
-        field.value.setError("This field should be a decimal number.");
+        field.value.setError(val.errName+" should be a decimal number.");
+        return false;
+    }else if(validity.stepMismatch){
+        field.value.setError(val.errName+" should be a multiple of "+val.step+".");
+        return false;
+    }else if(validity.rangeOverflow){
+        field.value.setError(val.errName+" should be no more than "+val.max+".");
+        return false;
+    }else if(validity.rangeUnderflow){
+        field.value.setError(val.errName+" should be no less than "+val.min+".");
         return false;
     }
     if(nv==""){
         field.value.setError("");
-        return false;
-    }
-    if(nv<=0){
-        field.value.setError("This should be greater than zero.");
         return false;
     }
     return true;

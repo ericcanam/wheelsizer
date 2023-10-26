@@ -2,6 +2,7 @@
     import { ref } from 'vue';
 
     const props = defineProps({
+        modelValue:{},
         inputname:{
             type: String,
             required: true
@@ -17,6 +18,19 @@
         type:{
             type:String,
             default:"text"
+        },
+        step:{
+            default: 'any'
+        },
+        min:{
+            default: ''
+        },
+        max:{
+            default: ''
+        },
+        errName:{
+            type: String,
+            default: 'This field'
         }
     });
 
@@ -24,7 +38,7 @@
     const errorLine = ref();
 
     function getValue(){
-        return {value: inputElement.value.value, validity: inputElement.value.validity};
+        return {value: inputElement.value.value, validity: inputElement.value.validity, min: props.min, max: props.max, step: props.step, errName: props.errName};
     }
 
     function setError(status){
@@ -44,6 +58,8 @@
         setError,
         unsetError
     });
+
+    defineEmits(['update:modelValue']);
 </script>
 
 <template>
@@ -51,9 +67,10 @@
         <input 
             ref = "inputElement"
             :name="inputname"
+            :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"
             :style="'width: '+(length*12)+'pt;'"
             :type="type" :placeholder="placeholder"
-            step="any" />
+            :step="step" :max="max" :min="min" />
         <div class="errorline" ref="errorLine"></div>
     </div>
 </template>

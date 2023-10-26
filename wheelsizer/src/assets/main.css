@@ -50,20 +50,65 @@ div.fall {
 	display: inline-block;
 }
 
+div.cols {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
+	margin-right: auto;
+	margin-left: auto;
+}
+div.cols > div {
+	padding-left: 6pt;
+	padding-right: 6pt;
+	width: calc(50% - 12pt);
+}
+
 input, button, div.multitextfield {
 	padding: 6pt;
 	color: var(--color-text);
-	background-color: var(--color-accent4);
+	background-color: var(--color-backshade);
 	border: none;
 	text-align: center;
 	border-radius: 8pt;
 	font-size: inherit;
 }
+
+/* ERROR stuff (red) */
 .errorlight {
 	outline: 2pt solid var(--color-accent5);
 }
 .errorline {
 	color: var(--color-accent5);
+}
+.errorbox {
+	outline: 2pt solid var(--color-accent5);
+	background-color: var(--color-backshade);
+}
+
+/* WARNING stuff (yellow) */
+.warninglight {
+	outline: 2pt solid var(--color-accent4);
+}
+.warningline {
+	color: var(--color-accent4);
+}
+.warningbox {
+	margin-top: 18pt;
+	margin-bottom: 18pt;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 12cm;
+	border-radius: 8pt;
+	padding: 6pt;
+
+	text-align: left;
+	outline: 2pt solid var(--color-accent4);
+	background-color: var(--color-backshade);
+}
+.warningbox div {
+	padding: 4pt;
 }
 
 .inputlabel {
@@ -92,7 +137,7 @@ button {
 button[disabled] {
 	cursor: default;
 	color: var(--color-accent3);
-	background-color: var(--color-accent4);
+	background-color: var(--color-backshade);
 }
 .suggest {
 	background-color: var(--color-accent1);
@@ -103,11 +148,24 @@ button[disabled] {
 .go {
 	background-color: var(--color-accent2);
 }
-input:focus, button:focus {
+input:focus, button:focus, div.hasfocus {
 	outline: 2pt solid var(--color-text);
 }
 
 table {
 	margin-left: auto;
 	margin-right: auto;
+	border-spacing: 0;
 }
+table tr:nth-child(odd) td { background-color: var(--color-tr1); }
+table tr:nth-child(even) td { background-color: var(--color-tr2); }
+table td, table th {
+	padding: 6pt;
+	padding-left: 24pt;
+	padding-right: 24pt;
+}
+table th { background-color: var(--color-accent1); }
+table tr th:first-child{ border-top-left-radius: 8pt; }
+table tr th:last-child{ border-top-right-radius: 8pt; }
+table tr:last-child td:first-child{ border-bottom-left-radius: 8pt; }
+table tr:last-child td:last-child{ border-bottom-right-radius: 8pt; }

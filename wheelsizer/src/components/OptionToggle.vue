@@ -2,6 +2,7 @@
     import { ref } from 'vue';
     
     const props = defineProps({
+        modelValue:{},
         inputname:{
             type: String,
             required: true
@@ -27,6 +28,13 @@
     const errorLine = ref();
     const inputElement = ref();
 
+    function focusBox(){ inputElement.value.classList.add('hasfocus'); }
+    function unfocusBox(event){
+        //if(!inputElement.value.contains(event.relatedTarget)){
+            inputElement.value.classList.remove('hasfocus');
+        //}
+    }
+
     function setError(status){
         inputElement.value.classList.add("errorlight");
         if(errorLine.value.innerHTML != ""){
@@ -44,19 +52,22 @@
         unsetError
     });
 
-    defineEmits(['valChange']);
+    const emit = defineEmits(['update:modelValue']);
+    emit('update:modelValue', props.defaultoption);
 </script>
 
 <template>
     <div class="optionscontainer">
         <div ref="inputElement" class="optionslider">
-            <div :class="'optwrap' + (linesep ? ' lineopt' : '')" v-for="option in options">
+            <div :class="'optwrap' + (linesep ? ' lineopt' : '')" v-for="(option, index) in options">
                 <input type="radio"
-                        @change="$emit('valChange', $event.target.value)"
-                        :id = "inputname+'_'+option"
-                        :value="option"
-                        :name="inputname"
-                        :checked="defaultoption===option" />
+                    @focus = "focusBox"
+                    @blur  = "unfocusBox"
+                    @input="$emit('update:modelValue', $event.target.value)"
+                    :id = "inputname+'_'+option"
+                    :value="option"
+                    :name="inputname"
+                    :checked="defaultoption===option" />
                 <label :for="inputname+'_'+option"><div class="opt">
                     {{ option }}
                 </div></label>
@@ -71,7 +82,7 @@
         display: inline-block;
     }
     div.optionslider {
-        background-color: var(--color-accent4);
+        background-color: var(--color-backshade);
         color: var(--color-text);
         border-radius: 8pt;
     }
@@ -95,6 +106,7 @@
         background-color: var(--color-accent1);
     }
     input {
-        display: none;
+        position: absolute;
+        opacity: 0;
     }
 </style>

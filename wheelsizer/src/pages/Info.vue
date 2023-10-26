@@ -22,20 +22,20 @@
         validate,
         fields
     });
+
 </script>
 
 <template>
+
     <h2>Give your car a name:</h2>
     <TextBar inputname="cartitle" :ref="fields.cartitle" :length=20
         placeholder="e.g., 2003 Mitsubishi Lancer" />
-
-    
+    <input type="hidden" name="savename" value="-UNSAVED-" />
     <h2>Let's talk shop:</h2>
 
     <!-- Stagger -->
     <p>Are your wheels staggered? In other words, are your wheels or tires different from front to back?</p>
-    <OptionToggle inputname="staggered" :options="['Yes', 'No']" defaultoption="No"
-         />
+    <OptionToggle inputname="staggered" :options="['Yes', 'No']" defaultoption="No" />
 
 
     <!-- Drive Wheel -->

@@ -2,6 +2,7 @@
     import { ref } from 'vue';
 
     const props = defineProps({
+        modelValue:{},
         inputdefs:{
             type: Array,
             required: true
@@ -32,6 +33,9 @@
             placeholder: ('placeholder' in inpo ? inpo.placeholder : ''),
             errName: inpo.errName,
             length: ('length' in inpo ? inpo.length : 12),
+            step: ('step' in inpo ? inpo.step : 'any'),
+            min: ('min' in inpo ? inpo.min : ''),
+            max: ('max' in inpo ? inpo.max : ''),
             prepend: props.struct.substring(c, nus),
             apppend: (inpn<props.inputdefs.length-1 ? '' : props.struct.substring(nus+1))
         };
@@ -45,7 +49,9 @@
         let vals = {};
         for(const field in inputlist){
             let inputfield = Object.assign({}, inputlist[field].refer.value)[0];
-            vals[field] = {value: inputfield.value, validity: inputfield.validity, errName: inputlist[field].errName};
+            vals[field] = {value: inputfield.value, validity: inputfield.validity,
+                step: inputfield.step, min: inputfield.min, max: inputfield.max,
+                errName: inputlist[field].errName};
         }
         return vals;
     }
@@ -76,20 +82,25 @@
         setError,
         unsetError
     });
+
+    defineEmits(['update:modelValue']);
+    function getEmits(){
+        let vals = {};
+        for(const field in inputlist){
+            vals[field] = Object.assign({}, inputlist[field].refer.value)[0].value;
+        }
+        return vals;
+    }
 </script>
 
 <template>
     <div class="multitextcontainer">
         <div ref="inputElement" class="multitextfield" style="display:inherit;">
-            <!--<input @change="$emit('valChange', [$event.target.name, $event.target.value])"
-                ref = "inputElements"
-                :name="inputname"
-                :style="'width: '+(length*12)+'pt;'"
-                :type="type" :placeholder="placeholder" />-->
             <span v-for="(inp, name) in inputlist">
                 {{ inp.prepend }}
                 <input :ref="inp.refer"
-                :name="name" :type="inp.type" :placeholder="inp.placeholder" :style="'width: '+(inp.length*12)+'pt;'" step="any" />
+                @input="$emit('update:modelValue', getEmits());"
+                :name="name" :type="inp.type" :placeholder="inp.placeholder" :style="'width: '+(inp.length*12)+'pt;'" :step="inp.step" :min="inp.min" :max="inp.max" />
                 {{ inp.append }}
             </span>
         </div>

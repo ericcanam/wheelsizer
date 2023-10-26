@@ -10,8 +10,12 @@
 	--color-accent1: #0077ff;
 	--color-accent2: #08b450;
 	--color-accent3: #636364;
-	--color-accent4: rgba(199,199,199,0.16);
+	--color-backshade: rgba(199,199,199,0.16);
+	--color-accent4: #df9904;
 	--color-accent5: #d83939;
+
+	--color-tr1: rgba(199,199,199,0.16);
+	--color-tr2: rgba(199,199,199,0.08);
 
 	--line-height: 1.6;
 	--font-size: 15px;

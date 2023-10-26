@@ -76,7 +76,7 @@
 
 <template>
 	<header>
-		<img alt="Wheel Sizer" class="logo" src="./assets/logo.svg" />
+		<img alt="Wheelhub" class="logo" src="" />
     	<h1>Wheelhub</h1>
 		<div class="row">
 			<div v-for="(page, n) in pages" class="fall">
@@ -93,7 +93,7 @@
 					</KeepAlive>
 			</div>
 			<div class="row">
-				<button @click="formback" ref="backRef" :disabled="cid==1">Back</button><!--
+				<button @click="formback" ref="backRef" :disabled="cid==1" type="button">Back</button><!--
 				--><button ref="submitRef" type="submit" :disabled="cid==pages.length" class="suggest">Next</button>
 			</div>
 		</form>
