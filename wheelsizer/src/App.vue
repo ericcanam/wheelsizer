@@ -1,13 +1,14 @@
 <script setup>
-	import { ref } from 'vue';
+	import { ref, watch } from 'vue';
 
     import Step from './components/Step.vue';
 
     // import pages:
     import Info from './pages/Info.vue';
     import OEM from './pages/OEM.vue';
-	import Report from './pages/Report.vue';
-	import Save from './pages/Save.vue';
+	import DoorCard from './pages/DoorCard.vue';
+	import New from './pages/New.vue';
+	import Calculator from './pages/Calculator.vue';
 
 	const cid = ref(1);
 
@@ -16,10 +17,11 @@
     }
 
     const pages = [
-        {comp: Info, title: "Car Info", svg: "nametag.svg"},
+        {comp: Info, title: "Car Setup", svg: "nametag.svg"},
         {comp: OEM, title: "OEM Specs", svg: "wheel.svg"},
-        {comp: Report, title: "New Specs", svg: "star.svg"},
-		{comp: Save, title: "Save", svg: "Save.svg"}
+        {comp: DoorCard, title: "Doorcard", svg: "info.svg"},
+        {comp: New, title: "New Setup", svg: "star.svg"},
+        {comp: Calculator, title: "Calculator", svg: "calculator.svg"}
     ];
 
 	
@@ -27,6 +29,7 @@
 	});
 
 	const childComponentRef = ref();
+	const formRef = ref();
 	const submitRef = ref();
 	const backRef = ref();
 
@@ -40,31 +43,22 @@
 	}
 
 	function formnext(e){
-
 		e.preventDefault();
 		submitRef.value.blur();
-		let form = e.target;
-		let formdata = new FormData(form);
-		let formobj = {};
-		for(let [inputName, value] of formdata){
-			formobj[inputName] = value;
-		}
-		//console.log(formobj);
+		
 		clearErrors();
-		if(childComponentRef.value.validate()){
-			for (let [inputName, value] of formdata) {
-				appdata.value[inputName] = value;
-			}
-			//console.log( pages[cid.value].comp );
-			cid.value++;
-		}else{
 
+		if(childComponentRef.value.validate()){
+			saveform();
+			cid.value++;
 		}
 	}
 
 	function formback(e){
 		e.preventDefault();
 		backRef.value.blur();
+
+		saveform();
 		
 		clearErrors();
 
@@ -72,25 +66,48 @@
 			cid.value--;
 		}
 	}
+
+	function saveform(){
+		let form = formRef.value;
+		let formdata = new FormData(form);
+		for (let [inputName, value] of formdata) {
+			appdata.value[inputName] = value;
+		}
+	}
+
+	function fill(){
+		let form = formRef.value;
+		for(let index in appdata.value){
+			let field = form.elements.namedItem(index);
+			if (field){
+				field.value = appdata.value[index];
+			}
+		}
+	}
+
+	watch(childComponentRef, (nccr) => {
+		fill();
+	});
 </script>
 
 <template>
 	<header>
-		<img alt="Wheelhub" class="logo" src="" />
-    	<h1>Wheelhub</h1>
+		<div v-if="cid==1" class="row">
+			<img alt="Wheelhub" class="logo" src="" />
+			<h1>Wheelhub</h1>
+		</div>
 		<div class="row">
 			<div v-for="(page, n) in pages" class="fall">
 				<Step :title="page.title" :svg="page.svg" :status="gs(n+1, cid)" />
 				<img v-if="n+1<pages.length" alt="&gt;" class="arrow" src="./assets/arrow.svg" />
 			</div>
+			<!--<div class="steptitle current overarch">{{ pages[cid-1].title }}</div>-->
 		</div>
 	</header>
 	<main>
-		<form id="sform" @submit="formnext" novalidate>
+		<form id="sform" @submit="formnext" novalidate ref="formRef">
 			<div class="row">
-					<KeepAlive>
 						<component :is="pages[cid-1].comp" ref="childComponentRef" :ad="appdata" />
-					</KeepAlive>
 			</div>
 			<div class="row">
 				<button @click="formback" ref="backRef" :disabled="cid==1" type="button">Back</button><!--
@@ -102,7 +119,7 @@
 
 
 
-<style scoped>
+<style>
 	
 	div.row {
 		margin-top: 2rem;

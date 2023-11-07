@@ -8,8 +8,8 @@
 </script>
 
 <template>
-    <div class="warningbox">
-        <div class="warningline">Warning: {{ title }}</div>
+    <div class="infobox">
+        <div class="infoline">Note: {{ title }}</div>
         <div>
             <slot />
         </div>

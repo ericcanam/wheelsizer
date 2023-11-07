@@ -2,13 +2,11 @@
     import { ref } from 'vue';
 
     import TextBar from '../components/TextBar.vue';
-    import MultiPartText from '../components/MultiPartText.vue';
-    import WarningBox from '../components/WarningBox.vue';
 
     import TireSize from '../components/fields/TireSize.vue';
     import WheelSize from '../components/fields/WheelSize.vue';
 
-    import { allNumeric, isNumeric } from './validator';
+    import { allNumeric, isNumeric } from './validator.js';
 
     var props = defineProps(['ad']);
 
@@ -18,6 +16,7 @@
     
     //var staggered = ref(props.ad.staggered=="Yes");
     function staggered(){return props.ad.staggered=="Yes";}
+    function spare(){return props.ad.spare=="Yes";}
 
 
     const fields = {
@@ -91,11 +90,13 @@
     <!-- Offset -->
     <p>What's the offset of the OEM wheels, in millimeters?</p>
     <span class="inputlabel" v-if="staggered()">Front:</span>
-    <TextBar type="number" :length=6 inputname="foffset" errName="Wheel offset" :ref="fields.foff" placeholder="Offset" />
+    <TextBar type="number" length=6 inputname="of_offset" errName="Wheel offset" :ref="fields.foff" placeholder="Offset" />
     <p v-if="staggered()">
         <span class="inputlabel">Rear:</span>
-        <TextBar type="number" :length=6 inputname="roffset" errName="Wheel offset" :ref="fields.roff" placeholder="Offset" />
+        <TextBar type="number" length=6 inputname="or_offset" errName="Wheel offset" :ref="fields.roff" placeholder="Offset" />
     </p>
+
+    <p>Wheel size and offset can usually be found stamped on the spokes of your wheels.</p>
 
     <h2>Tell us about the OEM tires.</h2>
     <p>These numbers are specified in ISO Metric format, and can be found on your tire sidewall or on a sticker in the driver's side door frame.</p>
@@ -106,6 +107,4 @@
         <span class="inputlabel">Rear:</span>
         <TireSize inprefix="or" :ref="fields.rts" />
     </p>
-
-    <WarningBox ref="warnbox" />
 </template>

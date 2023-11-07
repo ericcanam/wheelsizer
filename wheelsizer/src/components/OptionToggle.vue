@@ -47,19 +47,30 @@
         errorLine.value.innerHTML = "";
     }
 
+    function getValue(){
+        return selected.value;
+    }
+
     defineExpose({
         setError,
-        unsetError
+        unsetError,
+        getValue
     });
 
     const emit = defineEmits(['update:modelValue']);
-    emit('update:modelValue', props.defaultoption);
+    const selected = ref(props.defaultoption===null ? props.modelValue : props.defaultoption);
+    if(props.defaultoption===undefined){
+        emit('update:modelValue', props.defaultoption);
+    }/*else{
+        console.log(props.modelValue);
+        emit('update:modelValue', props.modelValue);
+    }*/
 </script>
 
 <template>
     <div class="optionscontainer">
         <div ref="inputElement" class="optionslider">
-            <div :class="'optwrap' + (linesep ? ' lineopt' : '')" v-for="(option, index) in options">
+            <div :class="'optwrap' + (linesep ? ' lineopt' : '')" v-for="option in options">
                 <input type="radio"
                     @focus = "focusBox"
                     @blur  = "unfocusBox"
@@ -67,7 +78,8 @@
                     :id = "inputname+'_'+option"
                     :value="option"
                     :name="inputname"
-                    :checked="defaultoption===option" />
+                    v-model="selected"
+                    :checked="option==defaultoption || option==modelValue" />
                 <label :for="inputname+'_'+option"><div class="opt">
                     {{ option }}
                 </div></label>
@@ -77,18 +89,19 @@
     </div>
 </template>
 
-<style scoped>
+<style>
     div.optionscontainer {
         display: inline-block;
     }
     div.optionslider {
+        display: inline-block;
+        padding: 4pt;
         background-color: var(--color-backshade);
         color: var(--color-text);
         border-radius: 8pt;
     }
     div.optwrap {
         display: inline-block;
-        margin: 4pt;
     }
     div.lineopt {
         display: block;
@@ -104,9 +117,5 @@
     }
     input:checked + label div.opt {
         background-color: var(--color-accent1);
-    }
-    input {
-        position: absolute;
-        opacity: 0;
     }
 </style>

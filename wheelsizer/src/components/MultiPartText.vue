@@ -83,6 +83,8 @@
         unsetError
     });
 
+    let locked = ref(false);
+
     defineEmits(['update:modelValue']);
     function getEmits(){
         let vals = {};
@@ -104,7 +106,6 @@
                 {{ inp.append }}
             </span>
         </div>
-            
         <div class="errorline" ref="errorLine"></div>
     </div>
 </template>
@@ -119,9 +120,5 @@
         margin-left: auto;
         margin-right: auto;
         max-width: calc(100% - 12pt);
-    }
-    button {
-        margin-left: 2pt;
-        margin-right: 2pt;
     }
 </style>

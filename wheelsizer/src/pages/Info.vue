@@ -37,8 +37,11 @@
     <p>Are your wheels staggered? In other words, are your wheels or tires different from front to back?</p>
     <OptionToggle inputname="staggered" :options="['Yes', 'No']" defaultoption="No" />
 
-
     <!-- Drive Wheel -->
     <p>Which are the driven wheels?</p>
     <OptionToggle inputname="drivewheels" :options="['Front', 'Rear', 'All']" defaultoption="Front" />
+
+    <!-- Spare Tire -->
+    <!-- <p>Do you want to consider the spare tire?</p>
+    <OptionToggle inputname="spare" :options="['Yes', 'No']" defaultoption="No" /> -->
 </template>

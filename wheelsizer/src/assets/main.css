@@ -10,19 +10,31 @@ body {
 }
 
 #app {
-	max-width: 8in;
+	max-width: 10in;
 	margin: 0 auto;
+	padding-left: 12pt;
+	padding-right: 12pt;
 
 	font-weight: normal;
 }
 
 header {
-	padding: 2rem;
+	padding-bottom: 2rem;
+}
+
+a, a:visited {
+	color: var(--color-accent1);
+	text-decoration: none;
 }
 
 h1 {
-	font-size: 0.5in;
-	line-height: 0.8in;
+	font-size: calc(3 * var(--font-size));
+}
+h2 {
+	font-size: calc(1.6 * var(--font-size));
+}
+h3 {
+	font-size: calc(1.2 * var(--font-size));
 }
 .logo {
 	margin-right: 0.3in;
@@ -74,6 +86,10 @@ input, button, div.multitextfield {
 	border-radius: 8pt;
 	font-size: inherit;
 }
+input[type="checkbox"], input[type="radio"] {
+	position: absolute;
+	opacity: 0;
+}
 
 /* ERROR stuff (red) */
 .errorlight {
@@ -87,14 +103,19 @@ input, button, div.multitextfield {
 	background-color: var(--color-backshade);
 }
 
-/* WARNING stuff (yellow) */
-.warninglight {
-	outline: 2pt solid var(--color-accent4);
+/* INFO stuff (grey/blue) */
+.infoline {
+	color: var(--color-text);
+	font-weight: bold;
 }
-.warningline {
-	color: var(--color-accent4);
+.infobox {
+	outline: 2pt solid var(--color-accent3);
 }
-.warningbox {
+.infobox div {
+	padding: 4pt;
+}
+
+.infobox, .warningbox {
 	margin-top: 18pt;
 	margin-bottom: 18pt;
 	margin-left: auto;
@@ -104,12 +125,25 @@ input, button, div.multitextfield {
 	padding: 6pt;
 
 	text-align: left;
-	outline: 2pt solid var(--color-accent4);
 	background-color: var(--color-backshade);
+}
+
+
+/* WARNING stuff (yellow) */
+.warninglight {
+	outline: 2pt solid var(--color-accent4);
+}
+.warningline {
+	color: var(--color-accent4);
+	font-weight: bold;
+}
+.warningbox {
+	outline: 2pt solid var(--color-accent4);
 }
 .warningbox div {
 	padding: 4pt;
 }
+
 
 .inputlabel {
 	vertical-align: middle;
@@ -156,13 +190,16 @@ table {
 	margin-left: auto;
 	margin-right: auto;
 	border-spacing: 0;
+	max-width: 100%;
+	table-layout: fixed;
+	overflow-wrap: break-word;
 }
 table tr:nth-child(odd) td { background-color: var(--color-tr1); }
 table tr:nth-child(even) td { background-color: var(--color-tr2); }
 table td, table th {
 	padding: 6pt;
-	padding-left: 24pt;
-	padding-right: 24pt;
+	padding-left: 12pt;
+	padding-right: 12pt;
 }
 table th { background-color: var(--color-accent1); }
 table tr th:first-child{ border-top-left-radius: 8pt; }

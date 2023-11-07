@@ -8,13 +8,13 @@
         <div :class="status" class="iconcircle">
             <img :alt="title" class="logo" :src="'../assets/'+svg" />
         </div>
-        <div class="steptitle" :style="status=='current' ? 'background-color:var(--color-accent1);' : ''">
+        <div :class="'steptitle' + (status=='current' ? ' current' : '')">
             {{ title }}
         </div>
 </div>
 </template>
 
-<style scoped>
+<style>
     div.step {
         display: inline-block;
         width: 1in;
@@ -39,5 +39,30 @@
     div.steptitle {
         border-radius: 6pt;
         padding: 2pt;
+    }
+    div.steptitle.overarch{
+        display: none;
+    }
+
+    @media screen and (max-width: 10in){
+        /* modify nav/progress indicator */
+        div.step {
+            width: 15vw;
+        }
+        div.iconcircle {
+            width: 12vw;
+            height: 12vw;
+            border-radius: 6vw;
+            /*border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;*/
+            margin: auto;
+            margin-bottom: 0;
+        }
+        div.steptitle{
+            display: none;
+        }
+        div.steptitle.overarch{
+            display: block;
+        }
     }
 </style>
