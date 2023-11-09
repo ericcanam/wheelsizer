@@ -63,22 +63,22 @@
         <p>
             <span class="inputlabel" v-if="!newStagger()">New width:</span>
             <span class="inputlabel" v-else>Front:</span>
-            <TextBar type="number" length=6 inputname="nf_width" errName="Wheel width" :ref="fields.fww" placeholder="Width" step=0.5 v-model="fnw" />
+            <TextBar type="number" :length=6 inputname="nf_width" errName="Wheel width" :ref="fields.fww" placeholder="Width" step=0.5 v-model="fnw" />
         </p>
         <p v-if="newStagger()">
             <span class="inputlabel">Rear:</span>
-            <TextBar type="number" length=6 inputname="nr_width" errName="Wheel width" :ref="fields.rww" placeholder="Width" step=0.5 v-model="rnw" />
+            <TextBar type="number" :length=6 inputname="nr_width" errName="Wheel width" :ref="fields.rww" placeholder="Width" step=0.5 v-model="rnw" />
         </p>
 
         <h3 v-if="newStagger()">New Offsets</h3>
         <p>
             <span class="inputlabel" v-if="!newStagger()">New offset:</span>
             <span class="inputlabel" v-else>Front:</span>
-            <TextBar type="number" length=6 inputname="nf_offset" errName="Wheel offset" :ref="fields.fwo" placeholder="Offset" v-model="fno" />
+            <TextBar type="number" :length=6 inputname="nf_offset" errName="Wheel offset" :ref="fields.fwo" placeholder="Offset" v-model="fno" />
         </p>
         <p v-if="newStagger()">
             <span class="inputlabel">Rear:</span>
-            <TextBar type="number" length=6 inputname="nr_offset" errName="Wheel offset" :ref="fields.rwo" placeholder="Offset" v-model="rno" />
+            <TextBar type="number" :length=6 inputname="nr_offset" errName="Wheel offset" :ref="fields.rwo" placeholder="Offset" v-model="rno" />
         </p>
         <h2>Changes</h2>
         <table>

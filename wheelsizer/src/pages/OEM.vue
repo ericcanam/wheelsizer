@@ -90,10 +90,10 @@
     <!-- Offset -->
     <p>What's the offset of the OEM wheels, in millimeters?</p>
     <span class="inputlabel" v-if="staggered()">Front:</span>
-    <TextBar type="number" length=6 inputname="of_offset" errName="Wheel offset" :ref="fields.foff" placeholder="Offset" />
+    <TextBar type="number" :length=6 inputname="of_offset" errName="Wheel offset" :ref="fields.foff" placeholder="Offset" />
     <p v-if="staggered()">
         <span class="inputlabel">Rear:</span>
-        <TextBar type="number" length=6 inputname="or_offset" errName="Wheel offset" :ref="fields.roff" placeholder="Offset" />
+        <TextBar type="number" :length=6 inputname="or_offset" errName="Wheel offset" :ref="fields.roff" placeholder="Offset" />
     </p>
 
     <p>Wheel size and offset can usually be found stamped on the spokes of your wheels.</p>

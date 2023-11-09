@@ -6,7 +6,7 @@
 <template>
     <div class="step">
         <div :class="status" class="iconcircle">
-            <img :alt="title" class="logo" :src="'../assets/'+svg" />
+            <img :alt="title" :src="'/assets/'+svg" />
         </div>
         <div :class="'steptitle' + (status=='current' ? ' current' : '')">
             {{ title }}
@@ -31,9 +31,9 @@
     div.current { background-color: var(--color-accent1); }
     div.upcoming { background-color: var(--color-accent3); }
     div.iconcircle img {
-        width: 70%;
-        height: 70%;
-        margin: 15% 15%;
+        width: 60%;
+        height: 60%;
+        margin: 20% 20%;
     }
 
     div.steptitle {

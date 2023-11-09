@@ -28,6 +28,10 @@
         max:{
             default: ''
         },
+        showControls:{
+            type: Boolean,
+            default: false
+        },
         errName:{
             type: String,
             default: 'This field'
@@ -59,25 +63,39 @@
         unsetError
     });
 
+    var nstep = (props.step=='any' ? 1 : parseInt(props.step));
+    function change(n){
+        let cv = parseFloat(inputElement.value.value) || 0;
+        inputElement.value.value = cv+n}
+
     defineEmits(['update:modelValue']);
 </script>
 
 <template>
     <div class="textfield">
-        <input 
-            ref = "inputElement"
-            :name="inputname"
-            :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"
-            :style="'width: '+(length*12)+'pt;'"
-            :type="type" :placeholder="placeholder"
-            :step="step" :max="max" :min="min" />
+        <div class="inputbox">
+            <input v-if="type=='number' && showControls" tabindex="-1" type="button" value="-" @click="change(-nstep)" /><!--
+            --><input 
+                ref = "inputElement"
+                :name="inputname"
+                :value="modelValue" @change="$emit('update:modelValue', $event.target.value)"
+                :style="'width: '+(length*12)+'pt;'"
+                :type="type" :placeholder="placeholder"
+                :step="step" :max="max" :min="min" /><!--
+            --><input v-if="type=='number' && showControls" tabindex="-1" type="button" value="+" @click="change(nstep)" />
+        </div>
         <div class="errorline" ref="errorLine"></div>
     </div>
 </template>
 
-<style scoped>
-    input {
+<style>
+    div.inputbox input {
         padding: 6pt;
+	    background-color: transparent;
+    }
+    div.inputbox{
+        background-color: var(--color-backshade);
+        border-radius: 8pt;
     }
     div.textfield{
         display:inline-block;
@@ -85,9 +103,5 @@
         margin-left: auto;
         margin-right: auto;
         max-width: calc(100% - 12pt);
-    }
-    button {
-        margin-left: 2pt;
-        margin-right: 2pt;
     }
 </style>

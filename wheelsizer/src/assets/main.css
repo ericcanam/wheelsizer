@@ -1,25 +1,21 @@
 @import './base.css';
+@import './mobile.css';
 body {
 	margin: 0pt;
 	padding: 0pt;
-
-	min-height: calc(100vh - 24pt);
 	padding-bottom: 24pt;
 
 	text-align: center;
 }
 
-#app {
-	max-width: 10in;
+div.row {
 	margin: 0 auto;
+	margin-top: 24pt;
+	margin-bottom: 24pt;
+	max-width: 10in;
 	padding-left: 12pt;
 	padding-right: 12pt;
-
-	font-weight: normal;
-}
-
-header {
-	padding-bottom: 2rem;
+	display: block;
 }
 
 a, a:visited {
@@ -28,7 +24,7 @@ a, a:visited {
 }
 
 h1 {
-	font-size: calc(3 * var(--font-size));
+	font-size: calc(2.5 * var(--font-size));
 }
 h2 {
 	font-size: calc(1.6 * var(--font-size));
@@ -37,18 +33,14 @@ h3 {
 	font-size: calc(1.2 * var(--font-size));
 }
 .logo {
-	margin-right: 0.3in;
-	height: 0.8in;
+	max-width: max(68%, min(3in, 100%));
+	max-height: 1.5in;
 }
 .arrow {
 	width: 24pt;
 	margin-left: 6pt;
 	margin-right: 6pt;
 	margin-bottom: calc(0.375in + 6pt);
-	vertical-align: middle;
-}
-h1, .logo {
-	display: inline-block;
 	vertical-align: middle;
 }
 
@@ -85,6 +77,9 @@ input, button, div.multitextfield {
 	text-align: center;
 	border-radius: 8pt;
 	font-size: inherit;
+	max-width: calc(100% - 12pt);
+	
+	font-family: 'Fira Sans', sans-serif;
 }
 input[type="checkbox"], input[type="radio"] {
 	position: absolute;

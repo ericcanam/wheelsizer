@@ -17,10 +17,10 @@
     }
 
     const pages = [
-        {comp: Info, title: "Car Setup", svg: "nametag.svg"},
-        {comp: OEM, title: "OEM Specs", svg: "wheel.svg"},
-        {comp: DoorCard, title: "Doorcard", svg: "info.svg"},
-        {comp: New, title: "New Setup", svg: "star.svg"},
+        {comp: Info, title: "Car Setup", svg: "car.svg"},
+        {comp: OEM, title: "OEM Specs", svg: "notepad.svg"},
+        {comp: DoorCard, title: "Doorcard", svg: "doorcard.svg"},
+        {comp: New, title: "New Setup", svg: "wrench.svg"},
         {comp: Calculator, title: "Calculator", svg: "calculator.svg"}
     ];
 
@@ -51,6 +51,7 @@
 		if(childComponentRef.value.validate()){
 			saveform();
 			cid.value++;
+			window.scrollTo(0, 0);
 		}
 	}
 
@@ -64,6 +65,7 @@
 
 		if(cid.value>1){
 			cid.value--;
+			window.scrollTo(0, 0);
 		}
 	}
 
@@ -93,13 +95,12 @@
 <template>
 	<header>
 		<div v-if="cid==1" class="row">
-			<img alt="Wheelhub" class="logo" src="" />
-			<h1>Wheelhub</h1>
+			<img alt="Wheelhub" class="logo" src="/assets/logo_t1.svg" />
 		</div>
 		<div class="row">
 			<div v-for="(page, n) in pages" class="fall">
 				<Step :title="page.title" :svg="page.svg" :status="gs(n+1, cid)" />
-				<img v-if="n+1<pages.length" alt="&gt;" class="arrow" src="./assets/arrow.svg" />
+				<img v-if="n+1<pages.length" alt="&gt;" class="arrow" src="/assets/arrow.svg" />
 			</div>
 			<!--<div class="steptitle current overarch">{{ pages[cid-1].title }}</div>-->
 		</div>
@@ -116,14 +117,3 @@
 		</form>
 	</main>
 </template>
-
-
-
-<style>
-	
-	div.row {
-		margin-top: 2rem;
-		display: block;
-	}
-
-</style>
