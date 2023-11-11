@@ -34,6 +34,9 @@
        y2="50"
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(-22.5)" />
+   <style type="text/css">
+      @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@200");
+   </style>
   </defs>
   <sodipodi:namedview
      id="namedview7"
@@ -98,6 +101,6 @@
        id="tspan10"
        x="207.52"
        y="69.519974"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:53.3333px;font-family:'Fira Sans';-inkscape-font-specification:'Fira Sans';letter-spacing:-1.25px"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:53.3333px;font-family:'Fira Sans', sans-serif;-inkscape-font-specification:'Fira Sans';letter-spacing:-1.25px"
        dx="0">Wheelhub</tspan></text>
 </svg>

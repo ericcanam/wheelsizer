@@ -1,6 +1,26 @@
 @media screen and (max-width: 10in){
     /* modify nav/progress indicator */
-    img.arrow{
+    img.topnavarrow{
         display:none;
     }
+
+	/* modify nav/progress indicator */
+	div.step {
+		width: 15vw;
+	}
+	div.iconcircle {
+		width: 12vw;
+		height: 12vw;
+		border-radius: 6vw;
+		/*border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;*/
+		margin: auto;
+		margin-bottom: 0;
+	}
+	div.steptitle{
+		display: none;
+	}
+	div.steptitle.overarch{
+		display: block;
+	}
 }

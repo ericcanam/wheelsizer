@@ -100,7 +100,7 @@
 		<div class="row">
 			<div v-for="(page, n) in pages" class="fall">
 				<Step :title="page.title" :svg="page.svg" :status="gs(n+1, cid)" />
-				<img v-if="n+1<pages.length" alt="&gt;" class="arrow" src="/assets/arrow.svg" />
+				<img v-if="n+1<pages.length" alt="&gt;" class="h_arrow topnavarrow" src="/assets/arrow_right.svg" />
 			</div>
 			<!--<div class="steptitle current overarch">{{ pages[cid-1].title }}</div>-->
 		</div>
@@ -111,8 +111,8 @@
 						<component :is="pages[cid-1].comp" ref="childComponentRef" :ad="appdata" />
 			</div>
 			<div class="row">
-				<button @click="formback" ref="backRef" :disabled="cid==1" type="button">Back</button><!--
-				--><button ref="submitRef" type="submit" :disabled="cid==pages.length" class="suggest">Next</button>
+				<button @click="formback" ref="backRef" v-if="cid>1" type="button"><img class="left" src="/assets/left_chevron.svg" /><span>Back</span></button><!--
+				--><button ref="submitRef" type="submit" v-if="cid<pages.length" class="suggest"><span>Next</span><img class="right" src="/assets/check.svg" /></button>
 			</div>
 		</form>
 	</main>
