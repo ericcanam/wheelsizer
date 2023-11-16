@@ -63,39 +63,40 @@
         unsetError
     });
 
-    var nstep = (props.step=='any' ? 1 : parseInt(props.step));
+    const nstep = (props.step=='any' ? 1 : props.step);
+    const nmin = (props.min=='' ? -Infinity : props.min);
+    const nmax = (props.max=='' ? Infinity : props.max)
     function change(n){
-        let cv = parseFloat(inputElement.value.value) || 0;
-        inputElement.value.value = cv+n}
+        let cv = Math.round((parseFloat(inputElement.value.value) || 0)/nstep)*nstep;
+        inputElement.value.value = Math.min(Math.max(cv+n, nmin), nmax);
+        emits('update:modelValue', inputElement.value.value);
+    }
 
-    defineEmits(['update:modelValue']);
+    const emits = defineEmits(['update:modelValue']);
 </script>
 
 <template>
     <div class="textfield">
-        <div class="inputbox">
-            <input v-if="type=='number' && showControls" tabindex="-1" type="button" value="-" @click="change(-nstep)" /><!--
-            --><input 
+        <button v-if="type=='number' && showControls" tabindex="-1" type="button" class="nofocus"
+            @click="change(nstep)"><img :alt="'+'+nstep" src="/assets/up_chevron.svg" /></button><div class="inputbox">
+            <input 
                 ref = "inputElement"
                 :name="inputname"
                 :value="modelValue" @change="$emit('update:modelValue', $event.target.value)"
                 :style="'width: '+(length*12)+'pt;'"
                 :type="type" :placeholder="placeholder"
-                :step="step" :max="max" :min="min" /><!--
-            --><input v-if="type=='number' && showControls" tabindex="-1" type="button" value="+" @click="change(nstep)" />
-        </div>
+                :step="step" :max="max" :min="min" />
+        </div><button v-if="type=='number' && showControls" tabindex="-1" type="button" class="nofocus"
+            @click="change(-nstep)"><img :alt="'-'+nstep" src="/assets/down_chevron.svg" /></button>
         <div class="errorline" ref="errorLine"></div>
     </div>
 </template>
 
 <style>
-    div.inputbox input {
+    div.textfield button {
         padding: 6pt;
 	    background-color: transparent;
-    }
-    div.inputbox{
-        background-color: var(--color-backshade);
-        border-radius: 8pt;
+        cursor: pointer;
     }
     div.textfield{
         display:inline-block;

@@ -112,7 +112,7 @@
 			</div>
 			<div class="row">
 				<button @click="formback" ref="backRef" v-if="cid>1" type="button"><img class="left" src="/assets/left_chevron.svg" /><span>Back</span></button><!--
-				--><button ref="submitRef" type="submit" v-if="cid<pages.length" class="suggest"><span>Next</span><img class="right" src="/assets/check.svg" /></button>
+				--><button ref="submitRef" type="submit" v-if="cid<pages.length" class="suggest"><span>Next</span><img class="right" src="/assets/right_chevron.svg" /></button>
 			</div>
 		</form>
 	</main>

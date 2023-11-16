@@ -73,7 +73,7 @@ div.cols > div {
 	width: calc(50% - 12pt);
 }
 
-input, button, div.multitextfield {
+input, button, div.multitextfield, div.multitextfield span span {
 	padding: 6pt;
 	color: var(--color-text);
 	background-color: var(--color-backshade);
@@ -90,12 +90,15 @@ input[type="checkbox"], input[type="radio"] {
 	position: absolute;
 	opacity: 0;
 }
-button img {
+button img, .infoline img, .warningline img {
 	vertical-align: middle;
 	height: 14pt;
 }
 button img.left {
 	margin-right: 8pt;
+}
+.infoline img, .warningline img {
+	margin-right: 4pt;
 }
 button img.right {
 	margin-left: 8pt;
@@ -120,12 +123,10 @@ button span {
 /* INFO stuff (grey/blue) */
 .infoline {
 	color: var(--color-text);
-	font-weight: bold;
+	font-weight: 500;
 }
 .infobox {
 	outline: 2pt solid var(--color-accent3);
-}
-.infobox div {
 	padding: 4pt;
 }
 
@@ -136,7 +137,7 @@ button span {
 	margin-right: auto;
 	max-width: 12cm;
 	border-radius: 8pt;
-	padding: 6pt;
+	padding: 10pt;
 
 	text-align: left;
 	background-color: var(--color-backshade);
@@ -149,13 +150,10 @@ button span {
 }
 .warningline {
 	color: var(--color-accent4);
-	font-weight: bold;
+	font-weight: 500;
 }
 .warningbox {
 	outline: 2pt solid var(--color-accent4);
-}
-.warningbox div {
-	padding: 4pt;
 }
 
 
@@ -196,7 +194,7 @@ button[disabled] {
 .go {
 	background-color: var(--color-accent2);
 }
-input:focus, button:focus, div.hasfocus {
+input:focus, button:not(.nofocus):focus, div.hasfocus {
 	outline: 2pt solid var(--color-text);
 }
 
@@ -215,7 +213,7 @@ table td, table th {
 	padding-left: 12pt;
 	padding-right: 12pt;
 }
-table th { background-color: var(--color-accent1); }
+table th { background-color: var(--color-accent1); font-weight: 500; }
 table tr th:first-child{ border-top-left-radius: 8pt; }
 table tr th:last-child{ border-top-right-radius: 8pt; }
 table tr:last-child td:first-child{ border-bottom-left-radius: 8pt; }

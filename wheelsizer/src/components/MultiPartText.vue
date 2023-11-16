@@ -19,12 +19,11 @@
     var inputlist = {};
     var nus;
 
-
+    // set uplist of fields from given format
     for(var inpn = 0; inpn<props.inputdefs.length; inpn++) {
         let inpo = props.inputdefs[inpn];
         // search for next underscore
         nus = props.struct.indexOf("_", c);
-        //console.log("c:" +c +",  nus: "+nus)
 
         // extract string
         inputlist[inpo.name]={
@@ -32,12 +31,12 @@
             type: inpo.type,
             placeholder: ('placeholder' in inpo ? inpo.placeholder : ''),
             errName: inpo.errName,
-            length: ('length' in inpo ? inpo.length : 12),
+            length: ('length' in inpo ? inpo.length : 8),
             step: ('step' in inpo ? inpo.step : 'any'),
             min: ('min' in inpo ? inpo.min : ''),
             max: ('max' in inpo ? inpo.max : ''),
             prepend: props.struct.substring(c, nus),
-            apppend: (inpn<props.inputdefs.length-1 ? '' : props.struct.substring(nus+1))
+            appendix: (inpn<props.inputdefs.length-1 ? '' : props.struct.substring(nus+1))
         };
         c = nus+1;
     }
@@ -102,8 +101,9 @@
                 {{ inp.prepend }}
                 <input :ref="inp.refer"
                 @input="$emit('update:modelValue', getEmits());"
-                :name="name" :type="inp.type" :placeholder="inp.placeholder" :style="'width: '+(inp.length*12)+'pt;'" :step="inp.step" :min="inp.min" :max="inp.max" />
-                {{ inp.append }}
+                :name="name" :type="inp.type" :placeholder="inp.placeholder" :style="'width: '+(inp.length*12)+'pt;'" :step="inp.step" :min="inp.min" :max="inp.max"
+                 />
+                {{ inp.appendix }}
             </span>
         </div>
         <div class="errorline" ref="errorLine"></div>

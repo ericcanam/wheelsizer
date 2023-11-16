@@ -6,12 +6,13 @@
 
 	/* modify nav/progress indicator */
 	div.step {
-		width: 15vw;
+		width: 15vmin;
+        height: 15vmin;
 	}
 	div.iconcircle {
-		width: 12vw;
-		height: 12vw;
-		border-radius: 6vw;
+		width: 12vmin;
+		height: 12vmin;
+		border-radius: 50%;
 		/*border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;*/
 		margin: auto;

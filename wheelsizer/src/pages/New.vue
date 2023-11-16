@@ -13,7 +13,7 @@
     function validate(){
         // check that a square setup is possible if that is what's selected
         if(stagToSquare() && fields.change.value.getValue()!='Everything'){
-            fields.change.value.setError("Wheels or tire must be changed on at least 1 axle.");
+            fields.change.value.setError("Wheels and tires must be changed on at least 1 axle. (See warning.)");
             return false;
         }
         return true;
@@ -47,7 +47,7 @@
         <OptionToggle :ref="fields.change" inputname="nconfig" :options="['Wheels', 'Tires', 'Everything']" v-model="newconfig" />
     </p>
 
-    <WarningBox v-if="stagToSquare()" title="Staggered &rarr; Square">
+    <WarningBox v-if="stagToSquare()">
         Going from an OEM staggered setup to a square setup requires changing tires <i>and</i> wheels
         on at least one axle if the original rim diameters differed.
     </WarningBox>

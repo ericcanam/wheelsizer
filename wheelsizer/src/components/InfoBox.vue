@@ -2,16 +2,16 @@
     const props = defineProps({
         title:{
             type: String,
-            required: true
+            default: ""
         }
     });
 </script>
 
 <template>
     <div class="infobox">
-        <div class="infoline">Note: {{ title }}</div>
-        <div>
+        <component :is="props.title=='' ? 'span' : 'div'" class="infoline"><!--<img src="/assets/info.svg" />-->Note: {{ title }}</component>
+        <component :is="props.title=='' ? 'span' : 'div'">
             <slot />
-        </div>
+        </component>
     </div>
 </template>

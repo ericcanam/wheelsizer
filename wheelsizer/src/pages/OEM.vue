@@ -2,6 +2,7 @@
     import { ref } from 'vue';
 
     import TextBar from '../components/TextBar.vue';
+    import InfoBox from '../components/InfoBox.vue';
 
     import TireSize from '../components/fields/TireSize.vue';
     import WheelSize from '../components/fields/WheelSize.vue';
@@ -96,7 +97,7 @@
         <TextBar type="number" :length=6 inputname="or_offset" errName="Wheel offset" :ref="fields.roff" placeholder="Offset" />
     </p>
 
-    <p>Wheel size and offset can usually be found stamped on the spokes of your wheels.</p>
+    <InfoBox>Wheel size and offset can usually be found stamped on the spokes of your wheels.</InfoBox>
 
     <h2>Tell us about the OEM tires.</h2>
     <p>These numbers are specified in ISO Metric format, and can be found on your tire sidewall or on a sticker in the driver's side door frame.</p>
