@@ -21,19 +21,19 @@
     var rwes = oemStagger() ? getWheels(props.ad.or_section, props.ad.or_ratio) : [fwes[0], fwes[1]];
     // new wheel widths
     var fnw = ref((props.ad.nconfig!='Tires' ? props.ad.nf_width : undefined) || props.ad.of_width);
-    var rnw = ref((props.ad.nconfig!='Tires' ? props.ad.rf_width : undefined) || (oemStagger() ? props.ad.or_width : props.ad.of_width));
+    var rnw = ref((props.ad.nconfig!='Tires' ? props.ad.nr_width : undefined) || (oemStagger() ? props.ad.or_width : props.ad.of_width));
     // new wheel offsets
     var fno = ref((props.ad.nconfig!='Tires' ? props.ad.nf_offset : undefined) || props.ad.of_offset);
-    var rno = ref((props.ad.nconfig!='Tires' ? props.ad.rf_offset : undefined) || (oemStagger() ? props.ad.or_offset : props.ad.of_offset));
+    var rno = ref((props.ad.nconfig!='Tires' ? props.ad.nr_offset : undefined) || (oemStagger() ? props.ad.or_offset : props.ad.of_offset));
     // new tire sections
-    var fnts = ref((props.ad.nconfig!='Wheels' ? props.ad.nf_section : undefined) || ((stagToSquare() && props.ad.drivewheels=='Rear') ? props.ad.or_section : props.ad.of_section));
-    var rnts = ref((props.ad.nconfig!='Wheels' ? props.ad.rf_section : undefined) || (oemStagger() ? props.ad.or_section : props.ad.of_section));
+    var fnts = ref((props.ad.nconfig!='Wheels' ? props.ad.nf_section : undefined) || (props.ad.of_section));
+    var rnts = ref((props.ad.nconfig!='Wheels' ? props.ad.nr_section : undefined) || (oemStagger() ? props.ad.or_section : props.ad.of_section));
     // new tire ratios
-    var fntr = ref((props.ad.nconfig!='Wheels' ? props.ad.nf_ratio : undefined) || ((stagToSquare() && props.ad.drivewheels=='Rear') ? props.ad.or_ratio : props.ad.of_ratio));
-    var rntr = ref((props.ad.nconfig!='Wheels' ? props.ad.rf_ratio : undefined) || (oemStagger() ? props.ad.or_ratio : props.ad.of_ratio));
+    var fntr = ref((props.ad.nconfig!='Wheels' ? props.ad.nf_ratio : undefined) || (props.ad.of_ratio));
+    var rntr = ref((props.ad.nconfig!='Wheels' ? props.ad.nr_ratio : undefined) || (oemStagger() ? props.ad.or_ratio : props.ad.of_ratio));
     // new wheel diameters
-    var fnwd = ref(props.ad.nf_diameter || props.ad.of_diameter);
-    var rnwd = ref(props.ad.nr_diameter || (oemStagger() ? props.ad.or_diameter : props.ad.of_diameter));
+    var fnwd = ref((props.ad.nconfig=='Everything' ? props.ad.nf_diameter : undefined) || props.ad.of_diameter);
+    var rnwd = ref((props.ad.nconfig=='Everything' ? props.ad.rf_diameter : undefined) || (oemStagger() ? props.ad.or_diameter : props.ad.of_diameter));
     // old rear wheel specs
     const row = (oemStagger() ? props.ad.or_width : props.ad.of_width);
     const roo = (oemStagger() ? props.ad.or_offset : props.ad.of_offset);
@@ -47,24 +47,28 @@
     // legal tires & respective heights for OEM wheels
     var frontTireArray, fminHeight, fmaxHeight, frontTireHeightArray,
         rearTireArray,  rminHeight, rmaxHeight, rearTireHeightArray;
+    var fthd = ref(props.ad.nf_tireheight || (foh));
+    var rthd = ref(props.ad.nr_tireheight || roh);
     function defineTireArrays(){
         frontTireArray = getTireArray(fnw.value, fnwd.value, foh);
-            fminHeight = frontTireArray[0].th;
-            fmaxHeight = frontTireArray[frontTireArray.length-1].th;
+            fminHeight = (frontTireArray.length ? frontTireArray[0].th : foh-1);
+            fmaxHeight = (frontTireArray.length ? frontTireArray[frontTireArray.length-1].th : foh+1);
             frontTireHeightArray = getTireHeightArray(frontTireArray);
-        rearTireArray = (oemStagger() ? getTireArray(rnw.value, rnwd.value, roh) : frontTireArray);
-            rminHeight = rearTireArray[0].th;
-            rmaxHeight = rearTireArray[rearTireArray.length-1].th;
+        rearTireArray = (anyStagger() ? getTireArray(stagToSquare() ? fnw.value : rnw.value, stagToSquare() ? fnwd.value : rnwd.value, roh) : frontTireArray);
+            rminHeight = (rearTireArray.length ? rearTireArray[0].th : roh-1);
+            rmaxHeight = (rearTireArray.length ? rearTireArray[rearTireArray.length-1].th : roh+1);
             rearTireHeightArray = getTireHeightArray(rearTireArray);
-            console.log(rearTireHeightArray)
+
+        if(stagToSquare() && props.ad.nconfig=='Tires'){
+            frontTireArray = [... new Set([...frontTireArray, ...rearTireArray])];
+        }
+        
+        updateHeight(fnwd.value, fnts.value, fntr.value, fthd);
+        updateHeight(rnwd.value, rnts.value, rntr.value, rthd);
     }
     defineTireArrays();
     // target rear wheels as well when coming up with a list of tires: only if square now, staggered OEM
-    if(stagToSquare()){
-        frontTireArray = [... new Set([...frontTireArray, ...rearTireArray])];
-    }
-    var fthd = ref(props.ad.nf_tireheight || ((stagToSquare() && props.ad.drivewheels=='Rear') ? roh : foh));
-    var rthd = ref(props.ad.nr_tireheight || roh);
+    
 
     const fields = {
         // wheels only
@@ -106,11 +110,11 @@
     function updateHeight(diameter, section, ratio, tire_height_var){
         tire_height_var.value = tireHeight(diameter, ratio, section);
     }
-    watch(fnts, (new_section) => {updateHeight(fnwd.value || props.ad.of_diameter, new_section, fntr.value, fthd)}); // fronts
-    watch(fntr, (new_ratio)   => {updateHeight(fnwd.value || props.ad.of_diameter, fnts.value, new_ratio,   fthd)});
+    watch(fnts, (new_section) => {updateHeight(fnwd.value, new_section, fntr.value, fthd)}); // fronts
+    watch(fntr, (new_ratio)   => {updateHeight(fnwd.value, fnts.value, new_ratio,   fthd)});
     watch(fnwd, (new_diam)    => {defineTireArrays(); updateHeight(new_diam, fnts.value, fntr.value, fthd)});
-    watch(rnts, (new_section) => {updateHeight(rnwd.value || rod, new_section, rntr.value, rthd)}); // rears
-    watch(rntr, (new_ratio)   => {updateHeight(rnwd.value || rod, rnts.value, new_ratio,   rthd)});
+    watch(rnts, (new_section) => {updateHeight(rnwd.value, new_section, rntr.value, rthd)}); // rears
+    watch(rntr, (new_ratio)   => {updateHeight(rnwd.value, rnts.value, new_ratio,   rthd)});
     watch(rnwd, (new_diam)    => {defineTireArrays(); updateHeight(new_diam, rnts.value, rntr.value, rthd)});
 
 
@@ -125,7 +129,10 @@
 </script>
 
 <template>
-
+    <!-- FOR DEBUG<br />
+    FRONT: {{ fnts }}/{{ fntr }}R{{ fnwd }}, {{ fnwd }}&times;{{ fnw }} ET{{ fno }}<br />
+    REAR: {{ rnts }}/{{ rntr }}R{{ rnwd }}, {{ rnwd }}&times;{{ rnw }} ET{{ rno }}-->
+    
     <!-- Changing only the tires -->
     <div v-if="props.ad.nconfig!='Wheels'">
         <h2>New Tires</h2>
@@ -155,19 +162,19 @@
                 Rear: ({{ getPctDiff(roh, tireHeight(fnwd , fntr, fnts)) }})
             </span>
         </p>
-        <Scale inputname="nf_tireheight"
+        <Scale inputname="nf_tireheight" v-if="frontTireHeightArray.length>1"
             :min="fminHeight"    :minLabel="fminHeight+'mm\n('+getPctDiff(foh, fminHeight)+')'"
             :max="fmaxHeight"    :maxLabel="fmaxHeight+'mm\n('+getPctDiff(foh, fmaxHeight)+')'"
             v-model="fthd"
             :discreteSnapPoints="frontTireHeightArray"
             showControls
             @update:modelValue="fillFrontTire($event)"
-        />
+        /><input v-else type="hidden" name="nf_tireheight" v-model="fthd" />
         <WarningBox v-if="!isLegalTire(fnw, fnts, fntr)">
             A tire of size {{ fnts }}/{{ fntr }}R{{ fnwd }} is beyond the limits of a {{ fnw }}&quot;-wide rim,
             per ISO 4000-1.
         </WarningBox>
-        <WarningBox v-if="stagToSquare() && !isLegalTire(rnw , fnts, fntr)">
+        <WarningBox v-if="stagToSquare() && props.ad.nconfig=='Tires' && !isLegalTire(rnw , fnts, fntr)">
             A tire of size {{ fnts }}/{{ fntr }}R{{ fnwd }} is beyond the limits of a {{ rnw }}&quot;-wide rim,
             per ISO 4000-1.
         </WarningBox>
@@ -190,14 +197,14 @@
                     v-model="rnwd" />
             </p>
             <p><b>Tire Height:</b> {{ niceNumber(tireHeight(rnwd, rntr, rnts)) }} mm ({{ getPctDiff(roh, tireHeight(rnwd, rntr, rnts)) }})</p>
-            <Scale inputname="nf_tireheight"
+            <Scale inputname="nr_tireheight" v-if="rearTireHeightArray.length>1"
                 :min="rminHeight"    :minLabel="rminHeight+'mm<br />('+getPctDiff(roh, rminHeight)+')'"
                 :max="rmaxHeight"    :maxLabel="rmaxHeight+'mm<br />('+getPctDiff(roh, rmaxHeight)+')'"
                 v-model="rthd"
                 :discreteSnapPoints="rearTireHeightArray"
                 showControls
                 @update:modelValue="fillRearTire($event)"
-            />
+            /><input v-else type="hidden" name="nr_tireheight" v-model="rthd" />
             <WarningBox v-if="!isLegalTire(rnw, rnts, rntr)">
                 A tire of size {{ rnts }}/{{ rntr }}R{{ rnwd }} is beyond the limits of a {{ rnw }}&quot;-wide rim,
                 per ISO 4000-1.
@@ -233,10 +240,10 @@
             Offset
         </p>
         <WarningBox v-if="!isLegalTire(fnw, fnts, fntr)">
-            This {{ fnw }}&quot;-wide rim is beyond the limits of a tire sized {{ fnts }}/{{ fntr }}R{{ rnwd }},
+            This {{ fnw }}&quot;-wide rim is beyond the limits of a tire sized {{ fnts }}/{{ fntr }}R{{ fnwd }},
             per ISO 4000-1.
         </WarningBox>
-        <WarningBox v-if="stagToSquare() && !isLegalTire(fnw, rnts, rntr)">
+        <WarningBox v-if="stagToSquare() && props.ad.nconfig=='Wheels' && !isLegalTire(fnw, rnts, rntr)">
             This {{ fnw }}&quot;-wide rim is beyond the limits of a tire sized {{ rnts }}/{{ rntr }}R{{ rnwd }},
             per ISO 4000-1.
         </WarningBox>
@@ -262,21 +269,18 @@
             </tr>
             <tr>
                 <td>Wheel Poke</td><td>{{ fpm(getPokeDiff(fnw, fno, props.ad.of_width, props.ad.of_offset)) }} mm</td>
-                <td v-if="anyStagger()">{{ newStagger() ? 
-                                            fpm(getPokeDiff(rnw, rno, row, roo)) :
-                                            fpm(getPokeDiff(fnw, rno, row, roo))    }} mm</td>
+                <td v-if="newStagger()">{{ fpm(getPokeDiff(rnw, rno, row, roo)) }} mm</td>
+                <td v-else-if="oemStagger()">{{ fpm(getPokeDiff(fnw, fno, row, roo)) }} mm</td>
             </tr>
             <tr>
                 <td>Wheel Inset</td><td>{{ fpm(getInsetDiff(fnw, fno, props.ad.of_width, props.ad.of_offset)) }} mm</td>
-                <td v-if="anyStagger()">{{ newStagger() ? 
-                                            fpm(getInsetDiff(rnw, rno, row, roo)) :
-                                            fpm(getInsetDiff(fnw, rno, row, roo))    }} mm</td>
+                <td v-if="newStagger()">{{ fpm(getInsetDiff(rnw, rno, row, roo)) }} mm</td>
+                <td v-else-if="oemStagger()">{{ fpm(getInsetDiff(fnw, fno, row, roo)) }} mm</td>
             </tr>
             <tr>
                 <td>Tire Center</td><td>{{ fpm(props.ad.of_offset - fno) }} mm</td>
-                <td v-if="anyStagger()">{{ newStagger() ? 
-                                            fpm(roo-rno) :
-                                            fpm(props.ad.of_offset - fno)    }} mm</td>
+                <td v-if="newStagger()">{{ fpm(roo-rno) }} mm</td>
+                <td v-else-if="oemStagger()">{{ fpm(props.ad.or_offset-fno) }} mm</td>
             </tr>
         </table>
     </div>

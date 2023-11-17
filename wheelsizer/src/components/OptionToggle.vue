@@ -1,5 +1,5 @@
 <script setup>
-    import { ref } from 'vue';
+    import { ref, watch } from 'vue';
     
     const props = defineProps({
         modelValue:{},
@@ -22,11 +22,20 @@
         linesep:{
             type:Boolean,
             default:false
+        },
+        autofocus:{
+            type: Boolean,
+            default: false
         }
     });
 
     const errorLine = ref();
     const inputElement = ref();
+
+    var radiorefs = {};
+    for(let option of props.options){
+        radiorefs[option] = ref();
+    }
 
     function focusBox(){ inputElement.value.classList.add('hasfocus'); }
     function unfocusBox(event){
@@ -65,6 +74,12 @@
         console.log(props.modelValue);
         emit('update:modelValue', props.modelValue);
     }*/
+
+    if(props.autofocus){
+        watch(radiorefs[props.modelValue || props.defaultOption], () => {
+            Object.assign({}, radiorefs[props.modelValue || props.defaultoption].value)[0].focus();
+        });
+    }
 </script>
 
 <template>
@@ -79,6 +94,7 @@
                     :value="option"
                     :name="inputname"
                     v-model="selected"
+                    :ref="radiorefs[option]"
                     :checked="option==defaultoption || option==modelValue" />
                 <label :for="inputname+'_'+option"><div class="opt">
                     {{ option }}

@@ -1,5 +1,5 @@
 <script setup>
-    import { ref } from 'vue';
+    import { ref, watch } from 'vue';
 
     const props = defineProps({
         modelValue:{},
@@ -12,6 +12,10 @@
             */
             type: String,
             required: true
+        },
+        autofocus: {
+            type: Boolean,
+            default: false
         }
     });
     
@@ -92,12 +96,19 @@
         }
         return vals;
     }
+
+    if(props.autofocus){
+        watch(inputlist[props.inputdefs[0].name].refer, () => {
+            Object.assign({}, inputlist[props.inputdefs[0].name].refer.value)[0].focus();
+        });
+    }
+    
 </script>
 
 <template>
     <div class="multitextcontainer">
         <div ref="inputElement" class="multitextfield" style="display:inherit;">
-            <span v-for="(inp, name) in inputlist">
+            <span v-for="(inp, name, index) in inputlist">
                 {{ inp.prepend }}
                 <input :ref="inp.refer"
                 @input="$emit('update:modelValue', getEmits());"
