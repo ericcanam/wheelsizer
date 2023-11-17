@@ -3,6 +3,8 @@ body {
 	margin: 0pt;
 	padding: 0pt;
 	padding-bottom: 24pt;
+	padding-left: 12pt;
+	padding-right: 12pt;
 
 	text-align: center;
 }
@@ -12,8 +14,6 @@ div.row {
 	margin-top: 24pt;
 	margin-bottom: 24pt;
 	max-width: 10in;
-	padding-left: 12pt;
-	padding-right: 12pt;
 	display: block;
 }
 
@@ -180,6 +180,16 @@ button {
 	margin-left: 12pt;
 	margin-right: 12pt;
 }
+	
+button.single{
+	width: calc(50% - 24pt);
+	max-width: calc(2.5in - 24pt);
+}
+button.double{
+	width: calc(100% - 24pt);
+	max-width: calc(5in - 24pt);
+}
+
 button[disabled] {
 	cursor: default;
 	color: var(--color-accent3);
@@ -256,4 +266,8 @@ div.steptitle {
 }
 div.steptitle.overarch{
 	display: none;
+}
+
+pre {
+	font-family: inherit;
 }

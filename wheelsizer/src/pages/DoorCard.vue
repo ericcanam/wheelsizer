@@ -41,5 +41,8 @@
             </tr>
         </table>
     </p>
+    <div class="row">
+        <!-- <button type="button" class="go double">Save "{{ props.ad.cartitle }}"<img class="right" src="/assets/download.svg" /></button> -->
+    </div>
 
 </template>

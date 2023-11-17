@@ -123,13 +123,20 @@ function getClosestSidewall(oem_height, new_section, new_rim){
     return Math.round(sidewall_target/new_section*20)*5;
 }
 
-// get the +/- difference for a new tire
+// get the +/- difference for a new tire, formatted as ([+/-]X.YZ%)
 function getPctDiff(oemHeight, newHeight){
-    return fpm((newHeight-oemHeight) / oemHeight * 100)+"%";
+    return fpm(getPctDiffUnform(oemHeight, newHeight))+"%";
+}
+
+// get the +/- difference for a new tire (without the prettification)
+function getPctDiffUnform(oemHeight, newHeight){
+    return (newHeight-oemHeight) / oemHeight * 100;
 }
 
 // returns legal sections and sidewall ratios
 function getTireArray(width, diameter, target_height){
+    const pct_diff_cutoff = 10;
+
     width = parseFloat(width);
 
     // calc section range
@@ -144,14 +151,18 @@ function getTireArray(width, diameter, target_height){
         let sidewall = csw;
         while(isLegalTire(width, section, sidewall) && sidewall<=95){
             let th = tireHeight(diameter, sidewall, section);
-            csw_arr.push({th: Math.round(th*10)/10, section: section, ratio: sidewall});
+            if(Math.abs(getPctDiffUnform(target_height, th))<=pct_diff_cutoff){
+                csw_arr.push({th: Math.round(th*10)/10, section: section, ratio: sidewall});
+            }
             sidewall += 5;
         }
         // finally, work downwards
         sidewall = csw-5;
         while(isLegalTire(width, section, sidewall) && sidewall>=20){
             let th = tireHeight(diameter, sidewall, section);
-            csw_arr.push({th: Math.round(th*10)/10, section: section, ratio: sidewall});
+            if(Math.abs(getPctDiffUnform(target_height, th))<=pct_diff_cutoff){
+                csw_arr.push({th: Math.round(th*10)/10, section: section, ratio: sidewall});
+            }
             sidewall -= 5;
         }
     }

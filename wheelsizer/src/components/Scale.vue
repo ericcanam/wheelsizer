@@ -1,4 +1,5 @@
 <script setup>
+    import { ref } from 'vue';
     const props = defineProps({
         modelValue:{
             required: true
@@ -41,13 +42,13 @@
         }
     });
 
+    var sliderField = ref();
+
     // set labels if they are not defined
     var minLabelComputed = props.minLabel || props.min.toString();
     var maxLabelComputed = props.maxLabel || props.max.toString();
 
-    var mv = props.modelValue;
-
-    const defaultPercentage = 100*(mv-props.min)/(props.max-props.min);
+    const defaultPercentage = 100*(props.modelValue-props.min)/(props.max-props.min);
     const gstring = "linear-gradient(to right, "+props.minColor+", var(--color-accent2) "+defaultPercentage+"%, "+props.maxColor+")";
 
     // send out updated value (and "round" it to nearest discrete point if applicable)
@@ -55,7 +56,6 @@
         let target = event.target;
         let value = target.value;
 
-        mv = value;
         if(!props.discreteSnapPoints){
             // no snap points, send it
             emits('update:modelValue', value);
@@ -87,8 +87,29 @@
             emits('update:modelValue', target.value);
         }
     }
-    function stepDown(){}
-    function stepUp(){}
+
+    function stepDown(){
+        if(props.discreteSnapPoints){
+            for(let i=props.discreteSnapPoints.length-1; i>=0; i--){
+                if(props.discreteSnapPoints[i]<sliderField.value.value){
+                    sliderField.value.value = props.discreteSnapPoints[i];
+                    emits('update:modelValue', sliderField.value.value);
+                    return;
+                }
+            }
+        }
+    }
+    function stepUp(){
+        if(props.discreteSnapPoints){
+            for(let i=0; i<props.discreteSnapPoints.length; i++){
+                if(props.discreteSnapPoints[i]>sliderField.value.value){
+                    sliderField.value.value = props.discreteSnapPoints[i];
+                    emits('update:modelValue', sliderField.value.value);
+                    return;
+                }
+            }
+        }
+    }
 
     defineExpose({
         update
@@ -106,10 +127,10 @@
                 @click="stepUp($event.target.value)"><img src="/assets/right_chevron.svg" /></button>
             
             <div class="slidercontainer"><input type="range" @input="update($event)"
+                ref="sliderField"
                 :name="inputname"
                 step=0.1
                 :min="min" :max="max" :value="modelValue" /></div>
-
         </div>
     </p>
 </template>

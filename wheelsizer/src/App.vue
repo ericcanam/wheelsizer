@@ -90,12 +90,14 @@
 	watch(childComponentRef, (nccr) => {
 		fill();
 	});
+
+	const appv = APP_VERSION;
 </script>
 
 <template>
 	<header>
 		<div v-if="cid==1" class="row">
-			<img alt="Wheelhub" class="logo" src="/assets/logo_t1.svg" />
+			<a href="/"><img alt="Wheelhub" class="logo" src="/assets/logo_t1.svg" /></a><br />{{ appv }}
 		</div>
 		<div class="row">
 			<div v-for="(page, n) in pages" class="fall">
@@ -108,11 +110,11 @@
 	<main>
 		<form id="sform" @submit="formnext" novalidate ref="formRef">
 			<div class="row">
-						<component :is="pages[cid-1].comp" ref="childComponentRef" :ad="appdata" />
+				<component :is="pages[cid-1].comp" ref="childComponentRef" :ad="appdata" />
 			</div>
 			<div class="row">
-				<button @click="formback" ref="backRef" v-if="cid>1" type="button"><img class="left" src="/assets/left_chevron.svg" /><span>Back</span></button><!--
-				--><button ref="submitRef" type="submit" v-if="cid<pages.length" class="suggest"><span>Next</span><img class="right" src="/assets/right_chevron.svg" /></button>
+				<button @click="formback" ref="backRef" v-if="cid>1" type="button" class="single"><img class="left" src="/assets/left_chevron.svg" /><span>Back</span></button><!--
+				--><button ref="submitRef" type="submit" v-if="cid<pages.length" class="suggest single"><span>Next</span><img class="right" src="/assets/right_chevron.svg" /></button>
 			</div>
 		</form>
 	</main>

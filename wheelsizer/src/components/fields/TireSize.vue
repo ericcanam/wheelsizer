@@ -34,9 +34,9 @@
 </script>
 
 <template>
-    <MultiPartText :inputdefs="[{name: inprefix+'_section', type:'number', step: 5, min: 5, length:3, errName: 'Tire section width'},
-                                {name: inprefix+'_ratio', type:'number', step: 5, min: 5, length:3, errName: 'Tire sidewall ratio'},
-                                {name: inprefix+'_diam', type:'number', step: 0.5, min: 5, length:3, errName: 'Wheel diameter'}]" struct="_/_R_"
+    <MultiPartText :inputdefs="[{name: inprefix+'_section', type:'number', step: 5, min: 5, max: 605, length:3, errName: 'Tire section width'},
+                                {name: inprefix+'_ratio', type:'number', step: 5, min: 5, max: 95, length:3, errName: 'Tire sidewall ratio'},
+                                {name: inprefix+'_diam', type:'number', step: 0.5, min: 5, max: 30, length:3, errName: 'Wheel diameter'}]" struct="_/_R_"
         v-model="mv"
         @input="$emit('update:modelValue', mv)"
         ref="field" />

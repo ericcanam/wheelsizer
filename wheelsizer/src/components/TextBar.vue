@@ -95,8 +95,13 @@
 <style>
     div.textfield button {
         padding: 6pt;
+        margin: 0pt;
 	    background-color: transparent;
         cursor: pointer;
+    }
+    div.textfield input {
+        margin-left: 4pt;
+        margin-right: 4pt;
     }
     div.textfield{
         display:inline-block;
