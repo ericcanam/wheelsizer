@@ -29,7 +29,7 @@
 
     <h2>Give your car a name:</h2>
     <TextBar inputname="cartitle" :ref="fields.cartitle" :length=20
-        placeholder="e.g., 2003 Mitsubishi Lancer" />
+        placeholder="e.g., 2003 Mitsubishi Lancer" autofocus />
     <input type="hidden" name="savename" value="-UNSAVED-" />
     <h2>Let's talk shop:</h2>
 

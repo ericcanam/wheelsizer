@@ -82,7 +82,7 @@
     <!-- Wheel size -->
     <p>What size are the OEM wheels, in inches?</p>
     <span class="inputlabel" v-if="staggered()">Front:</span>
-    <WheelSize inprefix="of" :ref="fields.fws" />
+    <WheelSize inprefix="of" :ref="fields.fws" autofocus />
     <p v-if="staggered()">
         <span class="inputlabel">Rear:</span>
         <WheelSize inprefix="or" :ref="fields.rws" />

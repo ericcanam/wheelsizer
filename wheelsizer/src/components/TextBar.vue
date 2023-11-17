@@ -1,5 +1,5 @@
 <script setup>
-    import { ref } from 'vue';
+    import { ref, watch } from 'vue';
 
     const props = defineProps({
         modelValue:{},
@@ -35,6 +35,10 @@
         errName:{
             type: String,
             default: 'This field'
+        },
+        autofocus: {
+            type: Boolean,
+            default: false
         }
     });
 
@@ -73,6 +77,12 @@
     }
 
     const emits = defineEmits(['update:modelValue']);
+    
+    if(props.autofocus){
+        watch(inputElement, () => {
+            inputElement.value.focus();
+        });
+    }
 </script>
 
 <template>
