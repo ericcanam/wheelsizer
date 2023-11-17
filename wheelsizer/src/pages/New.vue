@@ -40,7 +40,7 @@
     <!-- stagger/square option toggle -->
     <p>Will your new setup be different front to rear (staggered)? Or will all four wheels and tires be the same (square)?</p>
     <p>
-        <OptionToggle inputname="nstagger" :options="['Square', 'Staggered']" v-model="newstagger" />
+        <OptionToggle inputname="nstagger" :options="['Square', 'Staggered']" v-model="newstagger" autofocus />
     </p>
     <p>What are you looking to change?</p>
     <p>

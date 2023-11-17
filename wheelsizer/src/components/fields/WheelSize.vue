@@ -7,6 +7,10 @@
             type: String,
             required: true
         },
+        autofocus: {
+            type: Boolean,
+            default: false
+        },
         modelValue:{}
     });
 
@@ -38,6 +42,7 @@
                                     {name: inprefix+'_width', type:'number', step: 0.5, min: 2.5, max: 22.5, placeholder: 'Width', length:5, errName: 'Wheel width'}]"
         struct="_&times;_"
         v-model="mv"
+        :autofocus="autofocus"
         @input="$emit('update:modelValue', mv)"
         ref="field" />
 </template>
