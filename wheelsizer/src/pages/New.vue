@@ -27,6 +27,11 @@
         return props.ad.staggered=='Yes' && newstagger.value=='Square' && props.ad.of_diameter!=props.ad.or_diameter;
     }
 
+    // returns true if either the OEM or new setup are staggered, AND if the car is AWD/4WD
+    function stagAWD(){
+        return (newstagger.value=='Staggered' || props.ad.staggered=='Yes') && props.ad.drivewheels=='All';
+    }
+
     defineExpose({
         validate,
         fields
@@ -49,6 +54,12 @@
     <WarningBox v-if="stagToSquare()">
         Going from an OEM staggered setup to a square setup requires changing tires <i>and</i> wheels
         on at least one axle if the original rim diameters differed.
+    </WarningBox>
+
+    <WarningBox v-if="stagAWD()">
+        All-wheel-drive (AWD) and four-wheel-drive (4WD) vehicles may be sensitive to
+        changes in tire size when there are differences between the front and rear tires.
+        Consult a mechanic familiar with your vehicle before committing to a change.
     </WarningBox>
 
     <InfoBox>
