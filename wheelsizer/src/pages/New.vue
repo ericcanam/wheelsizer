@@ -1,6 +1,7 @@
 <script setup>
     import { ref } from 'vue';
     import WarningBox from '../components/WarningBox.vue';
+    import InfoBox from '../components/InfoBox.vue';
     import OptionToggle from '../components/OptionToggle.vue';
     
     var props = defineProps(['ad']);
@@ -35,8 +36,6 @@
 <template>
 
     <h2>New Setup</h2>
-    <!--<p>Play around with the values here, and see the effects of these changes in real-time.</p>-->
-
     <!-- stagger/square option toggle -->
     <p>Will your new setup be different front to rear (staggered)? Or will all four wheels and tires be the same (square)?</p>
     <p>
@@ -51,5 +50,10 @@
         Going from an OEM staggered setup to a square setup requires changing tires <i>and</i> wheels
         on at least one axle if the original rim diameters differed.
     </WarningBox>
+
+    <InfoBox>
+        Changing your wheels and tires for on-road or off-road use can sometimes cause problems,
+        and may not be legal in all jurisdictions. Consult a mechanic if you're unsure.
+    </InfoBox>
 
 </template>
