@@ -90,6 +90,7 @@
 	});
 
 	const appv = APP_VERSION;
+	const builddate = BUILD_DATE;
 </script>
 
 <template>
@@ -115,7 +116,7 @@
 				--><button ref="submitRef" type="submit" v-if="cid<pages.length" class="suggest single"><span>Next</span><img class="right" src="/assets/right_chevron.svg" /></button>
 			</div>
 			<div class="row">
-				{{ appv }} &mdash; <a href="https://github.com/ericcanam/wheelsizer/releases">GitHub</a>
+				{{ appv }} &mdash; Copyright {{ builddate }} Wheelhub
 			</div>
 		</form>
 	</main>

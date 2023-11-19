@@ -256,11 +256,11 @@
             <TextBar type="number" :length=3
                 inputname="nr_offset" errName="Offset" :ref="fields.rwo" placeholder="Offset" v-model="rno" showControls />
             Offset
+            <WarningBox v-if="anyStagger() && !isLegalTire(rnw, rnts, rntr)">
+                This {{ rnw }}&quot;-wide rim is beyond the limits of a tire sized {{ rnts }}/{{ rntr }}R{{ rnwd }},
+                per ISO 4000-1.
+            </WarningBox>
         </p>
-        <WarningBox v-if="anyStagger() && !isLegalTire(rnw, rnts, rntr)">
-            This {{ rnw }}&quot;-wide rim is beyond the limits of a tire sized {{ ros }}/{{ ror }}R{{ rod }},
-            per ISO 4000-1.
-        </WarningBox>
 
         <h2>Changes</h2>
         <table>
