@@ -2,7 +2,7 @@ const INCH = 25.4;
 
 // rounds to 2 decimal places and adds delimiting commas for 1,000...
 function niceNumber(n){
-    return parseFloat(n.toFixed(2)).toLocaleString('en-US');
+    return parseFloat(parseFloat(n).toFixed(2)).toLocaleString('en-US');
 }
 
 // formats number with niceNumber and adds + or - to the front
@@ -177,6 +177,20 @@ function getTireHeightArray(tireArray){
     return arr;
 }
 
+// returns the hypotenuse or the adjacent side (for calculating wheelbase/tire-height stuff)
+function getPythagLength(a, b, getAdjacent=false){
+    if(getAdjacent){
+        return Math.sqrt(Math.pow(b,2) - Math.pow(a,2));
+    }else{
+        return Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
+    }
+}
+
+function getPythagAngle(opp, hyp){
+    return Math.asin(opp/hyp) * (180/Math.PI);
+}
+
+
 export { niceNumber, fpm, // formatting
     
     // tire stuff
@@ -184,5 +198,8 @@ export { niceNumber, fpm, // formatting
     getClosestSidewall, getPctDiff, getTireArray, getTireHeightArray,
     
     // wheel stuff
-    getWheels, getPokeDiff, getInsetDiff
+    getWheels, getPokeDiff, getInsetDiff,
+
+    // math stuff
+    getPythagLength, getPythagAngle
 };

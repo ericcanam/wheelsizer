@@ -48,8 +48,9 @@
     var minLabelComputed = props.minLabel || props.min.toString();
     var maxLabelComputed = props.maxLabel || props.max.toString();
 
-    const defaultPercentage = 100*(props.modelValue-props.min)/(props.max-props.min);
-    const gstring = "linear-gradient(to right, "+props.minColor+", var(--color-accent2) "+defaultPercentage+"%, "+props.maxColor+")";
+    var defaultPercentage, gstring;
+    defaultPercentage = 100*(props.modelValue-props.min)/(props.max-props.min);
+    gstring = "linear-gradient(to right, "+props.minColor+", var(--color-accent2) "+defaultPercentage+"%, "+props.maxColor+")";
 
     // send out updated value (and "round" it to nearest discrete point if applicable)
     function update(event){

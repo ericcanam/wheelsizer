@@ -22,15 +22,6 @@ a, a:visited {
 	text-decoration: none;
 }
 
-h1 {
-	font-size: calc(2.5 * var(--font-size));
-}
-h2 {
-	font-size: calc(1.6 * var(--font-size));
-}
-h3 {
-	font-size: calc(1.2 * var(--font-size));
-}
 .logo {
 	max-width: max(68%, min(3in, 100%));
 	max-height: 1.5in;
@@ -94,13 +85,13 @@ button img, .infoline img, .warningline img {
 	vertical-align: middle;
 	height: 14pt;
 }
-button img.left {
+img.left {
 	margin-right: 8pt;
 }
 .infoline img, .warningline img {
 	margin-right: 4pt;
 }
-button img.right {
+img.right {
 	margin-left: 8pt;
 }
 button span {
@@ -121,23 +112,23 @@ button span {
 }
 
 /* INFO stuff (grey/blue) */
-.infoline {
+.infoline, .adline {
 	color: var(--color-text);
 	font-weight: 500;
 }
-.infobox {
+.infobox, .adbox {
 	outline: 2pt solid var(--color-accent3);
 	padding: 4pt;
 }
 
-.infobox, .warningbox {
+.infobox, .warningbox, .adbox {
 	margin-top: 18pt;
 	margin-bottom: 18pt;
 	margin-left: auto;
 	margin-right: auto;
-	max-width: 12cm;
+	max-width: 5in;
 	border-radius: 8pt;
-	padding: 10pt;
+	padding: 8pt;
 
 	text-align: left;
 	background-color: var(--color-backshade);

@@ -7,18 +7,17 @@
     import TireSize from '../components/fields/TireSize.vue';
     import WheelSize from '../components/fields/WheelSize.vue';
 
-    import { allNumeric, isNumeric } from './validator.js';
+    import Collapsible from '../components/Collapsible.vue';
+
+    import { optional, allNumeric, isNumeric } from './validator.js';
 
     var props = defineProps(['ad']);
-
-    // wheel diameter field references (so it can be pre-populated and not typed TWICE)
-    const fwd = "";
-    const rwd = "";
     
     //var staggered = ref(props.ad.staggered=="Yes");
     function staggered(){return props.ad.staggered=="Yes";}
     function spare(){return props.ad.spare=="Yes";}
 
+    var advancedOptions = ref();
 
     const fields = {
         fws: ref(),
@@ -27,9 +26,11 @@
         roff: ref(),
         fts: ref(),
         rts: ref()
+    }
+    const optionalFields = {
+        // advanced options
+        owb: ref()
     };
-
-    const warnbox = ref();
 
     function validate(){
         // wheel size
@@ -62,16 +63,21 @@
             rwm = false;
         }
 
-        return fwsCheck && rwsCheck && foffCheck && roffCheck && ftsCheck && rtsCheck && fwm && rwm;
-    }
+        let owb = true;
+        if(advancedOptions.value.isToggled()){
+        // wheelbase
+            owb = optional(optionalFields.owb, isNumeric);
+        }
 
-    function warn(status){
-        warnbox.value.warn(status);
+        return fwsCheck && rwsCheck && foffCheck && roffCheck && ftsCheck && rtsCheck && fwm && rwm
+            // optional stuff
+            && owb;
     }
 
     defineExpose({
         validate,
-        fields
+        fields,
+        optionalFields
     });
 </script>
 
@@ -99,6 +105,7 @@
 
     <InfoBox>Wheel size and offset can usually be found stamped on the spokes of your wheels.</InfoBox>
 
+    <!-- Tire size -->
     <h2>Tell us about the OEM tires.</h2>
     <p>These numbers are specified in ISO Metric format, and can be found on your tire sidewall or on a sticker in the driver's side door frame.</p>
     
@@ -108,4 +115,13 @@
         <span class="inputlabel">Rear:</span>
         <TireSize inprefix="or" :ref="fields.rts" />
     </p>
+
+    <!-- Advanced Options -->
+    <Collapsible prompt="Advanced Options" ref="advancedOptions">
+        <p>These values are optional, but may offer additional insight into potential setup changes.</p>
+
+        <!-- Wheelbase -->
+        <p>What is your car's wheelbase in millimeters?</p>
+        <p><TextBar type="number" :length=6 inputname="o_wheelbase" errName="Wheelbase" :ref="optionalFields.owb" placeholder="Wheelbase" /></p>
+    </Collapsible>
 </template>
