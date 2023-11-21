@@ -5,13 +5,17 @@
     import WarningBox from '../components/WarningBox.vue';
     import InfoBox from '../components/InfoBox.vue';
 
-    import { niceNumber, fpm, tireHeight, getWheels, isLegalTire, getPokeDiff, getInsetDiff, getPctDiff, getTireArray, getTireHeightArray } from './calcs.js';
+    import { niceNumber, fpm,
+        getPythagLength, getPythagAngle,
+        tireHeight, tireCircumf,
+        getWheels, isLegalTire, getPokeDiff, getInsetDiff, getPctDiff, getTireArray, getTireHeightArray } from './calcs.js';
     
     var props = defineProps(['ad']);
     function oemStagger(){ return props.ad.staggered=='Yes' };
     function newStagger(){ return props.ad.nstagger=='Staggered' };
     function stagToSquare(){ return oemStagger() && !newStagger(); }
     function anyStagger(){ return oemStagger() || newStagger(); }
+    function advancedVars(){ return props.ad.AdvancedOptions=='on'; }
 
     /*
         Calculator model variables
@@ -54,11 +58,11 @@
             fminHeight = (frontTireArray.length ? frontTireArray[0].th : foh-1);
             fmaxHeight = (frontTireArray.length ? frontTireArray[frontTireArray.length-1].th : foh+1);
             frontTireHeightArray = getTireHeightArray(frontTireArray);
-        rearTireArray = (anyStagger() ? getTireArray(stagToSquare() ? fnw.value : rnw.value, stagToSquare() ? fnwd.value : rnwd.value, roh) : frontTireArray);
+        rearTireArray = (anyStagger() ? getTireArray(rnw.value, rnwd.value, roh) : frontTireArray);
             rminHeight = (rearTireArray.length ? rearTireArray[0].th : roh-1);
             rmaxHeight = (rearTireArray.length ? rearTireArray[rearTireArray.length-1].th : roh+1);
             rearTireHeightArray = getTireHeightArray(rearTireArray);
-
+        // target rear wheels as well when coming up with a list of tires: only if square now, staggered OEM
         if(stagToSquare() && props.ad.nconfig=='Tires'){
             frontTireArray = [... new Set([...frontTireArray, ...rearTireArray])];
         }
@@ -67,7 +71,19 @@
         updateHeight(rnwd.value, rnts.value, rntr.value, rthd);
     }
     defineTireArrays();
-    // target rear wheels as well when coming up with a list of tires: only if square now, staggered OEM
+
+    var hypotenuse, hypAngle;
+    // advanced stuff included
+    if(advancedVars()){
+        
+        // wheelbase
+        if(props.ad.o_wheelbase){
+            // this is the distance between the wheel centers (front to rear projected side)
+            hypotenuse = getPythagLength(props.ad.o_wheelbase, ((roh - foh)/2));
+            hypAngle = getPythagAngle(((roh - foh)/2), hypotenuse);
+        }
+
+    }
     
 
     const fields = {
@@ -262,26 +278,70 @@
             </WarningBox>
         </p>
 
-        <h2>Changes</h2>
-        <table>
+    </div>
+
+    <h2>Changes</h2>
+    <table>
+        <tr>
+            <th>Property</th><th>{{ anyStagger() ? 'Front' : 'Value' }}</th><th v-if="anyStagger()">Rear</th>
+        </tr>
+        <!-- Tire size -->
+        <tr>
+            <td>Tire Size</td><td :colspan="1+(stagToSquare())">{{ fnts + '/' + fntr + 'R' + fnwd }}</td>
+            <td v-if="newStagger()">{{ rnts + '/' + rntr + 'R' + rnwd }}</td>
+        </tr>
+        <!-- Wheel size -->
+        <tr>
+            <td>Wheel Size</td><td :colspan="1+(stagToSquare())">{{ fnwd + '" &times; ' + fnw +'", ET' + fno }}</td>
+            <td v-if="newStagger()">{{ rnwd + '" &times; ' + rnw +'", ET' + rno }}</td>
+        </tr>
+        <template v-if="props.ad.nconfig!='Wheels'">
+        <!-- Tire height -->
             <tr>
-                <th>Property</th><th>{{ anyStagger() ? 'Front' : 'Value' }}</th><th v-if="anyStagger()">Rear</th>
+                <td>Tire Height</td><td :colspan="1+(stagToSquare())">{{ niceNumber(fthd) + ' mm' }}</td>
+                <td v-if="newStagger()">{{ niceNumber(rthd) + ' mm' }}</td>
             </tr>
+            <!-- Tire circumference -->
             <tr>
-                <td>Wheel Poke</td><td>{{ fpm(getPokeDiff(fnw, fno, props.ad.of_width, props.ad.of_offset)) }} mm</td>
-                <td v-if="newStagger()">{{ fpm(getPokeDiff(rnw, rno, row, roo)) }} mm</td>
-                <td v-else-if="oemStagger()">{{ fpm(getPokeDiff(fnw, fno, row, roo)) }} mm</td>
+                <td>Tire Circumference</td><td :colspan="1+(stagToSquare())">{{ niceNumber(tireCircumf(fnwd, fntr, fnts)) + ' mm' }}</td>
+                <td v-if="newStagger()">{{ niceNumber(tireCircumf(rnwd, rntr, rnts)) + ' mm' }}</td>
             </tr>
-            <tr>
-                <td>Wheel Inset</td><td>{{ fpm(getInsetDiff(fnw, fno, props.ad.of_width, props.ad.of_offset)) }} mm</td>
-                <td v-if="newStagger()">{{ fpm(getInsetDiff(rnw, rno, row, roo)) }} mm</td>
-                <td v-else-if="oemStagger()">{{ fpm(getInsetDiff(fnw, fno, row, roo)) }} mm</td>
-            </tr>
+        </template>
+        <!-- wheel-related stuff -->
+        <template v-if="props.ad.nconfig!='Tires'">
+            <!-- Tire Center -->
             <tr>
                 <td>Tire Center</td><td>{{ fpm(props.ad.of_offset - fno) }} mm</td>
                 <td v-if="newStagger()">{{ fpm(roo-rno) }} mm</td>
                 <td v-else-if="oemStagger()">{{ fpm(props.ad.or_offset-fno) }} mm</td>
             </tr>
-        </table>
-    </div>
+            <!-- Wheel poke -->
+            <tr>
+                <td>Wheel Poke</td><td>{{ fpm(getPokeDiff(fnw, fno, props.ad.of_width, props.ad.of_offset)) }} mm</td>
+                <td v-if="newStagger()">{{ fpm(getPokeDiff(rnw, rno, row, roo)) }} mm</td>
+                <td v-else-if="oemStagger()">{{ fpm(getPokeDiff(fnw, fno, row, roo)) }} mm</td>
+            </tr>
+            <!-- Wheel inset -->
+            <tr>
+                <td>Wheel Inset</td><td>{{ fpm(getInsetDiff(fnw, fno, props.ad.of_width, props.ad.of_offset)) }} mm</td>
+                <td v-if="newStagger()">{{ fpm(getInsetDiff(rnw, rno, row, roo)) }} mm</td>
+                <td v-else-if="oemStagger()">{{ fpm(getInsetDiff(fnw, fno, row, roo)) }} mm</td>
+            </tr>
+        </template>
+        <!-- advanced stuff -->
+        <template v-if="advancedVars()">
+            <template v-if="anyStagger() && props.ad.o_wheelbase && props.ad.nconfig!='Wheels'">
+                <!-- wheelbase -->
+                <tr>
+                    <td>New Wheelbase</td>
+                    <td colspan="2">{{ niceNumber(getPythagLength(((newStagger() ? rthd : fthd) - fthd)/2, hypotenuse,true)) }} mm</td>
+                </tr>
+                <!-- body pitch -->
+                <tr>
+                    <td>Pitch {{ rthd>fthd ? '(forward)' : (fthd>rthd ? '(rearward)' : '') }}</td>
+                    <td colspan="2">{{ niceNumber(getPythagAngle(((newStagger() ? rthd : fthd) - fthd)/2, hypotenuse)-hypAngle) }} &deg;</td>
+                </tr>
+            </template>
+        </template>
+    </table>
 </template>

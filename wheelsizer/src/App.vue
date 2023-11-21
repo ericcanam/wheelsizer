@@ -40,6 +40,14 @@
 				childComponentRef.value.fields[field].value.unsetError();
 			}
 		}
+		// clears errors in optional fields too (if they exist)
+		if(childComponentRef.value.optionalFields){
+			for(const field in childComponentRef.value.optionalFields){
+				if(childComponentRef.value.optionalFields[field].value != undefined){
+					childComponentRef.value.optionalFields[field].value.unsetError();
+				}
+			}
+		}
 	}
 
 	function formnext(e){
@@ -80,6 +88,9 @@
 		for(let index in appdata.value){
 			let field = form.elements.namedItem(index);
 			if (field){
+				if(field.type=="checkbox"){
+					field.checked = appdata.value[index]!==undefined;
+				}
 				field.value = appdata.value[index];
 			}
 		}
@@ -107,6 +118,9 @@
 		</div>
 	</header>
 	<main>
+		<!--<div class="row">
+			<AdBox />
+		</div>-->
 		<form id="sform" @submit="formnext" novalidate ref="formRef">
 			<div class="row">
 				<component :is="pages[cid-1].comp" ref="childComponentRef" :ad="appdata" />

@@ -1,10 +1,16 @@
+/*
+For fields that are optional, but must be correctly formatted if they are specified
+*/
+function optional(field, func){
+    return isEmpty(field, false) || func(field);
+}
 
 /*
 For single-field text inputs
 */
-function isEmpty(field){
-    const err = field.value.getValue().value.trim().length<1;
-    if(err){
+function isEmpty(field, setError = true){
+    const err = !field.value.getValue().validity.badInput && field.value.getValue().value.trim().length<1;
+    if(err && setError){
         field.value.setError("");
     }
     return err;
@@ -50,6 +56,7 @@ function isNumeric(field){
     let val = field.value.getValue();
     let nv = val.value;
     let validity = val.validity;
+    console.log(validity);
     if(validity.badInput){
         field.value.setError(val.errName+" should be a decimal number.");
         return false;
@@ -71,4 +78,4 @@ function isNumeric(field){
 }
 
 
-export { isEmpty, allNumeric, isNumeric };
+export { optional, isEmpty, allNumeric, isNumeric };
