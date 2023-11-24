@@ -49,20 +49,25 @@ div.fall {
 	display: inline-block;
 }
 
-div.cols {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: row;
-	align-items: center;
-	width: 100%;
-	margin-right: auto;
-	margin-left: auto;
+div.tower {
+	display: inline-block;
+	vertical-align: top;
+	width: calc(50% - 6pt);
+	margin-bottom: 6pt;
+
+	border-radius: 12pt;
+	border: 2pt solid var(--color-backshade);
 }
-div.cols > div {
-	padding-left: 6pt;
-	padding-right: 6pt;
-	width: calc(50% - 12pt);
+div.tower:nth-child(even){
+	margin-left: 6pt;
 }
+.tower>h3 {
+	background-color: var(--color-backshade);
+	margin-top: 0pt;
+	padding: 4pt;
+	border-top-left-radius: 10pt;
+	border-top-right-radius: 10pt;
+  }
 
 input, button, div.multitextfield, div.multitextfield span span {
 	padding: 6pt;
@@ -117,7 +122,7 @@ button span {
 	font-weight: 500;
 }
 .infobox, .adbox {
-	outline: 2pt solid var(--color-accent3);
+	border: 2pt solid var(--color-accent3);
 	padding: 4pt;
 }
 
@@ -133,6 +138,9 @@ button span {
 	text-align: left;
 	background-color: var(--color-backshade);
 }
+div.tower .infobox, div.tower .warningbox {
+	margin: 4pt;
+}
 
 
 /* WARNING stuff (yellow) */
@@ -144,7 +152,7 @@ button span {
 	font-weight: 500;
 }
 .warningbox {
-	outline: 2pt solid var(--color-accent4);
+	border: 2pt solid var(--color-accent4);
 }
 
 

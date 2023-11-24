@@ -24,4 +24,11 @@
 	div.steptitle.overarch{
 		display: block;
 	}
+	div.tower {
+		display: block;
+		width: auto;
+	}
+	div.tower:nth-child(even) {
+		margin-left: 0pt;
+	}
 }
