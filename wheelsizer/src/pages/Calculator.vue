@@ -4,6 +4,7 @@
     import Scale from '../components/Scale.vue';
     import WarningBox from '../components/WarningBox.vue';
     import InfoBox from '../components/InfoBox.vue';
+    import VisualPackage from '../components/VisualPackage.vue';
 
     import { niceNumber, fpm,
         getPythagLength, getPythagAngle,
@@ -152,128 +153,142 @@
     REAR: {{ rnts }}/{{ rntr }}R{{ rnwd }}, {{ rnwd }}&times;{{ rnw }} ET{{ rno }}-->
 
     <!-- input modules -->
+    <!-- FRONT -->
     <div :class="newStagger() ? 'tower' : ''">
         <h3 v-if="newStagger()">Front{{ props.ad.nconfig!='Everything' ? ' '+props.ad.nconfig : '' }}</h3>
-        <!-- front tires -->
-        <div v-if="props.ad.nconfig!='Wheels'">
-            <template v-if="props.ad.nconfig=='Everything'">
-                <h3 v-if="newStagger()">New Tires</h3>
-                <h2 v-else>New Tires</h2>
-            </template>
-            <p>
-                <TextBar inputname="nf_section" :ref="fields.fts" :length=3
-                    type="number" :min=5 :max=605 :step=5 showControls
-                    v-model="fnts" />
-                /
-                <TextBar inputname="nf_ratio" :ref="fields.ftr" :length=3
-                    type="number" :min=5 :max=95 :step=5 showControls
-                    v-model="fntr" />
-                R
-                <span v-if="props.ad.nconfig=='Tires'">{{ props.ad.of_diameter }}</span>
-                <TextBar v-else inputname="nf_diameter" :ref="fields.fwd" :length=3
-                    type="number" :min=5 :max=30 :step=.5 showControls
-                    v-model="fnwd" />
+        <div class="sidebyside">
+            <!-- front tires -->
+            <div v-if="props.ad.nconfig!='Wheels'">
+                <template v-if="props.ad.nconfig=='Everything'">
+                    <h3 v-if="newStagger()">New Tires</h3>
+                    <h2 v-else>New Tires</h2>
+                </template>
+                <p>
+                    <TextBar inputname="nf_section" :ref="fields.fts" :length=3
+                        type="number" :min=5 :max=605 :step=5 showControls
+                        v-model="fnts" />
+                    /
+                    <TextBar inputname="nf_ratio" :ref="fields.ftr" :length=3
+                        type="number" :min=5 :max=95 :step=5 showControls
+                        v-model="fntr" />
+                    R
+                    <span v-if="props.ad.nconfig=='Tires'">{{ props.ad.of_diameter }}</span>
+                    <TextBar v-else inputname="nf_diameter" :ref="fields.fwd" :length=3
+                        type="number" :min=5 :max=30 :step=.5 showControls
+                        v-model="fnwd" />
 
-            </p>
-            <p>
-                <b>Tire Height:</b> {{ niceNumber(tireHeight(fnwd, fntr, fnts)) }} mm
-                <br v-if="stagToSquare()" />
-                <span v-if="stagToSquare()">Front: </span>
-                ({{ getPctDiff(foh, tireHeight(fnwd, fntr, fnts)) }})
-                <span v-if="stagToSquare()"><br />
-                    Rear: ({{ getPctDiff(roh, tireHeight(fnwd , fntr, fnts)) }})
-                </span>
-            </p>
-            <Scale inputname="nf_tireheight" v-if="frontTireHeightArray.length>1"
-                :min="fminHeight"    :minLabel="fminHeight+'mm\n('+getPctDiff(foh, fminHeight)+')'"
-                :max="fmaxHeight"    :maxLabel="fmaxHeight+'mm\n('+getPctDiff(foh, fmaxHeight)+')'"
-                v-model="fthd"
-                :discreteSnapPoints="frontTireHeightArray"
-                showControls
-                @update:modelValue="fillFrontTire($event)"
-            /><input v-else type="hidden" name="nf_tireheight" v-model="fthd" />
-            <WarningBox v-if="props.ad.nconfig!='Everything' && !isLegalTire(fnw, fnts, fntr)">
-                A tire of size {{ fnts }}/{{ fntr }}R{{ fnwd }} is beyond the limits of a {{ fnw }}&quot;-wide rim,
-                per ISO 4000-1.
-            </WarningBox>
-            <WarningBox v-if="stagToSquare() && props.ad.nconfig=='Tires' && !isLegalTire(rnw , fnts, fntr)">
-                A tire of size {{ fnts }}/{{ fntr }}R{{ fnwd }} is beyond the limits of a {{ rnw }}&quot;-wide rim,
-                per ISO 4000-1.
-            </WarningBox>
+                </p>
+                <p>
+                    <b>Tire Height:</b> {{ niceNumber(tireHeight(fnwd, fntr, fnts)) }} mm
+                    <br v-if="stagToSquare()" />
+                    <span v-if="stagToSquare()">Front: </span>
+                    ({{ getPctDiff(foh, tireHeight(fnwd, fntr, fnts)) }})
+                    <span v-if="stagToSquare()"><br />
+                        Rear: ({{ getPctDiff(roh, tireHeight(fnwd , fntr, fnts)) }})
+                    </span>
+                </p>
+                <Scale inputname="nf_tireheight" v-if="frontTireHeightArray.length>1"
+                    :min="fminHeight"    :minLabel="fminHeight+'mm\n('+getPctDiff(foh, fminHeight)+')'"
+                    :max="fmaxHeight"    :maxLabel="fmaxHeight+'mm\n('+getPctDiff(foh, fmaxHeight)+')'"
+                    v-model="fthd"
+                    :discreteSnapPoints="frontTireHeightArray"
+                    showControls
+                    @update:modelValue="fillFrontTire($event)"
+                /><input v-else type="hidden" name="nf_tireheight" v-model="fthd" />
+                <WarningBox v-if="props.ad.nconfig!='Everything' && !isLegalTire(fnw, fnts, fntr)">
+                    A tire of size {{ fnts }}/{{ fntr }}R{{ fnwd }} is beyond the limits of a {{ fnw }}&quot;-wide rim,
+                    per ISO 4000-1.
+                </WarningBox>
+                <WarningBox v-if="stagToSquare() && props.ad.nconfig=='Tires' && !isLegalTire(rnw , fnts, fntr)">
+                    A tire of size {{ fnts }}/{{ fntr }}R{{ fnwd }} is beyond the limits of a {{ rnw }}&quot;-wide rim,
+                    per ISO 4000-1.
+                </WarningBox>
+            </div>
+            <!-- front wheels -->
+            <div v-if="props.ad.nconfig!='Tires'">
+                <template v-if="props.ad.nconfig=='Everything'">
+                    <h3 v-if="newStagger()">New Wheels</h3>
+                    <h2 v-else>New Wheels</h2>
+                </template>
+                <p>
+                    Width
+                    <TextBar type="number" :min=2.5 :max=22.5 :length=3
+                        inputname="nf_width" errName="Wheel width" :ref="fields.fww" placeholder="Width" :step=0.5 v-model="fnw" showControls />
+                    <TextBar type="number" :length=3
+                        inputname="nf_offset" errName="Offset" :ref="fields.fwo" placeholder="Offset" v-model="fno" showControls />
+                    Offset
+                </p>
+                <WarningBox v-if="!isLegalTire(fnw, fnts, fntr)">
+                    This {{ fnw }}&quot;-wide rim is beyond the limits of a tire sized {{ fnts }}/{{ fntr }}R{{ fnwd }},
+                    per ISO 4000-1.
+                </WarningBox>
+                <WarningBox v-if="stagToSquare() && props.ad.nconfig=='Wheels' && !isLegalTire(fnw, rnts, rntr)">
+                    This {{ fnw }}&quot;-wide rim is beyond the limits of a tire sized {{ rnts }}/{{ rntr }}R{{ rnwd }},
+                    per ISO 4000-1.
+                </WarningBox>
+            </div>
         </div>
-        <!-- front wheels -->
-        <div v-if="props.ad.nconfig!='Tires'">
-            <template v-if="props.ad.nconfig=='Everything'">
-                <h3 v-if="newStagger()">New Wheels</h3>
-                <h2 v-else>New Wheels</h2>
-            </template>
-            <p>
-                Width
-                <TextBar type="number" :min=2.5 :max=22.5 :length=3
-                    inputname="nf_width" errName="Wheel width" :ref="fields.fww" placeholder="Width" :step=0.5 v-model="fnw" showControls />
-                <TextBar type="number" :length=3
-                    inputname="nf_offset" errName="Offset" :ref="fields.fwo" placeholder="Offset" v-model="fno" showControls />
-                Offset
-            </p>
-            <WarningBox v-if="!isLegalTire(fnw, fnts, fntr)">
-                This {{ fnw }}&quot;-wide rim is beyond the limits of a tire sized {{ fnts }}/{{ fntr }}R{{ fnwd }},
-                per ISO 4000-1.
-            </WarningBox>
-            <WarningBox v-if="stagToSquare() && props.ad.nconfig=='Wheels' && !isLegalTire(fnw, rnts, rntr)">
-                This {{ fnw }}&quot;-wide rim is beyond the limits of a tire sized {{ rnts }}/{{ rntr }}R{{ rnwd }},
-                per ISO 4000-1.
-            </WarningBox>
-        </div>
+
+        <!-- front diagram -->
+        <div class="sidebyside"><VisualPackage
+            :diameter="fnwd" :width="fnw" :offset="fno"
+            :section="fnts" :ratio="fntr" /></div>
     </div>
+    <!-- REAR -->
     <div class="tower" v-if="newStagger()">
         <h3>Rear{{ props.ad.nconfig!='Everything' ? ' '+props.ad.nconfig : '' }}</h3>
-        <!-- rear tires -->
-        <div v-if="props.ad.nconfig!='Wheels'">
-            <h3 v-if="props.ad.nconfig=='Everything'">New Tires</h3>
-            <p>
-                <TextBar inputname="nr_section" :ref="fields.rts" :length=3
-                    type="number" :min=5 :max=605 :step=5 showControls
-                    v-model="rnts" />
-                /
-                <TextBar inputname="nr_ratio" :ref="fields.rtr" :length=3
-                    type="number" :min=5 :max=95 :step=5 showControls
-                    v-model="rntr" />
-                R
-                <span v-if="props.ad.nconfig=='Tires'">{{ rod }}</span>
-                <TextBar v-else inputname="nr_diameter" :ref="fields.rwd" :length=3
-                    type="number" :min=5 :max=30 :step=.5 showControls
-                    v-model="rnwd" />
-            </p>
-            <p><b>Tire Height:</b> {{ niceNumber(tireHeight(rnwd, rntr, rnts)) }} mm ({{ getPctDiff(roh, tireHeight(rnwd, rntr, rnts)) }})</p>
-            <Scale inputname="nr_tireheight" v-if="rearTireHeightArray.length>1"
-                :min="rminHeight"    :minLabel="rminHeight+'mm<br />('+getPctDiff(roh, rminHeight)+')'"
-                :max="rmaxHeight"    :maxLabel="rmaxHeight+'mm<br />('+getPctDiff(roh, rmaxHeight)+')'"
-                v-model="rthd"
-                :discreteSnapPoints="rearTireHeightArray"
-                showControls
-                @update:modelValue="fillRearTire($event)"
-            /><input v-else type="hidden" name="nr_tireheight" v-model="rthd" />
-            <WarningBox v-if="props.ad.nconfig!='Everything' && !isLegalTire(rnw, rnts, rntr)">
-                A tire of size {{ rnts }}/{{ rntr }}R{{ rnwd }} is beyond the limits of a {{ rnw }}&quot;-wide rim,
-                per ISO 4000-1.
-            </WarningBox>
+        <div class="sidebyside">
+            <!-- rear tires -->
+            <div v-if="props.ad.nconfig!='Wheels'">
+                <h3 v-if="props.ad.nconfig=='Everything'">New Tires</h3>
+                <p>
+                    <TextBar inputname="nr_section" :ref="fields.rts" :length=3
+                        type="number" :min=5 :max=605 :step=5 showControls
+                        v-model="rnts" />
+                    /
+                    <TextBar inputname="nr_ratio" :ref="fields.rtr" :length=3
+                        type="number" :min=5 :max=95 :step=5 showControls
+                        v-model="rntr" />
+                    R
+                    <span v-if="props.ad.nconfig=='Tires'">{{ rod }}</span>
+                    <TextBar v-else inputname="nr_diameter" :ref="fields.rwd" :length=3
+                        type="number" :min=5 :max=30 :step=.5 showControls
+                        v-model="rnwd" />
+                </p>
+                <p><b>Tire Height:</b> {{ niceNumber(tireHeight(rnwd, rntr, rnts)) }} mm ({{ getPctDiff(roh, tireHeight(rnwd, rntr, rnts)) }})</p>
+                <Scale inputname="nr_tireheight" v-if="rearTireHeightArray.length>1"
+                    :min="rminHeight"    :minLabel="rminHeight+'mm<br />('+getPctDiff(roh, rminHeight)+')'"
+                    :max="rmaxHeight"    :maxLabel="rmaxHeight+'mm<br />('+getPctDiff(roh, rmaxHeight)+')'"
+                    v-model="rthd"
+                    :discreteSnapPoints="rearTireHeightArray"
+                    showControls
+                    @update:modelValue="fillRearTire($event)"
+                /><input v-else type="hidden" name="nr_tireheight" v-model="rthd" />
+                <WarningBox v-if="props.ad.nconfig!='Everything' && !isLegalTire(rnw, rnts, rntr)">
+                    A tire of size {{ rnts }}/{{ rntr }}R{{ rnwd }} is beyond the limits of a {{ rnw }}&quot;-wide rim,
+                    per ISO 4000-1.
+                </WarningBox>
+            </div>
+            <!-- rear wheels -->
+            <div v-if="props.ad.nconfig!='Tires'">
+                <h3 v-if="props.ad.nconfig=='Everything'">New Wheels</h3>
+                <p>
+                    Width
+                    <TextBar type="number" :min=2.5 :max=22.5 :length=3
+                        inputname="nr_width" errName="Wheel width" :ref="fields.rww" placeholder="Width" :step=0.5 v-model="rnw" showControls />
+                    <TextBar type="number" :length=3
+                        inputname="nr_offset" errName="Offset" :ref="fields.rwo" placeholder="Offset" v-model="rno" showControls />
+                    Offset
+                </p>
+                <WarningBox v-if="anyStagger() && !isLegalTire(rnw, rnts, rntr)">
+                    This {{ rnw }}&quot;-wide rim is beyond the limits of a tire sized {{ rnts }}/{{ rntr }}R{{ rnwd }},
+                    per ISO 4000-1.
+                </WarningBox>
+            </div>
         </div>
-        <!-- rear wheels -->
-        <div v-if="props.ad.nconfig!='Tires'">
-            <h3 v-if="props.ad.nconfig=='Everything'">New Wheels</h3>
-            <p>
-                Width
-                <TextBar type="number" :min=2.5 :max=22.5 :length=3
-                    inputname="nr_width" errName="Wheel width" :ref="fields.rww" placeholder="Width" :step=0.5 v-model="rnw" showControls />
-                <TextBar type="number" :length=3
-                    inputname="nr_offset" errName="Offset" :ref="fields.rwo" placeholder="Offset" v-model="rno" showControls />
-                Offset
-            </p>
-            <WarningBox v-if="anyStagger() && !isLegalTire(rnw, rnts, rntr)">
-                This {{ rnw }}&quot;-wide rim is beyond the limits of a tire sized {{ rnts }}/{{ rntr }}R{{ rnwd }},
-                per ISO 4000-1.
-            </WarningBox>
-        </div>
+
+        <!-- rear diagram -->
+
     </div>
 
     <h2>Changes</h2>
@@ -292,7 +307,7 @@
             <td v-if="newStagger()">{{ rnwd + '" &times; ' + rnw +'", ET' + rno }}</td>
         </tr>
         <template v-if="props.ad.nconfig!='Wheels'">
-        <!-- Tire height -->
+            <!-- Tire height -->
             <tr>
                 <td>Tire Height</td><td :colspan="1+(stagToSquare())">{{ niceNumber(fthd) + ' mm' }}</td>
                 <td v-if="newStagger()">{{ niceNumber(rthd) + ' mm' }}</td>
@@ -301,6 +316,11 @@
             <tr>
                 <td>Tire Circumference</td><td :colspan="1+(stagToSquare())">{{ niceNumber(tireCircumf(fnwd, fntr, fnts)) + ' mm' }}</td>
                 <td v-if="newStagger()">{{ niceNumber(tireCircumf(rnwd, rntr, rnts)) + ' mm' }}</td>
+            </tr>
+            <!-- Ride height -->
+            <tr>
+                <td>Ride Height Diff</td><td :colspan="1+(!anyStagger())">{{ fpm((fthd-foh)/2) + ' mm' }}</td>
+                <td v-if="anyStagger()">{{ fpm(((newStagger() ? rthd : fthd)-roh)/2) + ' mm' }}</td>
             </tr>
         </template>
         <!-- wheel-related stuff -->

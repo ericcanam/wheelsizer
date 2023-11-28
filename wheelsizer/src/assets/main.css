@@ -49,17 +49,19 @@ div.fall {
 	display: inline-block;
 }
 
-div.tower {
+div.sidebyside {
 	display: inline-block;
 	vertical-align: top;
 	width: calc(50% - 6pt);
 	margin-bottom: 6pt;
-
-	border-radius: 12pt;
-	border: 2pt solid var(--color-backshade);
 }
-div.tower:nth-child(even){
-	margin-left: 6pt;
+div.sidebyside:nth-child(even) {
+	margin-left: 12pt;
+}
+div.tower{
+	border: 2pt solid var(--color-backshade);
+	border-radius: 12pt;
+	margin-bottom: 6pt;
 }
 .tower>h3 {
 	background-color: var(--color-backshade);
