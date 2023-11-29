@@ -48,7 +48,7 @@ function k2(ratio){
 
 // for calculating allowable rim extremities for tires with sidewall ratio 30 and lower
 function measuringRim(section, ratio){
-    return Math.round(k2(ratio) * section * 2)/2;
+    return Math.round(k2(ratio) * section / INCH * 2)/2;
 }
 
 // gets minimum/maximum allowable rim width for the specified tire (ISO-4000-1)

@@ -174,7 +174,7 @@
                     R
                     <span v-if="props.ad.nconfig=='Tires'">{{ props.ad.of_diameter }}</span>
                     <TextBar v-else inputname="nf_diameter" :ref="fields.fwd" :length=3
-                        type="number" :min=5 :max=30 :step=.5 showControls
+                        type="number" :min=5 :max=30 :step=1 showControls
                         v-model="fnwd" />
 
                 </p>
@@ -230,9 +230,17 @@
         </div>
 
         <!-- front diagram -->
-        <div class="sidebyside"><VisualPackage
-            :diameter="fnwd" :width="fnw" :offset="fno"
-            :section="fnts" :ratio="fntr" /></div>
+        <div class="sidebyside">
+            <VisualPackage
+                :diameter="fnwd" :width="fnw" :offset="fno"
+                :section="fnts" :ratio="fntr"
+                :old="{diameter:    props.ad.of_diameter,
+                       width:       props.ad.of_width,
+                       offset:      props.ad.of_offset,
+                       section:     props.ad.of_section,
+                       ratio:       props.ad.of_ratio}"
+            />
+        </div>
     </div>
     <!-- REAR -->
     <div class="tower" v-if="newStagger()">
@@ -252,7 +260,7 @@
                     R
                     <span v-if="props.ad.nconfig=='Tires'">{{ rod }}</span>
                     <TextBar v-else inputname="nr_diameter" :ref="fields.rwd" :length=3
-                        type="number" :min=5 :max=30 :step=.5 showControls
+                        type="number" :min=5 :max=30 :step=1 showControls
                         v-model="rnwd" />
                 </p>
                 <p><b>Tire Height:</b> {{ niceNumber(tireHeight(rnwd, rntr, rnts)) }} mm ({{ getPctDiff(roh, tireHeight(rnwd, rntr, rnts)) }})</p>
