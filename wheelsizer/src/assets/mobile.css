@@ -24,11 +24,11 @@
 	div.steptitle.overarch{
 		display: block;
 	}
-	div.tower {
+	div.sidebyside {
 		display: block;
 		width: auto;
 	}
-	div.tower:nth-child(even) {
+	div.sidebyside:nth-child(even) {
 		margin-left: 0pt;
 	}
 }

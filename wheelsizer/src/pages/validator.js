@@ -56,7 +56,6 @@ function isNumeric(field){
     let val = field.value.getValue();
     let nv = val.value;
     let validity = val.validity;
-    console.log(validity);
     if(validity.badInput){
         field.value.setError(val.errName+" should be a decimal number.");
         return false;
