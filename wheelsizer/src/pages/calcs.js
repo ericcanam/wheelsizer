@@ -128,6 +128,10 @@ function getPctDiff(oemHeight, newHeight){
     return fpm(getPctDiffUnform(oemHeight, newHeight))+"%";
 }
 
+function getNewPctDiff(oemHeight, newHeight, unit="mm"){
+    return niceNumber(newHeight)+" "+unit+" ("+getPctDiff(oemHeight, newHeight)+")";
+}
+
 // get the +/- difference for a new tire (without the prettification)
 function getPctDiffUnform(oemHeight, newHeight){
     return (newHeight-oemHeight) / oemHeight * 100;
@@ -195,7 +199,7 @@ export { niceNumber, fpm, // formatting
     
     // tire stuff
     tireCircumf, tireHeight, isLegalTire,
-    getClosestSidewall, getPctDiff, getTireArray, getTireHeightArray,
+    getClosestSidewall, getPctDiff, getNewPctDiff, getTireArray, getTireHeightArray,
     
     // wheel stuff
     getWheels, getPokeDiff, getInsetDiff,

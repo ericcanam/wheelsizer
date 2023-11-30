@@ -131,6 +131,10 @@
 			</div>
 			<div class="row">
 				{{ appv }} &mdash; Copyright {{ builddate }} Wheelhub
+				<br />
+				<a href="/">Homepage</a>
+				&mdash;
+				<a href="/about.html#contact">Contact</a>
 			</div>
 		</form>
 	</main>

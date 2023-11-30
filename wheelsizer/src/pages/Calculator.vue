@@ -9,7 +9,7 @@
     import { niceNumber, fpm,
         getPythagLength, getPythagAngle,
         tireHeight, tireCircumf,
-        getWheels, isLegalTire, getPokeDiff, getInsetDiff, getPctDiff, getTireArray, getTireHeightArray } from './calcs.js';
+        getWheels, isLegalTire, getPokeDiff, getInsetDiff, getPctDiff, getNewPctDiff, getTireArray, getTireHeightArray } from './calcs.js';
     
     var props = defineProps(['ad']);
     function oemStagger(){ return props.ad.staggered=='Yes' };
@@ -156,7 +156,7 @@
     <!-- FRONT -->
     <div :class="newStagger() ? 'tower' : ''">
         <h3 v-if="newStagger()">Front{{ props.ad.nconfig!='Everything' ? ' '+props.ad.nconfig : '' }}</h3>
-        <div class="sidebyside">
+        <div :class="stagToSquare() ? '' :'sidebyside'">
             <!-- front tires -->
             <div v-if="props.ad.nconfig!='Wheels'">
                 <template v-if="props.ad.nconfig=='Everything'">
@@ -179,13 +179,14 @@
 
                 </p>
                 <p>
-                    <b>Tire Height:</b> {{ niceNumber(tireHeight(fnwd, fntr, fnts)) }} mm
+                    <b>Tire Height:</b>
                     <br v-if="stagToSquare()" />
-                    <span v-if="stagToSquare()">Front: </span>
-                    ({{ getPctDiff(foh, tireHeight(fnwd, fntr, fnts)) }})
-                    <span v-if="stagToSquare()"><br />
+                    <span v-if="stagToSquare()">
+                        {{ niceNumber(tireHeight(fnwd, fntr, fnts)) }} mm
+                        Front: ({{ getPctDiff(foh, tireHeight(fnwd, fntr, fnts))}}) <br />
                         Rear: ({{ getPctDiff(roh, tireHeight(fnwd , fntr, fnts)) }})
                     </span>
+                    <span v-else>&nbsp;{{ getNewPctDiff(foh, tireHeight(fnwd, fntr, fnts)) }}</span>
                 </p>
                 <Scale inputname="nf_tireheight" v-if="frontTireHeightArray.length>1"
                     :min="fminHeight"    :minLabel="fminHeight+'mm\n('+getPctDiff(foh, fminHeight)+')'"
@@ -234,11 +235,23 @@
             <VisualPackage
                 :diameter="fnwd" :width="fnw" :offset="fno"
                 :section="fnts" :ratio="fntr"
-                :old="{diameter:    props.ad.of_diameter,
-                       width:       props.ad.of_width,
-                       offset:      props.ad.of_offset,
-                       section:     props.ad.of_section,
-                       ratio:       props.ad.of_ratio}"
+                :old="{diameter: props.ad.of_diameter,
+                    width:       props.ad.of_width,
+                    offset:      props.ad.of_offset,
+                    section:     props.ad.of_section,
+                    ratio:       props.ad.of_ratio}"
+            />
+        </div>
+        <!-- rear diagram (for stag2square) -->
+        <div class="sidebyside">
+            <VisualPackage v-if="stagToSquare()" nolegend
+                :diameter="fnwd" :width="fnw" :offset="fno"
+                :section="fnts" :ratio="fntr"
+                :old="{diameter: props.ad.or_diameter,
+                    width:       props.ad.or_width,
+                    offset:      props.ad.or_offset,
+                    section:     props.ad.or_section,
+                    ratio:       props.ad.or_ratio}"
             />
         </div>
     </div>
@@ -263,7 +276,7 @@
                         type="number" :min=5 :max=30 :step=1 showControls
                         v-model="rnwd" />
                 </p>
-                <p><b>Tire Height:</b> {{ niceNumber(tireHeight(rnwd, rntr, rnts)) }} mm ({{ getPctDiff(roh, tireHeight(rnwd, rntr, rnts)) }})</p>
+                <p><b>Tire Height:</b> {{ getNewPctDiff(roh, tireHeight(rnwd, rntr, rnts)) }}</p>
                 <Scale inputname="nr_tireheight" v-if="rearTireHeightArray.length>1"
                     :min="rminHeight"    :minLabel="rminHeight+'mm<br />('+getPctDiff(roh, rminHeight)+')'"
                     :max="rmaxHeight"    :maxLabel="rmaxHeight+'mm<br />('+getPctDiff(roh, rmaxHeight)+')'"
@@ -296,10 +309,27 @@
         </div>
 
         <!-- rear diagram -->
-
+        <div class="sidebyside">
+            <VisualPackage
+                :diameter="rnwd" :width="rnw" :offset="rno"
+                :section="rnts" :ratio="rntr"
+                :old="oemStagger() ?
+                    {diameter:   props.ad.or_diameter,
+                    width:       props.ad.or_width,
+                    offset:      props.ad.or_offset,
+                    section:     props.ad.or_section,
+                    ratio:       props.ad.or_ratio}
+                    :
+                    {diameter:   props.ad.of_diameter,
+                    width:       props.ad.of_width,
+                    offset:      props.ad.of_offset,
+                    section:     props.ad.of_section,
+                    ratio:       props.ad.of_ratio}"
+            />
+        </div>
     </div>
 
-    <h2>Changes</h2>
+    <h2>Change Table</h2>
     <table>
         <tr>
             <th>Property</th><th>{{ anyStagger() ? 'Front' : 'Value' }}</th><th v-if="anyStagger()">Rear</th>
@@ -317,8 +347,8 @@
         <template v-if="props.ad.nconfig!='Wheels'">
             <!-- Tire height -->
             <tr>
-                <td>Tire Height</td><td :colspan="1+(stagToSquare())">{{ niceNumber(fthd) + ' mm' }}</td>
-                <td v-if="newStagger()">{{ niceNumber(rthd) + ' mm' }}</td>
+                <td>Tire Height</td><td :colspan="1+(stagToSquare())">{{ getNewPctDiff(foh, tireHeight(fnwd, fntr, fnts)) }}</td>
+                <td v-if="newStagger()">{{ getNewPctDiff(roh, tireHeight(rnwd, rntr, rnts)) }}</td>
             </tr>
             <!-- Tire circumference -->
             <tr>
