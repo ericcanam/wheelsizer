@@ -159,7 +159,7 @@
         <div :class="stagToSquare() ? '' :'sidebyside'">
             <!-- front tires -->
             <div v-if="props.ad.nconfig!='Wheels'">
-                <template v-if="props.ad.nconfig=='Everything'">
+                <template v-if="props.ad.nconfig=='Everything' || !newStagger()">
                     <h3 v-if="newStagger()">New Tires</h3>
                     <h2 v-else>New Tires</h2>
                 </template>
@@ -207,7 +207,7 @@
             </div>
             <!-- front wheels -->
             <div v-if="props.ad.nconfig!='Tires'">
-                <template v-if="props.ad.nconfig=='Everything'">
+                <template v-if="props.ad.nconfig=='Everything' || !newStagger()">
                     <h3 v-if="newStagger()">New Wheels</h3>
                     <h2 v-else>New Wheels</h2>
                 </template>

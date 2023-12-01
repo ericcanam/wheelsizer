@@ -113,7 +113,6 @@
         display: inline-block;
         padding: 4pt;
         background-color: var(--color-backshade);
-        color: var(--color-text);
         border-radius: 8pt;
     }
     div.optwrap {
@@ -133,5 +132,7 @@
     }
     input:checked + label div.opt {
         background-color: var(--color-accent1);
+        color: var(--color-text);
+	    outline: 2pt solid transparent;
     }
 </style>

@@ -74,18 +74,21 @@ div.tower{
 	border-top-right-radius: 10pt;
   }
 
-input, button, div.multitextfield, div.multitextfield span span {
+input, button, div.multitextfield {
 	padding: 6pt;
 	color: var(--color-text);
-	background-color: var(--color-backshade);
 	border: none;
 	text-align: center;
 	border-radius: 8pt;
 	font-size: inherit;
 	max-width: calc(100% - 12pt);
+	background-color: var(--color-backshade);
 	
 	font-family: 'Fira Sans', sans-serif;
 	font-weight: 300;
+}
+input, button, div.optionslider {
+	outline: 1px dashed transparent;
 }
 input[type="checkbox"], input[type="radio"] {
 	position: absolute;
@@ -123,7 +126,6 @@ button span {
 
 /* INFO stuff (grey/blue) */
 .infoline, .adline {
-	color: var(--color-text);
 	font-weight: 500;
 }
 .infobox, .adbox {
@@ -230,8 +232,9 @@ table td, table th {
 	padding: 6pt;
 	padding-left: 12pt;
 	padding-right: 12pt;
+	outline: 1pt solid transparent;
 }
-table th { background-color: var(--color-accent1); font-weight: 500; }
+table th { background-color: var(--color-accent1); font-weight: 500; color: var(--color-text); }
 table tr th:first-child{ border-top-left-radius: 8pt; }
 table tr th:last-child{ border-top-right-radius: 8pt; }
 table tr:last-child td:first-child{ border-bottom-left-radius: 8pt; }
@@ -251,7 +254,7 @@ div.iconcircle {
 	margin-bottom: 0.15in;
 }
 div.complete { background-color: var(--color-accent2); }
-div.current { background-color: var(--color-accent1); }
+div.current { background-color: var(--color-accent1); color: var(--color-text); outline: 2pt solid transparent; }
 div.upcoming { background-color: var(--color-accent3); }
 div.iconcircle img {
 	width: 60%;
@@ -280,4 +283,36 @@ div.steptitle.overarch{
 
 pre {
 	font-family: inherit;
+}
+
+
+
+
+@media (prefers-color-scheme: light) {
+    body {
+        background-color: var(--color-background-light);
+        color: var(--color-text-light);
+    }
+	input, button:not(.suggest) {
+		color: var(--color-text-light);
+	}
+	button.suggest{
+		color: var(--color-text);
+	}
+	input:focus, button:not(.nofocus):focus, div.hasfocus {
+		outline: 2pt solid var(--color-accent1);
+	}
+	button.suggest:focus {
+		outline: 2pt solid var(--color-text-light);
+	}
+
+	:root {
+		--color-backshade: rgba(199,199,199,0.40);
+		--color-tr1: rgba(199,199,199,0.40);
+		--color-tr2: rgba(199,199,199,0.60);
+	}
+
+	/* div:not(.iconcircle) > img, button:not(.suggest) img{
+		filter: invert(100%);
+	} */
 }

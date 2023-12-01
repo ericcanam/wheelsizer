@@ -190,4 +190,23 @@
     input[type="range"]:focus::-moz-range-thumb {
         background-color: var(--color-text);
     }
+
+    @media (prefers-color-scheme: light) {
+        input[type="range"]::-moz-range-thumb {
+            background-color: var(--color-accent1);
+            border: 2pt solid var(--color-text-light);
+        }
+        input[type="range"]:focus::-moz-range-thumb {
+            background-color: var(--color-accent1);
+            border: 2pt solid var(--color-accent1);
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            background-color: var(--color-accent1);
+            border: 2pt solid var(--color-text-light);
+        }
+        input[type="range"]:focus::-webkit-slider-thumb {
+            background-color: var(--color-accent1);
+            border: 2pt solid var(--color-accent1);
+        }
+    }
 </style>
