@@ -32,8 +32,10 @@
 	const formRef = ref();
 	const submitRef = ref();
 	const backRef = ref();
+	const ariaAlertRef = ref();
 
 	function clearErrors(){
+		ariaAlertRef.value.setAttribute("aria-label", "");
 		// clears errors in all the child component's fields
 		for(const field in childComponentRef.value.fields){
 			if(childComponentRef.value.fields[field].value != undefined){
@@ -59,6 +61,8 @@
 			saveform();
 			cid.value++;
 			window.scrollTo(0, 0);
+		}else{
+			ariaAlertRef.value.setAttribute("aria-label", "The next page could not be loaded due to errors in the form.");
 		}
 	}
 
@@ -112,7 +116,7 @@
 		<div class="row">
 			<div v-for="(page, n) in pages" class="fall">
 				<Step :title="page.title" :svg="page.svg" :status="gs(n+1, cid)" />
-				<img v-if="n+1<pages.length" alt="&gt;" class="h_arrow topnavarrow" src="/assets/arrow_right.svg" />
+				<img v-if="n+1<pages.length" alt="&gt;" class="svgarrow h_arrow topnavarrow" src="/assets/arrow_right.svg" />
 			</div>
 			<!--<div class="steptitle current overarch">{{ pages[cid-1].title }}</div>-->
 		</div>
@@ -122,12 +126,16 @@
 			<AdBox />
 		</div>-->
 		<form id="sform" @submit="formnext" novalidate ref="formRef">
+			<span ref="ariaAlertRef" role="alert"></span>
 			<div class="row">
 				<component :is="pages[cid-1].comp" ref="childComponentRef" :ad="appdata" />
 			</div>
 			<div class="row">
-				<button @click="formback" ref="backRef" v-if="cid>1" type="button" class="single"><img class="left" src="/assets/left_chevron.svg" /><span>Back</span></button><!--
-				--><button ref="submitRef" type="submit" v-if="cid<pages.length" class="suggest single"><span>Next</span><img class="right" src="/assets/right_chevron.svg" /></button>
+				<button @click="formback" ref="backRef" v-if="cid>1" type="button" class="single">
+					<!--<img class="left" src="/assets/left_chevron.svg" />--><span>Back</span>
+				</button><!--
+				--><button ref="submitRef" type="submit" v-if="cid<pages.length" class="suggest single">
+					<span>Next</span><!--<img class="right" src="/assets/right_chevron.svg" />--></button>
 			</div>
 			<div class="row">
 				{{ appv }} &mdash; Copyright {{ builddate }} Wheelhub

@@ -1,6 +1,6 @@
 @media screen and (max-width: 10in){
     /* modify nav/progress indicator */
-    img.topnavarrow{
+    .topnavarrow{
         display:none;
     }
 

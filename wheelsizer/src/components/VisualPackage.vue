@@ -320,7 +320,7 @@ l -0.25 -2 l 0.25 2 l 4 -0.5 m 6 4 v 12 h 10 a 4 4 90 0 0 4 -4 v -4 a 4 4 90 0 0
         {label: "Space Freed",          stroke: "var(--color-accent2)", fill: "var(--color-accent2-shade)"},
         {label: "New Tread Center",     stroke: "var(--color-accent4)"},
         {label: "Old Tread Center",     stroke: "var(--color-accent1)"},
-        {label: "Old Contact Patch",     stroke: "var(--color-text)"}
+        {label: "Old Contact Patch",     stroke: "var(--color-tire-patch)"}
     ];
 </script>
 
@@ -351,7 +351,7 @@ l -0.25 -2 l 0.25 2 l 4 -0.5 m 6 4 v 12 h 10 a 4 4 90 0 0 4 -4 v -4 a 4 4 90 0 0
             style="stroke:var(--color-accent1);"
         />
         <line :x1="oldTirePatchX1Px()" :x2="oldTirePatchX2Px()" :y1=centerliney2 :y2=centerliney2
-            style="stroke:var(--color-text);"
+            style="stroke:var(--color-tire-patch);"
         />
 
 
@@ -394,6 +394,7 @@ l -0.25 -2 l 0.25 2 l 4 -0.5 m 6 4 v 12 h 10 a 4 4 90 0 0 4 -4 v -4 a 4 4 90 0 0
         --color-tire: #0c0c0f;
         --color-suspension: #303540;
         --color-suspension-shade: rgba(48, 53, 64, 0.25);
+        --color-tire-patch: #f5f5f5;
     }
 
     .wtdrawing text {
@@ -405,5 +406,15 @@ l -0.25 -2 l 0.25 2 l 4 -0.5 m 6 4 v 12 h 10 a 4 4 90 0 0 4 -4 v -4 a 4 4 90 0 0
         stroke-width: 1px;
         stroke-dasharray: 2px 2px;
         stroke-linejoin: bevel;
+    }
+
+    @media (prefers-color-scheme: light) {
+        .wtdrawing text {
+        fill: var(--color-tex-light);
+        }
+
+        :root {
+            --color-tire-patch: #050505;
+        }
     }
 </style>

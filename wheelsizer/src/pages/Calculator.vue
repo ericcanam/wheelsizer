@@ -159,22 +159,28 @@
         <div :class="stagToSquare() ? '' :'sidebyside'">
             <!-- front tires -->
             <div v-if="props.ad.nconfig!='Wheels'">
-                <template v-if="props.ad.nconfig=='Everything'">
+                <template v-if="props.ad.nconfig=='Everything' || !newStagger()">
                     <h3 v-if="newStagger()">New Tires</h3>
                     <h2 v-else>New Tires</h2>
                 </template>
                 <p>
                     <TextBar inputname="nf_section" :ref="fields.fts" :length=3
                         type="number" :min=5 :max=605 :step=5 showControls
+                        acprefix="New"
+                        :errName="(newStagger() ? 'front ' : '')+'tire section'"
                         v-model="fnts" />
                     /
                     <TextBar inputname="nf_ratio" :ref="fields.ftr" :length=3
                         type="number" :min=5 :max=95 :step=5 showControls
+                        acprefix="New"
+                        :errName="(newStagger() ? 'front ' : '')+'tire sidewall ratio'"
                         v-model="fntr" />
                     R
                     <span v-if="props.ad.nconfig=='Tires'">{{ props.ad.of_diameter }}</span>
                     <TextBar v-else inputname="nf_diameter" :ref="fields.fwd" :length=3
                         type="number" :min=5 :max=30 :step=1 showControls
+                        acprefix="New"
+                        :errName="(newStagger() ? 'front ' : '')+'wheel diameter'"
                         v-model="fnwd" />
 
                 </p>
@@ -207,16 +213,20 @@
             </div>
             <!-- front wheels -->
             <div v-if="props.ad.nconfig!='Tires'">
-                <template v-if="props.ad.nconfig=='Everything'">
+                <template v-if="props.ad.nconfig=='Everything' || !newStagger()">
                     <h3 v-if="newStagger()">New Wheels</h3>
                     <h2 v-else>New Wheels</h2>
                 </template>
                 <p>
                     Width
                     <TextBar type="number" :min=2.5 :max=22.5 :length=3
-                        inputname="nf_width" errName="Wheel width" :ref="fields.fww" placeholder="Width" :step=0.5 v-model="fnw" showControls />
+                        inputname="nf_width" :ref="fields.fww" placeholder="Width" :step=0.5 v-model="fnw" showControls
+                        acprefix="New"
+                        :errName="(newStagger() ? 'front ' : '')+'Wheel width (inches)'" />
                     <TextBar type="number" :length=3
-                        inputname="nf_offset" errName="Offset" :ref="fields.fwo" placeholder="Offset" v-model="fno" showControls />
+                        inputname="nf_offset" :ref="fields.fwo" placeholder="Offset" v-model="fno" showControls
+                        acprefix="New"
+                        :errName="(newStagger() ? 'front ' : '')+'Wheel offset (millimeters)'" />
                     Offset
                 </p>
                 <WarningBox v-if="!isLegalTire(fnw, fnts, fntr)">
@@ -265,15 +275,21 @@
                 <p>
                     <TextBar inputname="nr_section" :ref="fields.rts" :length=3
                         type="number" :min=5 :max=605 :step=5 showControls
+                        acprefix="New"
+                        :errName="'Rear tire section'"
                         v-model="rnts" />
                     /
                     <TextBar inputname="nr_ratio" :ref="fields.rtr" :length=3
                         type="number" :min=5 :max=95 :step=5 showControls
+                        acprefix="New"
+                        :errName="'Rear tire sidewall ratio'"
                         v-model="rntr" />
                     R
                     <span v-if="props.ad.nconfig=='Tires'">{{ rod }}</span>
                     <TextBar v-else inputname="nr_diameter" :ref="fields.rwd" :length=3
                         type="number" :min=5 :max=30 :step=1 showControls
+                        acprefix="New"
+                        :errName="'Rear wheel diameter'"
                         v-model="rnwd" />
                 </p>
                 <p><b>Tire Height:</b> {{ getNewPctDiff(roh, tireHeight(rnwd, rntr, rnts)) }}</p>
@@ -296,9 +312,13 @@
                 <p>
                     Width
                     <TextBar type="number" :min=2.5 :max=22.5 :length=3
-                        inputname="nr_width" errName="Wheel width" :ref="fields.rww" placeholder="Width" :step=0.5 v-model="rnw" showControls />
+                        inputname="nr_width" :ref="fields.rww" placeholder="Width" :step=0.5 v-model="rnw" showControls
+                        acprefix="New"
+                        errName="Rear wheel width (inches)" />
                     <TextBar type="number" :length=3
-                        inputname="nr_offset" errName="Offset" :ref="fields.rwo" placeholder="Offset" v-model="rno" showControls />
+                        inputname="nr_offset" :ref="fields.rwo" placeholder="Offset" v-model="rno" showControls
+                        acprefix="New"
+                        errName="Rear wheel offset (millimeters)" />
                     Offset
                 </p>
                 <WarningBox v-if="anyStagger() && !isLegalTire(rnw, rnts, rntr)">

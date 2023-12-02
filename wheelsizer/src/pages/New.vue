@@ -14,7 +14,7 @@
     function validate(){
         // check that a square setup is possible if that is what's selected
         if(stagToSquare() && fields.change.value.getValue()!='Everything'){
-            fields.change.value.setError("Wheels and tires must be changed on at least 1 axle. (See warning.)");
+            fields.change.value.setError("Both wheels and tires must be changed on at least 1 axle.");
             return false;
         }
         return true;
@@ -42,13 +42,16 @@
 
     <h2>New Setup</h2>
     <!-- stagger/square option toggle -->
-    <p>Will your new setup be different front to rear (staggered)? Or will all four wheels and tires be the same (square)?</p>
     <p>
-        <OptionToggle inputname="nstagger" :options="['Square', 'Staggered']" v-model="newstagger" autofocus />
+        <OptionToggle inputname="nstagger" :options="['Square', 'Staggered']" v-model="newstagger" autofocus>
+            Will your new setup be different front to rear (staggered)? Or will all four wheels and tires be the same (square)?
+        </OptionToggle>
     </p>
-    <p>What are you looking to change?</p>
+    
     <p>
-        <OptionToggle :ref="fields.change" inputname="nconfig" :options="['Wheels', 'Tires', 'Everything']" v-model="newconfig" />
+        <OptionToggle :ref="fields.change" inputname="nconfig" :options="['Wheels', 'Tires', 'Everything']" v-model="newconfig">
+            What are you looking to change?
+        </OptionToggle>
     </p>
 
     <WarningBox v-if="stagToSquare()">

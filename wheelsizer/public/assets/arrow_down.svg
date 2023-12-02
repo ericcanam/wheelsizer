@@ -1,4 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 200">
-    <line y1="5" x1="25" y2="195" x2="25" style="stroke:white; stroke-width:10px;" />
-    <polygon points="25,200 0,175 50,175" style="fill:white;" />
+    <style>
+            line {
+                stroke:white; stroke-width:10px;
+            }
+            polygon {
+                fill:white;
+            }
+            @media (prefers-color-scheme: light) {
+                line {
+                    stroke:black;
+                }
+                polygon {
+                    fill:black;
+                }
+            }
+        </style>
+    <line y1="5" x1="25" y2="195" x2="25" />
+    <polygon points="25,200 0,175 50,175" />
 </svg>
