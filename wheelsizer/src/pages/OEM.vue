@@ -87,20 +87,24 @@
     
     <!-- Wheel size -->
     <p>What size are the OEM wheels, in inches?</p>
-    <span class="inputlabel" v-if="staggered()">Front:</span>
-    <WheelSize inprefix="of" :ref="fields.fws" autofocus />
+    <WheelSize inprefix="of" :acprefix="'OEM' +(staggered() ? 'Front' : '')" :ref="fields.fws" autofocus>
+        <span class="inputlabel" v-if="staggered()">Front:</span>
+    </WheelSize>
     <p v-if="staggered()">
-        <span class="inputlabel">Rear:</span>
-        <WheelSize inprefix="or" :ref="fields.rws" />
+        <WheelSize inprefix="or" acprefix="OEM Rear" :ref="fields.rws">
+            <span class="inputlabel">Rear:</span>
+        </WheelSize>
     </p>
     
     <!-- Offset -->
     <p>What's the offset of the OEM wheels, in millimeters?</p>
-    <span class="inputlabel" v-if="staggered()">Front:</span>
-    <TextBar type="number" :length=6 inputname="of_offset" errName="Wheel offset" :ref="fields.foff" placeholder="Offset" />
+    <TextBar type="number" :acprefix="'OEM' +(staggered() ? 'Front' : '')" :length=6 inputname="of_offset" errName="Wheel offset (millimeters)" :ref="fields.foff" placeholder="Offset">
+        <span class="inputlabel" v-if="staggered()">Front:</span>
+    </TextBar>
     <p v-if="staggered()">
-        <span class="inputlabel">Rear:</span>
-        <TextBar type="number" :length=6 inputname="or_offset" errName="Wheel offset" :ref="fields.roff" placeholder="Offset" />
+        <TextBar type="number" acprefix="OEM Rear" :length=6 inputname="or_offset" errName="Wheel offset (millimeters)" :ref="fields.roff" placeholder="Offset">
+            <span class="inputlabel">Rear:</span>
+        </TextBar>
     </p>
 
     <InfoBox>Wheel size and offset can usually be found stamped on the spokes of your wheels.</InfoBox>
@@ -109,11 +113,13 @@
     <h2>Tell us about the OEM tires.</h2>
     <p>These numbers are specified in ISO Metric format, and can be found on your tire sidewall or on a sticker in the driver's side door frame.</p>
     
-    <span class="inputlabel" v-if="staggered()">Front:</span>
-    <TireSize inprefix="of" :ref="fields.fts" />
+    <TireSize inprefix="of" :acprefix="'OEM' +(staggered() ? 'Front' : '')" :ref="fields.fts">
+        <span class="inputlabel" v-if="staggered()">Front:</span>
+    </TireSize>
     <p v-if="staggered()">
-        <span class="inputlabel">Rear:</span>
-        <TireSize inprefix="or" :ref="fields.rts" />
+        <TireSize inprefix="or" acprefix="OEM Rear" :ref="fields.rts">
+            <span class="inputlabel">Rear:</span>
+        </TireSize>
     </p>
 
     <!-- Advanced Options -->
@@ -122,6 +128,6 @@
 
         <!-- Wheelbase -->
         <p>What is your car's wheelbase in millimeters?</p>
-        <p><TextBar type="number" :length=6 inputname="o_wheelbase" errName="Wheelbase" :ref="optionalFields.owb" placeholder="Wheelbase" /></p>
+        <p><TextBar type="number" :length=6 inputname="o_wheelbase" errName="Vehicle Wheelbase" :ref="optionalFields.owb" placeholder="Wheelbase" /></p>
     </Collapsible>
 </template>

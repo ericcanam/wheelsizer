@@ -36,7 +36,7 @@
 <template>
     <p>
         <input type="hidden" :name=inpname ref="inputfield" v-model="toggled" />
-        <h2><button @click="toggle" type="button"><span>{{ 
+        <h2><button @click="toggle" type="button" :aria-label="'Click to expand '+prompt"><span>{{ 
             prompt
         }}</span><img class="right" :src="'/assets/'+(isToggled() ? 'up' : 'down')+'_chevron.svg'" /></button></h2>
     </p>

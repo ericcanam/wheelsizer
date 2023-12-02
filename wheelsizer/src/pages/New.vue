@@ -42,13 +42,16 @@
 
     <h2>New Setup</h2>
     <!-- stagger/square option toggle -->
-    <p>Will your new setup be different front to rear (staggered)? Or will all four wheels and tires be the same (square)?</p>
     <p>
-        <OptionToggle inputname="nstagger" :options="['Square', 'Staggered']" v-model="newstagger" autofocus />
+        <OptionToggle inputname="nstagger" :options="['Square', 'Staggered']" v-model="newstagger" autofocus>
+            <p>Will your new setup be different front to rear (staggered)? Or will all four wheels and tires be the same (square)?</p>
+        </OptionToggle>
     </p>
-    <p>What are you looking to change?</p>
+    
     <p>
-        <OptionToggle :ref="fields.change" inputname="nconfig" :options="['Wheels', 'Tires', 'Everything']" v-model="newconfig" />
+        <OptionToggle :ref="fields.change" inputname="nconfig" :options="['Wheels', 'Tires', 'Everything']" v-model="newconfig">
+            <p>What are you looking to change?</p>
+        </OptionToggle>
     </p>
 
     <WarningBox v-if="stagToSquare()">

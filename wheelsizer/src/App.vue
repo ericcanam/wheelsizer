@@ -112,7 +112,7 @@
 		<div class="row">
 			<div v-for="(page, n) in pages" class="fall">
 				<Step :title="page.title" :svg="page.svg" :status="gs(n+1, cid)" />
-				<object v-if="n+1<pages.length" alt="&gt;" class="svgarrow h_arrow topnavarrow" data="/assets/arrow_right.svg" />
+				<img v-if="n+1<pages.length" alt="&gt;" class="svgarrow h_arrow topnavarrow" src="/assets/arrow_right.svg" />
 			</div>
 			<!--<div class="steptitle current overarch">{{ pages[cid-1].title }}</div>-->
 		</div>

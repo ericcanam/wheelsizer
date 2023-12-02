@@ -13,6 +13,10 @@
             type: String,
             required: true
         },
+        acprefix:{
+            type: String,
+            default: ''
+        },
         autofocus: {
             type: Boolean,
             default: false
@@ -107,12 +111,15 @@
 
 <template>
     <div class="multitextcontainer">
+        <slot /><!-- slot for LABEL -->
         <div ref="inputElement" class="multitextfield" style="display:inherit;">
             <span v-for="(inp, name, index) in inputlist">
                 {{ inp.prepend }}
                 <input :ref="inp.refer"
                 @input="$emit('update:modelValue', getEmits());"
                 :name="name" :type="inp.type" :placeholder="inp.placeholder" :style="'width: '+(inp.length*12)+'pt;'" :step="inp.step" :min="inp.min" :max="inp.max"
+                :aria-label="props.acprefix+' '+inp.errName"
+                autocomplete="off"
                  />
                 {{ inp.appendix }}
             </span>

@@ -83,7 +83,8 @@
 </script>
 
 <template>
-    <div class="optionscontainer">
+    <div class="optionscontainer"><fieldset>
+        <legend><slot /></legend>
         <div ref="inputElement" class="optionslider">
             <div :class="'optwrap' + (linesep ? ' lineopt' : '')" v-for="option in options">
                 <input type="radio"
@@ -102,13 +103,10 @@
             </div>
         </div>
         <div class="errorline" ref="errorLine"></div>
-    </div>
+    </fieldset></div>
 </template>
 
 <style>
-    div.optionscontainer {
-        display: inline-block;
-    }
     div.optionslider {
         display: inline-block;
         padding: 4pt;
@@ -134,5 +132,12 @@
         background-color: var(--color-accent1);
         color: var(--color-text);
 	    outline: 2pt solid transparent;
+    }
+    fieldset {
+        padding: 0;
+        border: none;
+    }
+    legend {
+        display: contents;
     }
 </style>

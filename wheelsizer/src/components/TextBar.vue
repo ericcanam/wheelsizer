@@ -34,7 +34,11 @@
         },
         errName:{
             type: String,
-            default: 'This field'
+            required: true
+        },
+        acprefix:{
+            type: String,
+            default: ''
         },
         autofocus: {
             type: Boolean,
@@ -86,23 +90,34 @@
 </script>
 
 <template>
-    <div class="textfield">
-        <button v-if="type=='number' && showControls" tabindex="-1" type="button" class="nofocus"
-            @click="change(nstep)"><img :alt="'+'+nstep" src="/assets/up_chevron.svg" /></button><div class="inputbox">
-            <input 
-                ref = "inputElement"
-                :name="inputname"
-                :value="modelValue" @change="$emit('update:modelValue', $event.target.value)"
-                :style="'width: '+(length*12)+'pt;'"
-                :type="type" :placeholder="placeholder"
-                :step="step" :max="max" :min="min" />
-        </div><button v-if="type=='number' && showControls" tabindex="-1" type="button" class="nofocus"
-            @click="change(-nstep)"><img :alt="'-'+nstep" src="/assets/down_chevron.svg" /></button>
+    <div class="textfieldcontainer">
+        <slot />
+        <div class="textfield">
+            <button v-if="type=='number' && showControls" tabindex="-1" type="button" class="nofocus"
+                @click="change(nstep)"><img :alt="'+'+nstep" src="/assets/up_chevron.svg" /></button><div class="inputbox">
+                <input 
+                    ref = "inputElement"
+                    :name="inputname"
+                    :value="modelValue" @change="$emit('update:modelValue', $event.target.value)"
+                    :type="type" :placeholder="placeholder"
+                    :step="step" :max="max" :min="min"
+                    :aria-label="props.acprefix+' '+props.errName"
+                    :size="(length*2)"
+                    autocomplete="off" />
+            </div><button v-if="type=='number' && showControls" tabindex="-1" type="button" class="nofocus"
+                @click="change(-nstep)"><img :alt="'-'+nstep" src="/assets/down_chevron.svg" /></button>
+        </div>
         <div class="errorline" ref="errorLine"></div>
     </div>
 </template>
 
 <style>
+    div.textfieldcontainer {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%;
+    }
     div.textfield button {
         padding: 6pt;
         margin: 0pt;
@@ -112,12 +127,11 @@
     div.textfield input {
         margin-left: 4pt;
         margin-right: 4pt;
+        max-width: calc(100% - 20pt);
     }
     div.textfield{
         display:inline-block;
         vertical-align: middle;
-        margin-left: auto;
-        margin-right: auto;
-        max-width: calc(100% - 12pt);
+        max-width: 100%;
     }
 </style>
