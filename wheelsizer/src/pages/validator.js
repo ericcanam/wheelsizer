@@ -9,9 +9,10 @@ function optional(field, func){
 For single-field text inputs
 */
 function isEmpty(field, setError = true){
-    const err = !field.value.getValue().validity.badInput && field.value.getValue().value.trim().length<1;
+    let val = field.value.getValue();
+    const err = !val.validity.badInput && val.value.trim().length<1;
     if(err && setError){
-        field.value.setError("");
+        field.value.setError(val.errName+' should not be empty.');
     }
     return err;
 }

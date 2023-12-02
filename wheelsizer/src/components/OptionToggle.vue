@@ -102,7 +102,7 @@
                 </div></label>
             </div>
         </div>
-        <div class="errorline" ref="errorLine"></div>
+        <legend><div class="errorline" ref="errorLine" :id="'errorline_'+inputname"></div></legend>
     </fieldset></div>
 </template>
 
@@ -138,6 +138,9 @@
         border: none;
     }
     legend {
-        display: contents;
+        display: block;
+        max-width: 100%;
+        margin: auto;
+        padding-bottom: 6pt;
     }
 </style>

@@ -36,6 +36,7 @@
         // extract string
         inputlist[inpo.name]={
             refer: ref(),
+            errorLine: ref(),
             type: inpo.type,
             placeholder: ('placeholder' in inpo ? inpo.placeholder : ''),
             errName: inpo.errName,
@@ -50,7 +51,6 @@
     }
 
     const inputElement = ref();
-    const errorLine = ref();
 
     function getValues(){
         let vals = {};
@@ -70,18 +70,24 @@
             let inputfield = Object.assign({}, inputlist[problemField].refer.value)[0];
             inputfield.classList.add("errorlight");
         }
-        if(errorLine.value.innerHTML != ""){
-            errorLine.value.innerHTML += "<br />";
+        // set error text
+        let errorLine = Object.assign({}, inputlist[problemField].errorLine.value)[0];
+        if(errorLine.innerHTML != ""){
+            errorLine.innerHTML += "<br />";
         }
-        errorLine.value.innerHTML += status;
+        errorLine.innerHTML += status;
     }
     function unsetError(){
         inputElement.value.classList.remove("errorlight");
         for(const field in inputlist){
+            // remove red error highlight
             let inputfield = Object.assign({}, inputlist[field].refer.value)[0];
             inputfield.classList.remove("errorlight");
+
+            // unset text
+            let errorLine = Object.assign({}, inputlist[field].errorLine.value)[0];
+            errorLine.innerHTML = "";
         }
-        errorLine.value.innerHTML = "";
     }
 
     defineExpose({
@@ -119,17 +125,18 @@
                 @input="$emit('update:modelValue', getEmits());"
                 :name="name" :type="inp.type" :placeholder="inp.placeholder" :style="'width: '+(inp.length*12)+'pt;'" :step="inp.step" :min="inp.min" :max="inp.max"
                 :aria-label="props.acprefix+' '+inp.errName"
+                :aria-labelledby="'errorline_'+name"
                 autocomplete="off"
                  />
                 {{ inp.appendix }}
             </span>
         </div>
-        <div class="errorline" ref="errorLine"></div>
+        <div v-for="(inp, name, index) in inputlist" class="errorline" :id="'errorline_'+name" :ref="inp.errorLine" role="alert"></div>
     </div>
 </template>
 
-<style scoped>
-    input {
+<style>
+    div.multitextcontainer input {
         padding: 4pt;
     }
     div.multitextcontainer {

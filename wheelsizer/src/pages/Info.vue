@@ -34,15 +34,18 @@
     <h2>Let's talk shop:</h2>
 
     <!-- Stagger -->
-    <OptionToggle inputname="staggered" :options="['Yes', 'No']" defaultoption="No">
-        <p>Are your wheels staggered? In other words, are your wheels or tires different from front to back?</p>
-    </OptionToggle>
+    <p>
+        <OptionToggle inputname="staggered" :options="['Yes', 'No']" defaultoption="No">
+            Are your wheels staggered? In other words, are your wheels or tires different from front to back?
+        </OptionToggle>
+    </p>
 
     <!-- Drive Wheel -->
-    
-    <OptionToggle inputname="drivewheels" :options="['Front', 'Rear', 'All']" defaultoption="Front">
-        <p>Which are the driven wheels?</p>
-    </OptionToggle>
+    <p>
+        <OptionToggle inputname="drivewheels" :options="['Front', 'Rear', 'All']" defaultoption="Front">
+            Which are the driven wheels?
+        </OptionToggle>
+    </p>
 
     <!-- Spare Tire -->
     <!-- <p>Do you want to consider the spare tire?</p>

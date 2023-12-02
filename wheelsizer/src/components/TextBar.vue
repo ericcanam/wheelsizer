@@ -102,12 +102,13 @@
                     :type="type" :placeholder="placeholder"
                     :step="step" :max="max" :min="min"
                     :aria-label="props.acprefix+' '+props.errName"
-                    :size="(length*2)"
+                    :aria-describedby="'errorline_'+inputname"
+                    :style="'width: '+(length*20)+'px;'"
                     autocomplete="off" />
             </div><button v-if="type=='number' && showControls" tabindex="-1" type="button" class="nofocus"
                 @click="change(-nstep)"><img :alt="'-'+nstep" src="/assets/down_chevron.svg" /></button>
         </div>
-        <div class="errorline" ref="errorLine"></div>
+        <div class="errorline" ref="errorLine" :id="'errorline_'+inputname" role="alert"></div>
     </div>
 </template>
 

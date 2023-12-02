@@ -32,8 +32,10 @@
 	const formRef = ref();
 	const submitRef = ref();
 	const backRef = ref();
+	const ariaAlertRef = ref();
 
 	function clearErrors(){
+		ariaAlertRef.value.setAttribute("aria-label", "");
 		// clears errors in all the child component's fields
 		for(const field in childComponentRef.value.fields){
 			if(childComponentRef.value.fields[field].value != undefined){
@@ -59,6 +61,8 @@
 			saveform();
 			cid.value++;
 			window.scrollTo(0, 0);
+		}else{
+			ariaAlertRef.value.setAttribute("aria-label", "The next page could not be loaded due to errors in the form.");
 		}
 	}
 
@@ -122,6 +126,7 @@
 			<AdBox />
 		</div>-->
 		<form id="sform" @submit="formnext" novalidate ref="formRef">
+			<span ref="ariaAlertRef" role="alert"></span>
 			<div class="row">
 				<component :is="pages[cid-1].comp" ref="childComponentRef" :ad="appdata" />
 			</div>

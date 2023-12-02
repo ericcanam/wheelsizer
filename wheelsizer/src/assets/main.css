@@ -87,7 +87,7 @@ input, button, div.multitextfield {
 	font-family: 'Fira Sans', sans-serif;
 	font-weight: 300;
 }
-input, button, div.optionslider {
+input:not(.errorlight):not(:focus), button:not(:focus), div.optionslider:not(.errorlight):not(.hasfocus) {
 	outline: 1px dashed transparent;
 }
 input[type="checkbox"], input[type="radio"] {
