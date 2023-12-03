@@ -318,8 +318,8 @@ l -0.25 -2 l 0.25 2 l 4 -0.5 m 6 4 v 12 h 10 a 4 4 90 0 0 4 -4 v -4 a 4 4 90 0 0
     const legend = [
         {label: "Space Taken",          stroke: "var(--color-accent5)", fill: "var(--color-accent5-shade)"},
         {label: "Space Freed",          stroke: "var(--color-accent2)", fill: "var(--color-accent2-shade)"},
-        {label: "New Tread Center",     stroke: "var(--color-accent4)"},
-        {label: "Old Tread Center",     stroke: "var(--color-accent1)"},
+        {label: "Old Tread Center",     stroke: "var(--color-accent4)"},
+        {label: "New Tread Center",     stroke: "var(--color-accent1)"},
         {label: "Old Contact Patch",     stroke: "var(--color-tire-patch)"}
     ];
 </script>
