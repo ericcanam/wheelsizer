@@ -2,6 +2,7 @@ const WHEELTIRE_SEP = ":";
 
 const MIN_WHEEL_WIDTH = 2.5;
 const MIN_WHEEL_DIAMETER = 5;
+const MIN_HOLES = 3;
 const MIN_TIRE_SECTION = 95;
 
 /*
@@ -19,7 +20,7 @@ function compileCode(properties){
     // wheel stuff
     if(properties.wheels != null){
         // wheel bolt holes
-        let whcode = parseInt(properties.wheels.holes)-3;
+        let whcode = parseInt(properties.wheels.holes)-MIN_HOLES;
         code += whcode;
 
         // wheel bolt PCD
@@ -53,7 +54,7 @@ function compileCode(properties){
         code += toAN(tscode);
 
         // tire sidewall
-        let swcode = (parseInt(properties.tires.ratio)-5)/5;
+        let swcode = parseInt(properties.tires.ratio)/5;
         code += toAN(swcode);
 
         // wheel diameter
@@ -75,12 +76,18 @@ function to2AN(n){
     let nn = (nm-nr) / 62; // leading digit
     return toAN(nn)+toAN(nr);
 }
+function from2AN(code){
+    return (fromAN(code.charAt(0))*62 + fromAN(code.charAt(1)))/10;
+}
 
 /*
 Returns two characters each between A-Z, a-z, or 0-9 when given a float with precision 0.1, between (-192.2, 192.2]
 */
 function to2ANsigned(n){
     return to2AN(parseFloat(n)+192.1);
+}
+function from2ANsigned(code){
+    return from2AN(code)-192.1;
 }
 
 /*
@@ -95,13 +102,23 @@ function toAN(code){
         }
     )(parseInt(code)));
 }
+function fromAN(code){
+    code = code.charCodeAt(0);
+    if(code>96) return code-71;
+    if(code>64) return code-65;
+    return code+4;
+}
 
 /*
 Returns a character between A-Z, if a number is an integer, or a-z, otherwise (assumed ending in .5).
 */
-function toANhalf(code){
-    code = parseFloat(code);
-    return String.fromCharCode(65 + Math.trunc(code) + (code%1>0 ? 32 : 0));
+function toANhalf(n){
+    n = parseFloat(n);
+    return String.fromCharCode(65 + Math.trunc(n) + (n%1>0 ? 32 : 0));
+}
+function fromANhalf(n){
+    if(n>96) return n-70.5;
+    return n-65;
 }
 
 
@@ -112,18 +129,34 @@ From a code, generate vehicle properties
 */
 function readCode(code){
     const splitcodes = code.split(":");
-    return {
+    // wheel is not omitted, and diameter coding character has been left out of the tire
+    if(splitcodes[0]){
+        splitcodes[1] += splitcodes[0][3];
+    }
+    var setup = {
         'wheels': readWheelCode(splitcodes[0]),
         'tires': readTireCode(splitcodes[1])
-    }
+    };
+    return setup;
 }
 
 function readWheelCode(code){
-    return null;
+    return {
+        'width': fromANhalf(code.charCodeAt(4))+MIN_WHEEL_WIDTH,
+        'offset': from2ANsigned(code.substr(5,2)),
+        'diameter': fromANhalf(code.charCodeAt(3))+MIN_WHEEL_DIAMETER,
+        'pcd': from2AN(code.substr(1,2)),
+        'holes': parseInt(code.charAt(0))+MIN_HOLES,
+        'bore': from2AN(code.substr(7,2))
+    };
 }
 
 function readTireCode(code){
-    return null;
+    return {
+        'section': fromAN(code.charAt(0))*10+MIN_TIRE_SECTION,
+        'ratio': fromAN(code.charAt(1))*5,
+        'diameter': fromANhalf(code.charCodeAt(2))+MIN_WHEEL_DIAMETER
+    };
 }
 
 
