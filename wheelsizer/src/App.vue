@@ -137,13 +137,15 @@
 				--><button ref="submitRef" type="submit" v-if="cid<pages.length" class="suggest single">
 					<span>Next</span><!--<img class="right" src="/assets/right_chevron.svg" />--></button>
 			</div>
-			<div class="row">
-				{{ appv }} &mdash; Copyright {{ builddate }} Wheelhub
-				<br />
-				<a href="/">Homepage</a>
-				&mdash;
-				<a href="/about.html#contact">Contact</a>
-			</div>
 		</form>
 	</main>
+    <footer>
+        <div class="row">
+            {{ appv }} &mdash; Copyright {{ builddate }} Wheelhub
+            <br />
+            <a href="/">Homepage</a>
+            &mdash;
+            <a href="/about.html#contact">Contact</a>
+        </div>
+    </footer>
 </template>

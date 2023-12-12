@@ -36,7 +36,7 @@
     <!-- Stagger -->
     <p>
         <OptionToggle inputname="staggered" :options="['Yes', 'No']" defaultoption="No">
-            Are your wheels staggered? In other words, are your wheels or tires different from front to back?
+            Is your setup staggered? In other words, are your wheels or tires different from front to back?
         </OptionToggle>
     </p>
 
