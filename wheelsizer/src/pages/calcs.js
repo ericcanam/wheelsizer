@@ -199,7 +199,7 @@ export { niceNumber, fpm, // formatting
     
     // tire stuff
     tireCircumf, tireHeight, isLegalTire,
-    getClosestSidewall, getPctDiff, getNewPctDiff, getTireArray, getTireHeightArray,
+    getClosestSidewall, getPctDiff, getNewPctDiff, getPctDiffUnform, getTireArray, getTireHeightArray,
     
     // wheel stuff
     getWheels, getPokeDiff, getInsetDiff,

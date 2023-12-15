@@ -127,6 +127,7 @@
                 :aria-label="props.acprefix+' '+inp.errName"
                 :aria-labelledby="'errorline_'+name"
                 autocomplete="off"
+                :value="modelValue ? modelValue[name] : ''"
                  />
                 {{ inp.appendix }}
             </span>

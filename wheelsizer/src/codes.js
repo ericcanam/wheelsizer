@@ -44,11 +44,11 @@ function compileCode(properties){
         code += cbcode;
     }
 
-    // wheel/tire seperator
-    code += WHEELTIRE_SEP;
-
     // tire stuff
     if(properties.tires != null){
+        // wheel/tire seperator
+        code += WHEELTIRE_SEP;
+
         // tire section
         let tscode = (parseInt(properties.tires.section) - MIN_TIRE_SECTION) / 10;
         code += toAN(tscode);
@@ -84,10 +84,10 @@ function from2AN(code){
 Returns two characters each between A-Z, a-z, or 0-9 when given a float with precision 0.1, between (-192.2, 192.2]
 */
 function to2ANsigned(n){
-    return to2AN(parseFloat(n)+192.1);
+    return to2AN((10*(parseFloat(n))+1921)/10);
 }
 function from2ANsigned(code){
-    return from2AN(code)-192.1;
+    return (Math.round((from2AN(code)*10))-1921)/10;
 }
 
 /*
@@ -117,7 +117,7 @@ function toANhalf(n){
     return String.fromCharCode(65 + Math.trunc(n) + (n%1>0 ? 32 : 0));
 }
 function fromANhalf(n){
-    if(n>96) return n-70.5;
+    if(n>96) return n-96.5;
     return n-65;
 }
 
@@ -130,17 +130,18 @@ From a code, generate vehicle properties
 function readCode(code){
     const splitcodes = code.split(":");
     // wheel is not omitted, and diameter coding character has been left out of the tire
-    if(splitcodes[0]){
-        splitcodes[1] += splitcodes[0][3];
+    if(splitcodes[0] && splitcodes[1]){
+        splitcodes[1] = splitcodes[1].substr(0,2)+splitcodes[0][3];
     }
     var setup = {
         'wheels': readWheelCode(splitcodes[0]),
-        'tires': readTireCode(splitcodes[1])
+        'tires':  readTireCode(splitcodes[1])
     };
     return setup;
 }
 
 function readWheelCode(code){
+    if(!code) return null;
     return {
         'width': fromANhalf(code.charCodeAt(4))+MIN_WHEEL_WIDTH,
         'offset': from2ANsigned(code.substr(5,2)),
@@ -152,6 +153,7 @@ function readWheelCode(code){
 }
 
 function readTireCode(code){
+    if(!code) return null;
     return {
         'section': fromAN(code.charAt(0))*10+MIN_TIRE_SECTION,
         'ratio': fromAN(code.charAt(1))*5,

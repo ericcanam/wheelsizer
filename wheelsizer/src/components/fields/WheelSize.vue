@@ -30,7 +30,7 @@
     }
 
     var field = ref();
-    var mv = ref();
+    var mv = ref(props.modelValue);
 
     defineExpose({
         getValues,

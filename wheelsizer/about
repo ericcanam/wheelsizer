@@ -45,7 +45,7 @@
 
             <div class="row">
                 <p>Give it a shot!</p>
-                <a href="/calculator.html"><button class="double suggest bigtext"><img src="./assets/calculator.svg" class="left" style="height:20pt;" /><span>Try the Calculator</span></button></a>
+                <a href="/calculator"><button class="double suggest bigtext"><img src="./assets/calculator.svg" class="left" style="height:20pt;" /><span>Try the Calculator</span></button></a>
             </div>
 
 			<div class="row">
@@ -53,7 +53,7 @@
 				<h1>Contact</h1>
 				<p>
 					To report a bug, request a feature or make a comment, you can reach me by e-mail at
-					<a href="mailto:dev@wheelhub.io">dev@wheelhub.io</a>.
+					<a href="mailto:eric@wheelhub.io">eric@wheelhub.io</a>.
 			</div>
 		</main>
 	</body>

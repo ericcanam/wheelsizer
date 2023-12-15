@@ -17,7 +17,7 @@
 	--color-tr1: rgba(199,199,199,0.16);
 	--color-tr2: rgba(199,199,199,0.08);
 
-	--line-height: 1.6;
+	--line-height: 1.4;
 	--font-size: 11.5pt;
 }
 
@@ -39,6 +39,12 @@ b {
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Kanit', sans-serif;
+}
+.headingsub {
+	font-family: 'Fira Sans', sans-serif;
+	line-height: 1;
+	font-size: var(--font-size);
+	font-weight: 300;
 }
 
 h1 { font-size: calc(2.5 * var(--font-size)); }
