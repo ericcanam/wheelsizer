@@ -56,9 +56,9 @@
         info_cell.innerHTML = title;
 
         const notices = {
+            note: notes,
             error: errors,
-            warning: warnings,
-            note: notes
+            warning: warnings
         }
         for(var notice in notices){
             if(notices[notice].length){

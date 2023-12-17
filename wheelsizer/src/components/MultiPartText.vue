@@ -147,10 +147,4 @@
         margin-right: auto;
         max-width: calc(100% - 12pt);
     }
-
-    @media (prefers-color-scheme: light) {
-        div.multitextfield {
-            color: var(--color-text-light);
-        }
-    }
 </style>

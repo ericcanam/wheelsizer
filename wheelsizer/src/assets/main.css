@@ -284,35 +284,3 @@ div.steptitle.overarch{
 pre {
 	font-family: inherit;
 }
-
-
-
-
-@media (prefers-color-scheme: light) {
-    body {
-        background-color: var(--color-background-light);
-        color: var(--color-text-light);
-    }
-	input, button:not(.suggest) {
-		color: var(--color-text-light);
-	}
-	button.suggest{
-		color: var(--color-text);
-	}
-	input:focus, button:not(.nofocus):focus, div.hasfocus {
-		outline: 2pt solid var(--color-accent1);
-	}
-	button.suggest:focus {
-		outline: 2pt solid var(--color-text-light);
-	}
-
-	:root {
-		--color-backshade: rgba(199,199,199,0.40);
-		--color-tr1: rgba(199,199,199,0.40);
-		--color-tr2: rgba(199,199,199,0.60);
-	}
-
-	/* div:not(.iconcircle) > img, button:not(.suggest) img{
-		filter: invert(100%);
-	} */
-}
