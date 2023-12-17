@@ -96,7 +96,7 @@
             // create URL for setup
             urlcontainer.value.innerHTML = "URL Will Appear Here";
             urlcontainer.value.setAttribute("href", "");
-            let url = "https://wheelhub.io/check?c="+getCode(oldfront);
+            let url = "https://wheelhub.io/check.html?c="+getCode(oldfront);
 
             urlcontainer.value.innerHTML = url;
             urlcontainer.value.setAttribute("href", url);
@@ -550,7 +550,7 @@
             <br />
             <a href="/">Homepage</a>
             &mdash;
-            <a href="/about#contact">Contact</a>
+            <a href="/about.html#contact">Contact</a>
         </div>
     </footer>
 </template>

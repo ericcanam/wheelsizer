@@ -145,7 +145,7 @@
             <br />
             <a href="/">Homepage</a>
             &mdash;
-            <a href="/about#contact">Contact</a>
+            <a href="/about.html#contact">Contact</a>
         </div>
     </footer>
 </template>
