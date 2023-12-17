@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "qrcode.vue": "^3.4.1",
     "vue": "^3.3.8"
   },
   "devDependencies": {

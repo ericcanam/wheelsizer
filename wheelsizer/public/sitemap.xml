@@ -6,17 +6,22 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
     <url>
         <loc>https://www.wheelhub.io/</loc>
-        <lastmod>2023-11-23</lastmod>
+        <lastmod>2023-12-17</lastmod>
         <priority>1.00</priority>
     </url>
     <url>
         <loc>https://www.wheelhub.io/calculator</loc>
-        <lastmod>2023-11-23</lastmod>
+        <lastmod>2023-12-17</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://www.wheelhub.io/check</loc>
+        <lastmod>2023-12-17</lastmod>
         <priority>0.80</priority>
     </url>
     <url>
         <loc>https://www.wheelhub.io/about</loc>
-        <lastmod>2023-11-19</lastmod>
+        <lastmod>2023-12-17</lastmod>
         <priority>0.60</priority>
     </url>
 </urlset>
