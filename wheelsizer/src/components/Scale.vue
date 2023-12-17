@@ -16,10 +16,6 @@
             type: String,
             default: undefined
         },
-        minColor:{
-            type: String,
-            default: 'var(--color-accent3)'
-        },
         max:{
             type: Number,
             required: true
@@ -28,9 +24,17 @@
             type: String,
             default: undefined
         },
-        maxColor:{
+        defaultColor:{
             type: String,
-            default: 'var(--color-accent3)'
+            default: 'var(--color-accent2)'
+        },
+        transitionColor:{
+            type: String,
+            default: 'var(--color-accent4)'
+        },
+        extremityColor:{
+            type: String,
+            default: 'var(--color-accent5)'
         },
         discreteSnapPoints:{
             type: Array,
@@ -50,7 +54,11 @@
 
     var defaultPercentage, gstring;
     defaultPercentage = 100*(props.modelValue-props.min)/(props.max-props.min);
-    gstring = "linear-gradient(to right, "+props.minColor+", var(--color-accent2) "+defaultPercentage+"%, "+props.maxColor+")";
+    gstring = "linear-gradient(to right, "+props.extremityColor+", "+
+        (props.transitionColor ? props.transitionColor+" "+(defaultPercentage/2)+"%, " : '')+
+        props.defaultColor+" "+defaultPercentage+"%, "+
+        (props.transitionColor ? props.transitionColor+" "+(defaultPercentage*3/2)+"%, " : '')+
+        props.extremityColor+")";
 
     // send out updated value (and "round" it to nearest discrete point if applicable)
     function update(event){

@@ -364,6 +364,7 @@
             <td>Wheel Size</td><td :colspan="1+(stagToSquare())">{{ fnwd + '" &times; ' + fnw +'", ET' + fno }}</td>
             <td v-if="newStagger()">{{ rnwd + '" &times; ' + rnw +'", ET' + rno }}</td>
         </tr>
+        <!-- tire-related stuff -->
         <template v-if="props.ad.nconfig!='Wheels'">
             <!-- Tire height -->
             <tr>
@@ -374,6 +375,11 @@
             <tr>
                 <td>Tire Circumference</td><td :colspan="1+(stagToSquare())">{{ niceNumber(tireCircumf(fnwd, fntr, fnts)) + ' mm' }}</td>
                 <td v-if="newStagger()">{{ niceNumber(tireCircumf(rnwd, rntr, rnts)) + ' mm' }}</td>
+            </tr>
+            <!-- Sidewall height (as a distance rather than ratio) -->
+            <tr>
+                <td>Sidewall Height</td><td :colspan="1+(stagToSquare())">{{ niceNumber(fntr*fnts/100) }} mm</td>
+                <td v-if="newStagger()">{{ niceNumber(rntr*rnts/100) }} mm</td>
             </tr>
             <!-- Ride height -->
             <tr>
