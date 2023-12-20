@@ -4,6 +4,7 @@
     import Scale from '../components/Scale.vue';
     import WarningBox from '../components/WarningBox.vue';
     import InfoBox from '../components/InfoBox.vue';
+    import SpecTable from '../components/SpecTable.vue';
     import VisualPackage from '../components/VisualPackage.vue';
 
     import { niceNumber, fpm,
@@ -350,78 +351,53 @@
     </div>
 
     <h2>Change Table</h2>
-    <table>
-        <tr>
-            <th>Property</th><th>{{ anyStagger() ? 'Front' : 'Value' }}</th><th v-if="anyStagger()">Rear</th>
-        </tr>
-        <!-- Tire size -->
-        <tr>
-            <td>Tire Size</td><td :colspan="1+(stagToSquare())">{{ fnts + '/' + fntr + 'R' + fnwd }}</td>
-            <td v-if="newStagger()">{{ rnts + '/' + rntr + 'R' + rnwd }}</td>
-        </tr>
-        <!-- Wheel size -->
-        <tr>
-            <td>Wheel Size</td><td :colspan="1+(stagToSquare())">{{ fnwd + '" &times; ' + fnw +'", ET' + fno }}</td>
-            <td v-if="newStagger()">{{ rnwd + '" &times; ' + rnw +'", ET' + rno }}</td>
-        </tr>
-        <!-- tire-related stuff -->
-        <template v-if="props.ad.nconfig!='Wheels'">
-            <!-- Tire height -->
-            <tr>
-                <td>Tire Height</td><td :colspan="1+(stagToSquare())">{{ getNewPctDiff(foh, tireHeight(fnwd, fntr, fnts)) }}</td>
-                <td v-if="newStagger()">{{ getNewPctDiff(roh, tireHeight(rnwd, rntr, rnts)) }}</td>
-            </tr>
-            <!-- Tire circumference -->
-            <tr>
-                <td>Tire Circumference</td><td :colspan="1+(stagToSquare())">{{ niceNumber(tireCircumf(fnwd, fntr, fnts)) + ' mm' }}</td>
-                <td v-if="newStagger()">{{ niceNumber(tireCircumf(rnwd, rntr, rnts)) + ' mm' }}</td>
-            </tr>
-            <!-- Sidewall height (as a distance rather than ratio) -->
-            <tr>
-                <td>Sidewall Height</td><td :colspan="1+(stagToSquare())">{{ niceNumber(fntr*fnts/100) }} mm</td>
-                <td v-if="newStagger()">{{ niceNumber(rntr*rnts/100) }} mm</td>
-            </tr>
-            <!-- Ride height -->
-            <tr>
-                <td>Ride Height Diff</td><td :colspan="1+(!anyStagger())">{{ fpm((fthd-foh)/2) + ' mm' }}</td>
-                <td v-if="anyStagger()">{{ fpm(((newStagger() ? rthd : fthd)-roh)/2) + ' mm' }}</td>
-            </tr>
-        </template>
-        <!-- wheel-related stuff -->
-        <template v-if="props.ad.nconfig!='Tires'">
-            <!-- Tire Center -->
-            <tr>
-                <td>Tire Center</td><td>{{ fpm(props.ad.of_offset - fno) }} mm</td>
-                <td v-if="newStagger()">{{ fpm(roo-rno) }} mm</td>
-                <td v-else-if="oemStagger()">{{ fpm(props.ad.or_offset-fno) }} mm</td>
-            </tr>
-            <!-- Wheel poke -->
-            <tr>
-                <td>Wheel Poke</td><td>{{ fpm(getPokeDiff(fnw, fno, props.ad.of_width, props.ad.of_offset)) }} mm</td>
-                <td v-if="newStagger()">{{ fpm(getPokeDiff(rnw, rno, row, roo)) }} mm</td>
-                <td v-else-if="oemStagger()">{{ fpm(getPokeDiff(fnw, fno, row, roo)) }} mm</td>
-            </tr>
-            <!-- Wheel inset -->
-            <tr>
-                <td>Wheel Inset</td><td>{{ fpm(getInsetDiff(fnw, fno, props.ad.of_width, props.ad.of_offset)) }} mm</td>
-                <td v-if="newStagger()">{{ fpm(getInsetDiff(rnw, rno, row, roo)) }} mm</td>
-                <td v-else-if="oemStagger()">{{ fpm(getInsetDiff(fnw, fno, row, roo)) }} mm</td>
-            </tr>
-        </template>
-        <!-- advanced stuff -->
-        <template v-if="advancedVars()">
-            <template v-if="anyStagger() && props.ad.o_wheelbase && props.ad.nconfig!='Wheels'">
-                <!-- wheelbase -->
-                <tr>
-                    <td>New Wheelbase</td>
-                    <td colspan="2">{{ niceNumber(getPythagLength(((newStagger() ? rthd : fthd) - fthd)/2, hypotenuse,true)) }} mm</td>
-                </tr>
-                <!-- body pitch -->
-                <tr>
-                    <td>Pitch {{ rthd>fthd ? '(forward)' : (fthd>rthd ? '(rearward)' : '') }}</td>
-                    <td colspan="2">{{ niceNumber(getPythagAngle(((newStagger() ? rthd : fthd) - fthd)/2, hypotenuse)-hypAngle) }} &deg;</td>
-                </tr>
-            </template>
-        </template>
-    </table>
+    <SpecTable 
+        :config="props.ad.nconfig"
+        :newstagger="newStagger()"
+        :oemstagger="oemStagger()"
+        :ow="{ 
+            front:{ // front wheels
+                diameter: props.ad.of_diameter,
+                width:  props.ad.of_width,
+                offset: props.ad.of_offset
+            },
+            rear:{ // rear wheels
+                diameter: rod,
+                width:  row,
+                offset: roo
+            }
+        }"
+        :ot="{
+            front:{
+                section: props.ad.of_section,
+                ratio: props.ad.of_ratio
+            },
+            rear:{ // rear tires
+                section: ros,
+                ratio: ror
+            }
+        }"
+        :nw="{ 
+            front:{ // front wheels
+                diameter: fnwd,
+                width:  fnw,
+                offset: fno
+            },
+            rear:{ // rear wheels
+                diameter: rnwd,
+                width:  rnw,
+                offset: rno
+            }
+        }"
+        :nt="{
+            front:{
+                section: fnts,
+                ratio: fntr
+            },
+            rear:{ // rear tires
+                section: rnts,
+                ratio: rntr
+            }
+        }"
+    />
 </template>

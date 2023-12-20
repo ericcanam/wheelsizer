@@ -175,7 +175,7 @@
                         ["This may cause interference between the tire and wheel arch or fender."] : []),
                     [],
                     (poke_diff ?
-                        ["The offset and width will put the wheel face/outer wheel rim "+niceNumber(Math.abs(poke_diff))+" mm further "+inset_direction+"."] : [])
+                        ["The offset and width will put the wheel face/outer wheel rim "+niceNumber(Math.abs(poke_diff))+" mm further "+poke_direction+"."] : [])
                 );
             }
 
