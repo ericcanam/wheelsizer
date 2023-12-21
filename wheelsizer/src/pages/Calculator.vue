@@ -4,27 +4,24 @@
     import Scale from '../components/Scale.vue';
     import WarningBox from '../components/WarningBox.vue';
     import InfoBox from '../components/InfoBox.vue';
+
     import SpecTable from '../components/SpecTable.vue';
     import VisualPackage from '../components/VisualPackage.vue';
 
     import { niceNumber, fpm,
         getPythagLength, getPythagAngle,
-        tireHeight, tireCircumf,
-        getWheels, isLegalTire, getPokeDiff, getInsetDiff, getPctDiff, getNewPctDiff, getTireArray, getTireHeightArray } from './calcs.js';
+        tireHeight,
+        isLegalTire, getPctDiff, getNewPctDiff, getTireArray, getTireHeightArray } from './calcs.js';
     
     var props = defineProps(['ad']);
     function oemStagger(){ return props.ad.staggered=='Yes' };
     function newStagger(){ return props.ad.nstagger=='Staggered' };
     function stagToSquare(){ return oemStagger() && !newStagger(); }
     function anyStagger(){ return oemStagger() || newStagger(); }
-    function advancedVars(){ return props.ad.AdvancedOptions=='on'; }
 
     /*
         Calculator model variables
     */
-    // extremity limits for wheel size based on OEM wheels
-    var fwes = getWheels(props.ad.of_section, props.ad.of_ratio);
-    var rwes = oemStagger() ? getWheels(props.ad.or_section, props.ad.or_ratio) : [fwes[0], fwes[1]];
     // new wheel widths
     var fnw = ref((props.ad.nconfig!='Tires' ? props.ad.nf_width : undefined) || props.ad.of_width);
     var rnw = ref((props.ad.nconfig!='Tires' ? props.ad.nr_width : undefined) || (oemStagger() ? props.ad.or_width : props.ad.of_width));
@@ -73,19 +70,6 @@
         updateHeight(rnwd.value, rnts.value, rntr.value, rthd);
     }
     defineTireArrays();
-
-    var hypotenuse, hypAngle;
-    // advanced stuff included
-    if(advancedVars()){
-        
-        // wheelbase
-        if(props.ad.o_wheelbase){
-            // this is the distance between the wheel centers (front to rear projected side)
-            hypotenuse = getPythagLength(props.ad.o_wheelbase, ((roh - foh)/2));
-            hypAngle = getPythagAngle(((roh - foh)/2), hypotenuse);
-        }
-
-    }
     
 
     const fields = {
@@ -398,6 +382,9 @@
                 section: rnts,
                 ratio: rntr
             }
+        }"
+        :advanced="{
+            wheelbase: props.ad.o_wheelbase
         }"
     />
 </template>

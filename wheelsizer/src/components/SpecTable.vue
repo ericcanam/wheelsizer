@@ -21,12 +21,22 @@
     function stagToSquare(){ return props.oemstagger && !props.newstagger; }
 
     // calculated properties
-    const calcs = {
-        foh: props.singular ? null : tireHeight(props.ow.front.diameter, props.ot.front.ratio, props.ot.front.section),
-        roh: props.singular ? null : tireHeight(props.ow.rear.diameter, props.ot.rear.ratio, props.ot.rear.section),
-        fthd: tireHeight(props.nw.front.diameter, props.nt.front.ratio, props.nt.front.section),
-        rthd: tireHeight(props.nw.rear.diameter, props.nt.rear.ratio, props.nt.rear.section)
-    };
+    function foh() {return props.singular ? null : tireHeight(props.ow.front.diameter, props.ot.front.ratio, props.ot.front.section);}
+    function roh() {return props.singular ? null : tireHeight(props.ow.rear.diameter, props.ot.rear.ratio, props.ot.rear.section);}
+    function fthd() {return tireHeight(props.nw.front.diameter, props.nt.front.ratio, props.nt.front.section);}
+    function rthd() {return tireHeight(props.nw.rear.diameter, props.nt.rear.ratio, props.nt.rear.section);}
+
+    var hypotenuse, hypAngle;
+    // advanced stuff included
+    if(props.advanced){
+        // wheelbase
+        if(props.advanced.wheelbase && !props.singular){
+            // this is the distance between the wheel centers (front to rear projected side)
+            hypotenuse = getPythagLength(props.advanced.wheelbase, ((roh() - foh())/2));
+            hypAngle = getPythagAngle(((roh() - foh())/2), hypotenuse);
+        }
+
+    }
 </script>
 
 <template>
@@ -51,12 +61,12 @@
                 <td>Tire Height</td><td :colspan="1+(stagToSquare())">{{
                     singular || stagToSquare() ? 
                     niceNumber(tireHeight(nw.front.diameter, nt.front.ratio, nt.front.section))+' mm' : 
-                    getNewPctDiff(calcs.foh, tireHeight(nw.front.diameter, nt.front.ratio, nt.front.section))
+                    getNewPctDiff(foh(), tireHeight(nw.front.diameter, nt.front.ratio, nt.front.section))
                 }}</td>
                 <td v-if="newstagger">{{
                     singular ? 
                     niceNumber(tireHeight(nw.rear.diameter, nt.rear.ratio, nt.rear.section))+' mm' : 
-                    getNewPctDiff(calcs.roh, tireHeight(nw.rear.diameter, nt.rear.ratio, nt.rear.section))
+                    getNewPctDiff(roh(), tireHeight(nw.rear.diameter, nt.rear.ratio, nt.rear.section))
                 }}</td>
             </tr>
             <!-- Tire circumference -->
@@ -71,8 +81,8 @@
             </tr>
             <!-- Ride height -->
             <tr v-if="!singular">
-                <td>Ride Height Diff</td><td :colspan="1+(!anyStagger())">{{ fpm((calcs.fthd-calcs.foh)/2) + ' mm' }}</td>
-                <td v-if="anyStagger()">{{ fpm(((newstagger ? calcs.rthd : calcs.fthd)-calcs.roh)/2) + ' mm' }}</td>
+                <td>Ride Height Diff</td><td :colspan="1+(!anyStagger())">{{ fpm((fthd()-foh())/2) + ' mm' }}</td>
+                <td v-if="anyStagger()">{{ fpm(((newstagger ? rthd() : fthd())-roh())/2) + ' mm' }}</td>
             </tr>
         </template>
         <!-- wheel-related stuff -->
@@ -102,12 +112,12 @@
                 <!-- wheelbase -->
                 <tr>
                     <td>New Wheelbase</td>
-                    <td colspan="2">{{ niceNumber(getPythagLength(((newstagger ? calcs.rthd : calcs.fthd) - calcs.fthd)/2, hypotenuse,true)) }} mm</td>
+                    <td colspan="2">{{ niceNumber(getPythagLength(((newstagger ? rthd() : fthd()) - fthd())/2, hypotenuse,true)) }} mm</td>
                 </tr>
                 <!-- body pitch -->
                 <tr>
-                    <td>Pitch {{ calcs.rthd>calcs.fthd ? '(forward)' : (calcs.fthd>calcs.rthd ? '(rearward)' : '') }}</td>
-                    <td colspan="2">{{ niceNumber(getPythagAngle(((newstagger ? calcs.rthd : calcs.fthd) - calcs.fthd)/2, hypotenuse)-hypAngle) }} &deg;</td>
+                    <td>Pitch {{ rthd()>fthd() ? '(forward)' : (fthd()>rthd() ? '(rearward)' : '') }}</td>
+                    <td colspan="2">{{ niceNumber(getPythagAngle(((newstagger ? rthd() : fthd()) - fthd())/2, hypotenuse)-hypAngle) }} &deg;</td>
                 </tr>
             </template>
         </template>
