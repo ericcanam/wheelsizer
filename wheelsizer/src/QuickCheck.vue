@@ -5,7 +5,6 @@
     import OptionToggle from './components/OptionToggle.vue';
 
     import { allNumeric, isNumeric } from './pages/validator.js';
-    import { niceNumber, getWheels, getPokeDiff, getInsetDiff, tireHeight, getPctDiff, getPctDiffUnform } from './pages/calcs.js';
 
     import BoltPattern from './components/fields/BoltPattern.vue';
     import TireSize from './components/fields/TireSize.vue';
@@ -18,6 +17,9 @@
     import { drawCanvas, clearCanvas } from './qrcode.js';
 
     import QrcodeVue from 'qrcode.vue';
+    
+    import SpecTable from './components/SpecTable.vue';
+    import VisualPackage from './components/VisualPackage.vue';
 
 
     const QUERY = new URLSearchParams(window.location.search).get('c');
@@ -58,13 +60,20 @@
         }
     }*/
 
+    
     // URL / QR code stuff
     const urlcontainer = ref();
     const checklistcontainer = ref();
     const qrimg = ref();
     const qrlogo = ref();
     const qrprops = ref({value: '', renderAs: 'canvas', level: 'M'});
+    // change table stuff
+    const spectable = ref();
+    // visualizer stuff
+    const visualpackage = ref();
 
+
+    // user presses The Button
     function formsubmit(e){
         e.preventDefault();
         let formdata = {};
@@ -114,171 +123,10 @@
             drawCanvas(url, oldfront, qrimg.value, qrprops.value, qrlogo.value);
         }
         else{
+            // build change table
+
             // check user's OEM specs against setup from the URL
-
-            // wheels
-            if(QUERY_SETUP.wheels){
-                // check bolt pattern
-                checklistcontainer.value.addRow(
-                    "Bolt Pattern ("+QUERY_SETUP.wheels.holes+"&times;"+QUERY_SETUP.wheels.pcd+")",
-                    [], (bpEqual(oldfront, QUERY_SETUP) ? [] : [
-                        "The bolt pattern does not match your vehicle's."
-                ]));
-
-                // check centre bore
-                checklistcontainer.value.addRow("Centre Bore ("+QUERY_SETUP.wheels.bore+" mm)",
-                    // centre bore too small, warn and advise hubcentric rings
-                    (oldfront.wheels.bore < QUERY_SETUP.wheels.bore ?
-                        ["Your vehicle's centre bore is smaller than on these wheels. Some vehicles may require hub-centric rings."] : []),
-                    // centre bore is too big, error
-                    (oldfront.wheels.bore > QUERY_SETUP.wheels.bore ?
-                        ["Your vehicle's centre bore is too large to mount these wheels."] : [])
-                );
-                
-                // check wheel diameter
-                checklistcontainer.value.addRow("Wheel Diameter ("+QUERY_SETUP.wheels.diameter+"&quot;)",
-                    // brake interference
-                    (oldfront.wheels.diameter > QUERY_SETUP.wheels.diameter ?
-                        ["Smaller diameter wheels may interfere with your vehicle's brakes."] : []),
-                    // need tires as well
-                    (!QUERY_SETUP.tires && oldfront.wheels.diameter!=QUERY_SETUP.wheels.diameter ?
-                        ["This setup will require new tires as well."] : [])
-                );
-                
-                // check offset
-                let offset_diff = Math.abs(oldfront.wheels.offset-QUERY_SETUP.wheels.offset);
-                let offset_direction = oldfront.wheels.offset<QUERY_SETUP.wheels.offset ? "in" : "out";
-                checklistcontainer.value.addRow("Wheel Offset ("+QUERY_SETUP.wheels.offset+" mm)",
-                    // not exact offset match
-                    (offset_diff ?
-                        ["The offset moves the contact patch centres "+offset_diff+" mm further "+offset_direction+"."] : [])
-                );
-
-                // check inset of wheel rim
-                let inset_diff = getInsetDiff(QUERY_SETUP.wheels.width, QUERY_SETUP.wheels.offset, oldfront.wheels.width, oldfront.wheels.offset);
-                let inset_direction = inset_diff>0 ? "in" : "out";
-                checklistcontainer.value.addRow("Wheel Inset ("+niceNumber(inset_diff)+" mm)",
-                    // large inset
-                    (inset_diff>5 ?
-                        ["This may cause interference between the tire and suspension."] : []),
-                    [],
-                    (inset_diff ?
-                        ["The offset and width will put the inner wheel rim "+niceNumber(Math.abs(inset_diff))+" mm further "+inset_direction+"."] : [])
-                );
-
-                // check poke of wheel rim
-                let poke_diff = getPokeDiff(QUERY_SETUP.wheels.width, QUERY_SETUP.wheels.offset, oldfront.wheels.width, oldfront.wheels.offset);
-                let poke_direction = poke_diff<0 ? "in" : "out";
-                checklistcontainer.value.addRow("Wheel Poke ("+niceNumber(poke_diff)+" mm)",
-                    // large wheel poke
-                    (poke_diff>5 ?
-                        ["This may cause interference between the tire and wheel arch or fender."] : []),
-                    [],
-                    (poke_diff ?
-                        ["The offset and width will put the wheel face/outer wheel rim "+niceNumber(Math.abs(poke_diff))+" mm further "+inset_direction+"."] : [])
-                );
-            }
-
-            // tires
-            if(QUERY_SETUP.tires){
-                // check wheel diameter
-                if(!QUERY_SETUP.wheels){ // only do diameter if wheels aren't present, otherwise this will have already been checked.
-                    checklistcontainer.value.addRow("Wheel Diameter ("+QUERY_SETUP.tires.diameter+"&quot;)",
-                        // brake interference
-                        (oldfront.tires.diameter > QUERY_SETUP.tires.diameter ?
-                            ["Smaller diameter wheels may interfere with your vehicle's brakes."] : []),
-                        // need wheels as well
-                        (!QUERY_SETUP.wheels && oldfront.tires.diameter!=QUERY_SETUP.tires.diameter ?
-                            ["This setup will require new wheels as well."] : [])
-                    );
-                }
-
-                
-                // check tire height
-                let old_height = tireHeight(oldfront.tires.diameter, oldfront.tires.ratio, oldfront.tires.section);
-                let new_height = tireHeight(QUERY_SETUP.tires.diameter, QUERY_SETUP.tires.ratio, QUERY_SETUP.tires.section);
-                let pct_diff_form = getPctDiff(old_height, new_height);
-                let pct_diff = getPctDiffUnform(old_height, new_height);
-                let diff_direction = (pct_diff>0 ? "taller" : "shorter");
-                let tire_message = "These tires are "+pct_diff_form+" "+diff_direction+" than your vehicle's.";
-                checklistcontainer.value.addRow("Tire Height ("+pct_diff_form+")",
-                    // tire height different
-                    (Math.abs(pct_diff)>2 ?
-                        [tire_message] : []),
-                    [],
-                    (Math.abs(pct_diff)<=2 && pct_diff>0.1 ?
-                        [tire_message] : []),
-                );
-
-                // check tire section
-                let section_diff = Math.abs(QUERY_SETUP.tires.section-oldfront.tires.section);
-                let section_diff_form = niceNumber(section_diff);
-                let section_wider = QUERY_SETUP.tires.section>oldfront.tires.section;
-                checklistcontainer.value.addRow("Tire Section ("+QUERY_SETUP.tires.section+" mm)",
-                    // tire section different
-                    (section_diff ?
-                        // wider or narrower
-                        ["These tires are "+section_diff_form+" mm "+(section_wider ? "wider" : "narrower")+" than your vehicle's. "+
-                         (section_wider ?
-                            "This may cause rubbing." : // wider
-                            "This may lead to a narrower contact patch." // narrower
-                        )] : []) // the same
-                );
-            }
-
-            // wheels AND tires
-            if(QUERY_SETUP.wheels && QUERY_SETUP.tires){
-                // check fitment of tires on wheels
-                let legal_widths = getWheels(QUERY_SETUP.tires.section, QUERY_SETUP.tires.ratio);
-                checklistcontainer.value.addRow("Wheel Width ("+QUERY_SETUP.wheels.width+"&quot;)",
-                    [],
-                    (QUERY_SETUP.wheels.width<legal_widths[0] ?
-                        // wheels are too narrow
-                        ["These wheels are too narrow for the specified tires."] : (
-                            (QUERY_SETUP.wheels.width>legal_widths[1] ?
-                                // wheels are too narrow
-                                ["These wheels are too wide for the specified tires."] : []
-                            )
-                        )
-                    )
-                );
-            }
-
-            // query is wheels BUT NOT tires
-            if(QUERY_SETUP.wheels && !QUERY_SETUP.tires){
-                // check fitment of tires on wheels
-                let legal_widths = getWheels(oldfront.tires.section, oldfront.tires.ratio);
-                checklistcontainer.value.addRow("Wheel Width ("+QUERY_SETUP.wheels.width+"&quot;)",
-                    [],
-                    (QUERY_SETUP.wheels.width<legal_widths[0] ?
-                        // wheels are too narrow
-                        ["These wheels are too narrow for your OEM tires."] : (
-                            (QUERY_SETUP.wheels.width>legal_widths[1] ?
-                                // wheels are too narrow
-                                ["These wheels are too wide for your OEM tires."] : []
-                            )
-                        )
-                    )
-                );
-            }
-
-            // query is tires BUT NOT wheels
-            if(!QUERY_SETUP.wheels && QUERY_SETUP.tires){
-                // check fitment of tires on wheels
-                let legal_widths = getWheels(QUERY_SETUP.tires.section, QUERY_SETUP.tires.ratio);
-                checklistcontainer.value.addRow("Wheel Width ("+oldfront.wheels.width+"&quot;)",
-                    [],
-                    (oldfront.wheels.width<legal_widths[0] ?
-                        // wheels are too narrow
-                        ["Your OEM wheels are too narrow for these tires."] : (
-                            (oldfront.wheels.width>legal_widths[1] ?
-                                // wheels are too narrow
-                                ["Your OEM wheels are too wide for these tires."] : []
-                            )
-                        )
-                    )
-                );
-            }
+            checklistcontainer.value.checkSetup(oldfront, QUERY_SETUP);
         }
     }
 
@@ -346,12 +194,6 @@
 
     function copyurl(){
         navigator.clipboard.writeText(urlcontainer.value.href);
-    }
-
-    // compare two bolt patterns
-    function bpEqual(wheel1, wheel2){
-        return wheel1.wheels.holes==wheel2.wheels.holes &&
-               wheel1.wheels.pcd==wheel2.wheels.pcd;
     }
 
 	const appv = APP_VERSION;
@@ -502,11 +344,10 @@
             </div></div>
             <!--<div class="row" v-if="!CREATE_MODE"><div class="sidebyside">
                 <h2>Visual Reference</h2>
-                <p>
-                    
-                </p>
+                <p ref="visualpackage"></p>
             </div><div class="sidebyside">
-                
+                <h2>Change Table</h2>
+                <p ref="spectable"></p>
             </div></div>-->
 		</form>
 	</main>
