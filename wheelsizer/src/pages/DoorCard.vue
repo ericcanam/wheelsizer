@@ -16,7 +16,7 @@
     });
 </script>
 
-<template>
+<template><div class="row">
     <h2>{{ props.ad.cartitle }}</h2>
     <p>Here's some information about the car's OEM setup that may be useful to you.</p>
     <p>
@@ -52,4 +52,4 @@
         <!-- <button type="button" class="go double">Save "{{ props.ad.cartitle }}"<img class="right" src="/assets/download.svg" /></button> -->
     </div>
 
-</template>
+</div></template>

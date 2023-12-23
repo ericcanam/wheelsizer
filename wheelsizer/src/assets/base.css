@@ -50,3 +50,13 @@ h1, h2, h3, h4, h5, h6 {
 h1 { font-size: calc(2.5 * var(--font-size)); }
 h2 { font-size: calc(1.6 * var(--font-size)); }
 h3 { font-size: calc(1.2 * var(--font-size)); }
+
+div.row {
+	animation: fade-in 0.75s;
+	animation-timing-function: ease-out;
+}
+
+@keyframes fade-in {
+	0%		{ opacity: 0.25; }
+	100%	{ opacity: 1; }
+  }

@@ -38,7 +38,7 @@
     });
 </script>
 
-<template>
+<template><div class="row">
 
     <h2>New Setup</h2>
     <!-- stagger/square option toggle -->
@@ -70,4 +70,4 @@
         and may not be legal in all jurisdictions. Consult a mechanic if you're unsure.
     </InfoBox>
 
-</template>
+</div></template>

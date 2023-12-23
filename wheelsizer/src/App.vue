@@ -127,9 +127,10 @@
 		</div>-->
 		<form id="sform" @submit="formnext" novalidate ref="formRef">
 			<span ref="ariaAlertRef" role="alert"></span>
-			<div class="row">
-				<component :is="pages[cid-1].comp" ref="childComponentRef" :ad="appdata" />
-			</div>
+			
+			<!-- App "Page" rendered here: -->
+			<component :is="pages[cid-1].comp" ref="childComponentRef" :ad="appdata" />
+
 			<div class="row">
 				<button @click="formback" ref="backRef" v-if="cid>1" type="button" class="single">
 					<!--<img class="left" src="/assets/left_chevron.svg" />--><span>Back</span>

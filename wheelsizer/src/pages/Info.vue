@@ -25,7 +25,7 @@
 
 </script>
 
-<template>
+<template><div class="row">
 
     <h2>Give your car a name:</h2>
     <TextBar inputname="cartitle" :ref="fields.cartitle" :length=20
@@ -50,4 +50,4 @@
     <!-- Spare Tire -->
     <!-- <p>Do you want to consider the spare tire?</p>
     <OptionToggle inputname="spare" :options="['Yes', 'No']" defaultoption="No" /> -->
-</template>
+</div></template>
