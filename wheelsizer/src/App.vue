@@ -10,6 +10,16 @@
 	import New from './pages/New.vue';
 	import Calculator from './pages/Calculator.vue';
 
+	// preload images
+	import { preload } from './preload.js';
+	preload(
+		// chevrons
+		'/assets/down_chevron.svg',
+		'/assets/up_chevron.svg',
+		'/assets/left_chevron.svg',
+		'/assets/right_chevron.svg'
+	);
+
 	const cid = ref(1);
 
     function gs(id, cu){
