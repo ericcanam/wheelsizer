@@ -350,6 +350,7 @@ l -0.25 -2 l 0.25 2 l 4 -0.5 m 6 4 v 12 h 10 a 4 4 90 0 0 4 -4 v -4 a 4 4 90 0 0
         <line :x1="drawingwidth/2" :x2="drawingwidth/2" :y1=centerliney1 :y2=centerliney2
             style="stroke:var(--color-accent1);"
         />
+        <!-- old tire patch -->
         <line :x1="oldTirePatchX1Px()" :x2="oldTirePatchX2Px()" :y1=centerliney2 :y2=centerliney2
             style="stroke:var(--color-tire-patch);"
         />
@@ -406,6 +407,10 @@ l -0.25 -2 l 0.25 2 l 4 -0.5 m 6 4 v 12 h 10 a 4 4 90 0 0 4 -4 v -4 a 4 4 90 0 0
         stroke-width: 1px;
         stroke-dasharray: 2px 2px;
         stroke-linejoin: bevel;
+    }
+
+    .wtdrawing path, .wtdrawing line, .wtdrawing rect {
+        transition: all 0.2s linear;
     }
 
     @media (prefers-color-scheme: light) {
