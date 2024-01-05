@@ -6,12 +6,12 @@
 
 	/* modify nav/progress indicator */
 	div.step {
-		width: 15vmin;
-        height: 15vmin;
+		width: min(15vmin, 1in);
+        height: min(15vmin, 1in);
 	}
 	div.iconcircle {
-		width: 12vmin;
-		height: 12vmin;
+		width: min(12vmin, 0.75in);
+		height: min(12vmin, 0.75in);
 		border-radius: 50%;
 		/*border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;*/
@@ -30,5 +30,16 @@
 	}
 	div.sidebyside:nth-child(even) {
 		margin-left: 0pt;
+	}
+
+	/* Homepage buttons for tools */
+	a.menuitem {
+		min-width: calc(50% - 16pt);
+		max-width: calc(100% - 16pt);
+		width: max-content;
+	}
+	a.menuitem.double {
+		min-width: calc(50% - 16pt);
+		max-width: calc(100% - 16pt);
 	}
 }

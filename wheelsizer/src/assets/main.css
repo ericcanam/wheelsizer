@@ -112,6 +112,7 @@ button span {
 	display: inline-block;
 }
 
+
 /* ERROR stuff (red) */
 .errorlight {
 	outline: 2pt solid var(--color-accent5);
@@ -193,7 +194,7 @@ button.single{
 }
 button.double{
 	width: calc(100% - 24pt);
-	max-width: calc(5in - 24pt);
+	max-width: 5in;
 }
 button.bigtext{
 	font-size: calc(1.2 * var(--font-size));
@@ -272,6 +273,9 @@ h2 div.iconcircle{
 h2 span{
 	vertical-align: middle;
 }
+button h2 {
+	margin: 0px;
+}
 
 div.steptitle {
 	border-radius: 6pt;
@@ -283,4 +287,31 @@ div.steptitle.overarch{
 
 pre {
 	font-family: inherit;
+}
+
+/* homepage menu */
+div.flexmenu {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: stretch;
+	gap: 12pt;
+}
+
+/* Homepage buttons for tools */
+a.menuitem {
+	outline: 2pt solid var(--color-accent3);
+	background-color: var(--color-backshade);
+	border-radius: 6pt;
+	height: 100%;
+	color: inherit;
+	padding: 6pt;
+	width: calc(100% - 16pt);
+	max-width: calc(100% / 3 - 20pt);
+}
+a.menuitem.double {
+	max-width: calc(2 * 100% / 3 - 16pt);
+}
+a.menuitem.suggest {
+	outline: 2pt solid var(--color-accent2);
 }

@@ -21,7 +21,7 @@
     }
 
     var newstagger = ref(props.ad.nstagger || (oemStagger() ? 'Staggered' : 'Square'));
-    var newconfig = ref(props.ad.nconfig || 'Tires');
+    var newconfig = ref(props.ad.nconfig || 'Everything');
 
     function stagToSquare(){
         return props.ad.staggered=='Yes' && newstagger.value=='Square' && props.ad.of_diameter!=props.ad.or_diameter;
