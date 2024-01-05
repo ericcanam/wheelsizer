@@ -38,10 +38,12 @@
         <input type="hidden" :name=inpname ref="inputfield" v-model="toggled" />
         <h2><button @click="toggle" type="button" :aria-label="'Click to expand '+prompt"><span>{{ 
             prompt
-        }}</span><img class="right" :src="'/assets/'+(isToggled() ? 'up' : 'down')+'_chevron.svg'" /></button></h2>
+        }}<!--<div class="headingsub">Click to {{
+            isToggled() ? 'Collapse' : 'Expand'
+        }}</div>--></span><img class="right" :src="'/assets/'+(isToggled() ? 'up' : 'down')+'_chevron.svg'" /></button></h2>
     </p>
-    <p>
-        <div :style="'display: '+(isToggled() ? 'default' : 'none')+';'">
+    <p :class="'collapsible' + (isToggled() ? ' expanded' : '')">
+        <div style="overflow: hidden;">
             <slot />
         </div>
     </p>
@@ -56,4 +58,18 @@
     h2 button img {
         height: 12pt;
     }
+
+    /* https://keithjgrant.com/posts/2023/04/transitioning-to-height-auto/ */
+    .collapsible {
+        display: grid;
+        grid-template-rows: 0fr;
+        visibility: collapse;
+        transition: grid-template-rows 0.5s ease-out, visibility 0s linear 0.5s;
+    }
+    .collapsible.expanded {
+        grid-template-rows: 1fr;
+        visibility: initial;
+        transition: grid-template-rows 0.5s ease-out, visibility 0s linear;
+    }
+    
 </style>

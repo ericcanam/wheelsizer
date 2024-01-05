@@ -10,6 +10,16 @@
 	import New from './pages/New.vue';
 	import Calculator from './pages/Calculator.vue';
 
+	// preload images
+	import { preload } from './preload.js';
+	preload(
+		// chevrons
+		'/assets/down_chevron.svg',
+		'/assets/up_chevron.svg',
+		'/assets/left_chevron.svg',
+		'/assets/right_chevron.svg'
+	);
+
 	const cid = ref(1);
 
     function gs(id, cu){
@@ -127,9 +137,10 @@
 		</div>-->
 		<form id="sform" @submit="formnext" novalidate ref="formRef">
 			<span ref="ariaAlertRef" role="alert"></span>
-			<div class="row">
-				<component :is="pages[cid-1].comp" ref="childComponentRef" :ad="appdata" />
-			</div>
+			
+			<!-- App "Page" rendered here: -->
+			<component :is="pages[cid-1].comp" ref="childComponentRef" :ad="appdata" />
+
 			<div class="row">
 				<button @click="formback" ref="backRef" v-if="cid>1" type="button" class="single">
 					<!--<img class="left" src="/assets/left_chevron.svg" />--><span>Back</span>

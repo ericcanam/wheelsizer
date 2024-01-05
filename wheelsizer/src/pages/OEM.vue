@@ -81,7 +81,7 @@
     });
 </script>
 
-<template>
+<template><div class="row">
 
     <h2>Tell us about the OEM wheels.</h2>
     
@@ -130,4 +130,4 @@
         <p>What is your car's wheelbase in millimeters?</p>
         <p><TextBar type="number" :length=6 inputname="o_wheelbase" errName="Vehicle Wheelbase" :ref="optionalFields.owb" placeholder="Wheelbase" /></p>
     </Collapsible>
-</template>
+</div></template>

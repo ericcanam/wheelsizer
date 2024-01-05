@@ -20,6 +20,15 @@
     
     import SpecTable from './components/SpecTable.vue';
     import VisualPackage from './components/VisualPackage.vue';
+    
+    // preload images
+	import { preload } from './preload.js';
+	preload(
+		// chevrons
+		'/assets/circle-checkmark.svg',
+		'/assets/circle-warning.svg',
+		'/assets/circle-error.svg'
+	);
 
 
     const QUERY = new URLSearchParams(window.location.search).get('c');

@@ -21,7 +21,7 @@
     }
 
     var newstagger = ref(props.ad.nstagger || (oemStagger() ? 'Staggered' : 'Square'));
-    var newconfig = ref(props.ad.nconfig || 'Tires');
+    var newconfig = ref(props.ad.nconfig || 'Everything');
 
     function stagToSquare(){
         return props.ad.staggered=='Yes' && newstagger.value=='Square' && props.ad.of_diameter!=props.ad.or_diameter;
@@ -38,7 +38,7 @@
     });
 </script>
 
-<template>
+<template><div class="row">
 
     <h2>New Setup</h2>
     <!-- stagger/square option toggle -->
@@ -70,4 +70,4 @@
         and may not be legal in all jurisdictions. Consult a mechanic if you're unsure.
     </InfoBox>
 
-</template>
+</div></template>

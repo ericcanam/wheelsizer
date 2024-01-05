@@ -132,7 +132,7 @@
     });
 </script>
 
-<template>
+<template><div class="row">
     <!-- FOR DEBUG<br />
     FRONT: {{ fnts }}/{{ fntr }}R{{ fnwd }}, {{ fnwd }}&times;{{ fnw }} ET{{ fno }}<br />
     REAR: {{ rnts }}/{{ rntr }}R{{ rnwd }}, {{ rnwd }}&times;{{ rnw }} ET{{ rno }}-->
@@ -387,4 +387,4 @@
             wheelbase: props.ad.o_wheelbase
         }"
     />
-</template>
+</div></template>
