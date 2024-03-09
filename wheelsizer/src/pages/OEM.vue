@@ -10,6 +10,7 @@
     import Collapsible from '../components/Collapsible.vue';
 
     import { optional, allNumeric, isNumeric } from './validator.js';
+    import BoltPattern from '../components/fields/BoltPattern.vue';
 
     var props = defineProps(['ad']);
     
@@ -25,7 +26,11 @@
         foff: ref(),
         roff: ref(),
         fts: ref(),
-        rts: ref()
+        rts: ref(),
+        fbp: ref(),
+        rbp: ref(),
+        fcb: ref(),
+        rcb: ref()
     }
     const optionalFields = {
         // advanced options
@@ -44,6 +49,10 @@
         // tire size
         let ftsCheck = allNumeric(fields.fts);
         let rtsCheck = (staggered() ? allNumeric(fields.rts) : true);
+
+        // bolt pattern
+        let fbpCheck = allNumeric(fields.fbp);
+        let rbpCheck = (staggered() ? allNumeric(fields.rbp) : true);
 
         // tire/wheel diameter match
         let fwm = true; // front
@@ -69,7 +78,7 @@
             owb = optional(optionalFields.owb, isNumeric);
         }
 
-        return fwsCheck && rwsCheck && foffCheck && roffCheck && ftsCheck && rtsCheck && fwm && rwm
+        return fwsCheck && rwsCheck && foffCheck && roffCheck && ftsCheck && rtsCheck && fbpCheck && rbpCheck && fwm && rwm
             // optional stuff
             && owb;
     }
@@ -108,6 +117,28 @@
     </p>
 
     <InfoBox>Wheel size and offset can usually be found stamped on the spokes of your wheels.</InfoBox>
+    
+    <!-- Bolt pattern -->
+    <p>What bolt pattern is used to fasten the wheels to the hubs?</p>
+    <BoltPattern inprefix="of" :acprefix="'OEM' +(staggered() ? 'Front' : '')" :ref="fields.fbp">
+        <span class="inputlabel" v-if="staggered()">Front:</span>
+    </BoltPattern>
+    <p v-if="staggered()">
+        <BoltPattern inprefix="or" acprefix="OEM Rear" :ref="fields.rbp">
+            <span class="inputlabel">Rear:</span>
+        </BoltPattern>
+    </p>
+    
+    <!-- Centre Bore -->
+    <p>How big is the Centre bore of the wheels, in millimeters?</p>
+    <TextBar type="number" :acprefix="'OEM' +(staggered() ? 'Front' : '')" min="0" :length=6 inputname="of_cb" errName="Wheel Centre bore (millimeters)" :ref="fields.fcb" placeholder="Centre Bore">
+        <span class="inputlabel" v-if="staggered()">Front:</span>
+    </TextBar>
+    <p v-if="staggered()">
+        <TextBar type="number" acprefix="OEM Rear" min="0" :length=6 inputname="or_cb" errName="Wheel Centre bore (millimeters)" :ref="fields.rcb" placeholder="Centre Bore">
+            <span class="inputlabel">Rear:</span>
+        </TextBar>
+    </p>
 
     <!-- Tire size -->
     <h2>Tell us about the OEM tires.</h2>

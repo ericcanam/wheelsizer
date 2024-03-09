@@ -1,4 +1,5 @@
 const WHEELTIRE_SEP = ":";
+const STAGGER_SEP = "-";
 
 const MIN_WHEEL_WIDTH = 2.5;
 const MIN_WHEEL_DIAMETER = 5;
@@ -9,13 +10,14 @@ const MIN_TIRE_SECTION = 95;
 From input, generate a code to tack onto a URL
 */
 function getCode(properties_f, properties_r=null){
-    return compileCode(properties_f);
+    return compileCode(properties_f) + (properties_r!=null ? STAGGER_SEP+compileCode(properties_r) : "");
 }
 
 /*
 Generate the code from a single axle
 */
 function compileCode(properties){
+    console.log(properties);
     let code = "";
     // wheel stuff
     if(properties.wheels != null){
@@ -128,7 +130,7 @@ function fromANhalf(n){
 From a code, generate vehicle properties
 */
 function readCode(code){
-    const splitcodes = code.split(":");
+    const splitcodes = code.split(WHEELTIRE_SEP);
     // wheel is not omitted, and diameter coding character has been left out of the tire
     if(splitcodes[0] && splitcodes[1]){
         splitcodes[1] = splitcodes[1].substr(0,2)+splitcodes[0][3];

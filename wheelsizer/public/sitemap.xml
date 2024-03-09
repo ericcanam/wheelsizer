@@ -24,4 +24,9 @@
         <lastmod>2023-12-17</lastmod>
         <priority>0.60</priority>
     </url>
+    <url>
+        <loc>https://www.wheelhub.io/manager.html</loc>
+        <lastmod>2023-12-17</lastmod>
+        <priority>0.40</priority>
+    </url>
 </urlset>

@@ -29,7 +29,8 @@ export default defineConfig({
         calculator: resolve(__dirname, 'calculator.html'),
         error: resolve(__dirname, 'error.html'),
         about: resolve(__dirname, 'about.html'),
-        check: resolve(__dirname, 'check.html')
+        check: resolve(__dirname, 'check.html'),
+        manager: resolve(__dirname, 'manager.html')
       }
     }
   }
