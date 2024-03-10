@@ -1,7 +1,7 @@
 <script setup>
     import { ref } from 'vue';
     
-    import { getCarList, deleteCar } from '../cookies.js';
+    import { UNSAVED_STRING, writeCar, getCarList, deleteCar, getAppData } from '../cookies.js';
 
     const props = defineProps({
         ad:{
@@ -18,30 +18,51 @@
         return Object.keys(cars.value).length;
     }
 
+    function showList(){
+        let unsaved = (props.ad!=undefined ? props.ad.cartitle : UNSAVED_STRING) == UNSAVED_STRING;
+        console.log(unsaved);
+        return carCount() && unsaved;
+    }
+
+    function saveCar(name, ad){
+        writeCar(name, ad);
+        refresh();
+    }
+
+
     defineExpose({
-        carCount
+        carCount,
+        showList,
+        saveCar
     });
+    defineEmits(['update']);
 
     function refresh(){
         cars.value = getCarList();
     }
 </script>
 
-<template>
-    <slot v-if="carCount()" />
-
-    <table v-if="carCount()">
+<template><div class="row">
+    <table v-if="showList()">
         <tr>
-            <th colspan="2">Vehicle</th>
+            <th>Vehicle</th>
             <th>Tires</th>
             <th>Wheels</th>
             <th v-if="trash"></th>
         </tr>
         <tr v-for="(info, key, index) in cars">
-            <td>{{ index+1 }}</td>
-            <td>{{ key }}</td>
-            <td>{{ info.tires.section }}/{{ info.tires.ratio }}R{{ info.tires.diameter }}</td>
-            <td>{{ info.wheels.diameter }}&times;{{ info.wheels.width }} ET{{ info.wheels.offset }}</td>
+            <!-- Car title -->
+            <td class="button" @click="$emit('update', getAppData(key, ad, info));">
+                {{ key }}
+            </td>
+            <!-- Tire Size -->
+            <td class="button" @click="$emit('update', getAppData(key, ad, info));">
+                {{ info.of_section }}/{{ info.of_ratio }}R{{ info.of_diam }}
+            </td>
+            <!-- Wheel size -->
+            <td class="button" @click="$emit('update', getAppData(key, ad, info));">
+                {{ info.of_diameter }}&times;{{ info.of_width }} ET{{ info.of_offset }}
+            </td>
 
             <!-- button options -->
             <td class="button" v-if="trash" @click="deleteCar(key);refresh();">
@@ -49,7 +70,7 @@
             </td>
         </tr>
     </table>
-</template>
+</div></template>
 
 <style>
     td.button {

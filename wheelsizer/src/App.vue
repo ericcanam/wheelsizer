@@ -1,5 +1,6 @@
 <script setup>
 	import { ref, watch } from 'vue';
+	import { UNSAVED_STRING } from './cookies.js';
 
     import Step from './components/Step.vue';
 
@@ -9,6 +10,8 @@
 	import DoorCard from './pages/DoorCard.vue';
 	import New from './pages/New.vue';
 	import Calculator from './pages/Calculator.vue';
+
+	import SaveManager from './components/SaveManager.vue';
 
 	// preload images
 	import { preload } from './preload.js';
@@ -23,7 +26,10 @@
 	const cid = ref(1);
 
     function gs(id, cu){
-        return (cu>id ? "complete" : (cu==id ? "current" : "upcoming"));
+		if(cu==id){
+			return "current";
+		}
+        return (complete_steps.value>=id ? "complete" : "upcoming");
     }
 
     const pages = [
@@ -33,9 +39,11 @@
         {comp: New, title: "New Setup", svg: "wrench.svg"},
         {comp: Calculator, title: "Calculator", svg: "calculator.svg"}
     ];
+	const complete_steps = ref(0);
 
 	
 	var appdata = ref({
+		cartitle: ''
 	});
 
 	const childComponentRef = ref();
@@ -69,6 +77,7 @@
 
 		if(childComponentRef.value.validate()){
 			saveform();
+			complete_steps.value = Math.max(cid.value, complete_steps.value);
 			cid.value++;
 			window.scrollTo(0, 0);
 		}else{
@@ -114,6 +123,19 @@
 		fill();
 	});
 
+	
+    const save_manager = ref();
+    function showSaveManagerText(){
+        // show form if no saved cars, if save_manager hasn't loaded yet, OR if it's overridden
+        return save_manager.value==undefined || save_manager.value.showList();
+    }
+	function updateAppData(ad){
+		appdata.value = ad;
+		complete_steps.value = 3;
+		cid.value = 4;
+	}
+
+
 	const appv = APP_VERSION;
 	const builddate = BUILD_DATE;
 </script>
@@ -125,21 +147,38 @@
 		</div>
 		<div class="row">
 			<div v-for="(page, n) in pages" class="fall">
-				<Step :title="page.title" :svg="page.svg" :status="gs(n+1, cid)" />
+				<Step :title="page.title" :svg="page.svg"
+					:status="gs(n+1, cid)"
+					:style="complete_steps>=n ? 'cursor:pointer;': ''"
+					@click="{cid = Math.min(complete_steps, n)+1;}"
+				/>
 				<img v-if="n+1<pages.length" alt="&gt;" class="svgarrow h_arrow topnavarrow" src="/assets/arrow_right.svg" />
 			</div>
 			<!--<div class="steptitle current overarch">{{ pages[cid-1].title }}</div>-->
 		</div>
 	</header>
 	<main>
-		<!--<div class="row">
-			<AdBox />
-		</div>-->
+		<div class="row">
+			<!-- Save manager (IF there are saved cars) -->
+			<h2 v-if="showSaveManagerText()">Choose a saved vehicle:</h2>
+			<SaveManager :ad="appdata" ref="save_manager" @update="updateAppData" />
+
+			<p v-if="showSaveManagerText()">Or use the calculator for another car:</p>
+		</div>
+
 		<form id="sform" @submit="formnext" novalidate ref="formRef">
 			<span ref="ariaAlertRef" role="alert"></span>
 			
 			<!-- App "Page" rendered here: -->
 			<component :is="pages[cid-1].comp" ref="childComponentRef" :ad="appdata" />
+
+			<!-- "Save car" button -->
+			<div class="row" v-if="cid==3">
+				<button @click="save_manager.saveCar(
+					appdata.cartitle,
+					appdata
+				);" type="button" class="go double">Save "{{ appdata.cartitle }}"<img class="right" src="/assets/download.svg" /></button>
+			</div>
 
 			<div class="row">
 				<button @click="formback" ref="backRef" v-if="cid>1" type="button" class="single">
