@@ -106,7 +106,7 @@ function getAppData(name, ad, car_list=null){
         car_list = decompileCar(name);
     }
 
-    return {...ad.value, ...car_list};
+    return {...ad.value, ...car_list, ...{savename: name}};
 }
 
 export { UNSAVED_STRING, writeCar, deleteCar, getCarList, getAppData };

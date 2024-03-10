@@ -43,7 +43,7 @@
 
 	
 	var appdata = ref({
-		cartitle: ''
+		savename: UNSAVED_STRING
 	});
 
 	const childComponentRef = ref();
@@ -98,6 +98,26 @@
 		}
 	}
 
+	/* Jump to (1-indexed) page from argument. */
+	function formjump(page){
+		// Invalid page jump (too far forward based on progress) or same-page
+		if(page==cid.value || page>complete_steps.value+1){
+			return;
+		}
+		/* If this is a page that's already previously been completed,
+		   then the form logic depends on this page, so VALIDATE it */
+		if(cid.value <= complete_steps.value){
+			clearErrors();
+			if(!childComponentRef.value.validate()){
+				return;
+			}
+		}
+
+		saveform();
+		window.scrollTo(0, 0);
+		cid.value = page
+	}
+	
 	function saveform(){
 		let form = formRef.value;
 		let formdata = new FormData(form);
@@ -150,7 +170,7 @@
 				<Step :title="page.title" :svg="page.svg"
 					:status="gs(n+1, cid)"
 					:style="complete_steps>=n ? 'cursor:pointer;': ''"
-					@click="{cid = Math.min(complete_steps, n)+1;}"
+					@click="formjump(n+1)"
 				/>
 				<img v-if="n+1<pages.length" alt="&gt;" class="svgarrow h_arrow topnavarrow" src="/assets/arrow_right.svg" />
 			</div>

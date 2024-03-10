@@ -18,10 +18,15 @@
         return Object.keys(cars.value).length;
     }
 
+    function isUnsaved(){
+        return (props.ad!=undefined ? props.ad.savename : UNSAVED_STRING) == UNSAVED_STRING;
+    }
+
     function showList(){
-        let unsaved = (props.ad!=undefined ? props.ad.cartitle : UNSAVED_STRING) == UNSAVED_STRING;
-        console.log(unsaved);
-        return carCount() && unsaved;
+        if(!(carCount() && isUnsaved())){
+            return false;
+        }
+        return props.ad==undefined || props.ad.cartitle==undefined;
     }
 
     function saveCar(name, ad){
@@ -70,6 +75,9 @@
             </td>
         </tr>
     </table>
+    <div v-else>
+        
+    </div>
 </div></template>
 
 <style>
