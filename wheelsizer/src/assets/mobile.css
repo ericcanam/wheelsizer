@@ -3,20 +3,32 @@
     .topnavarrow{
         display:none;
     }
+	div.row.topnav{
+		position: relative;
+		right: calc(min(6vmin, 0.375in) + min(2.75vw, 18pt));
+	}
 
 	/* modify nav/progress indicator */
 	div.step {
-		width: min(15vmin, 1in);
-        height: min(15vmin, 1in);
+		width: fit-content;
+        height: fit-content;
+		margin-left: min(12pt, 1.5vw);
+		margin-left: min(12pt, 1.5vw);
+	}
+	div.fall.menubutton{
+		max-width: calc(min(12vmin, 0.75in) + 2 * min(12pt, 1.5vw));
+		margin-left: min(4.5vw, 36pt);
 	}
 	div.iconcircle {
 		width: min(12vmin, 0.75in);
 		height: min(12vmin, 0.75in);
-		border-radius: 50%;
 		/*border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;*/
 		margin: auto;
 		margin-bottom: 0;
+	}
+	div.menu{
+		max-width: calc(min(calc(100vw - 48pt), calc(5 * (min(12vmin, 0.75in) + min(12pt, 1.5vw)) + min(4.5vw, 36pt))) - 12pt);
 	}
 	div.steptitle{
 		display: none;

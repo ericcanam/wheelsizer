@@ -25,7 +25,7 @@
         },
         nolegend:{
             type: Boolean,
-            default: false
+            default: true
         }
     });
 
@@ -372,20 +372,22 @@ l -0.25 -2 l 0.25 2 l 4 -0.5 m 6 4 v 12 h 10 a 4 4 90 0 0 4 -4 v -4 a 4 4 90 0 0
         />
 
         <!-- LEGEND -->
-        <text :x="drawingwidth" y=10 style="font-weight:500;">Legend</text>
-        <g v-for="(item, index) in legend">
-            <rect v-if="item.fill"
-                :x=drawingwidth :y="2.5+((index+1)*yspace)" :width=lsquare :height=lsquare
-                :style="'stroke:'+item.stroke+';fill:'+item.fill+';'"
-            />
-            <line v-else
-                :x1=drawingwidth :y1="2.5+((index+1)*yspace)+(lsquare/2)"
-                :x2="drawingwidth+lsquare" :y2="2.5+((index+1)*yspace)+(lsquare/2)"
-                :width=lsquare :height=lsquare
-                :style="'stroke:'+item.stroke+';'"
-            />
-            <text :x="drawingwidth+lsquare+xspace" :y="10+((index+1)*yspace)">{{ item.label }}</text>
-        </g>
+        <template v-if="!nolegend">
+            <text :x="drawingwidth" y=10 style="font-weight:500;">Legend</text>
+            <g v-for="(item, index) in legend">
+                <rect v-if="item.fill"
+                    :x=drawingwidth :y="2.5+((index+1)*yspace)" :width=lsquare :height=lsquare
+                    :style="'stroke:'+item.stroke+';fill:'+item.fill+';'"
+                />
+                <line v-else
+                    :x1=drawingwidth :y1="2.5+((index+1)*yspace)+(lsquare/2)"
+                    :x2="drawingwidth+lsquare" :y2="2.5+((index+1)*yspace)+(lsquare/2)"
+                    :width=lsquare :height=lsquare
+                    :style="'stroke:'+item.stroke+';'"
+                />
+                <text :x="drawingwidth+lsquare+xspace" :y="10+((index+1)*yspace)">{{ item.label }}</text>
+            </g>
+        </template>
     </svg>
 </template>
 

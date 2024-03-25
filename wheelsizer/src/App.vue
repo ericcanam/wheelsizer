@@ -36,7 +36,6 @@
         {comp: Info, title: "Car Setup", svg: "car.svg"},
         {comp: OEM, title: "OEM Specs", svg: "notepad.svg"},
         {comp: DoorCard, title: "Doorcard", svg: "doorcard.svg"},
-        {comp: New, title: "New Setup", svg: "wrench.svg"},
         {comp: Calculator, title: "Calculator", svg: "calculator.svg"}
     ];
 	const complete_steps = ref(0);
@@ -165,7 +164,7 @@
 		<div v-if="cid==1" class="row">
 			<a href="/"><img alt="Wheelhub" class="logo" src="/assets/logo_t1.svg" /></a>
 		</div>
-		<div class="row">
+		<div class="row topnav">
 			<div v-for="(page, n) in pages" class="fall">
 				<Step :title="page.title" :svg="page.svg"
 					:status="gs(n+1, cid)"
@@ -174,18 +173,11 @@
 				/>
 				<img v-if="n+1<pages.length" alt="&gt;" class="svgarrow h_arrow topnavarrow" src="/assets/arrow_right.svg" />
 			</div>
+			<SaveManager :ad="appdata" ref="save_manager" @update="updateAppData" />
 			<!--<div class="steptitle current overarch">{{ pages[cid-1].title }}</div>-->
 		</div>
 	</header>
 	<main>
-		<div class="row">
-			<!-- Save manager (IF there are saved cars) -->
-			<h2 v-if="showSaveManagerText()">Choose a saved vehicle:</h2>
-			<SaveManager :ad="appdata" ref="save_manager" @update="updateAppData" />
-
-			<p v-if="showSaveManagerText()">Or use the calculator for another car:</p>
-		</div>
-
 		<form id="sform" @submit="formnext" novalidate ref="formRef">
 			<span ref="ariaAlertRef" role="alert"></span>
 			

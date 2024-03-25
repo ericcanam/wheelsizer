@@ -12,6 +12,8 @@
         trash:{ type: Boolean, default: true }
     });
 
+    const container = ref();
+
     const cars = ref(getCarList());
 
     function carCount(){
@@ -34,10 +36,20 @@
         refresh();
     }
 
+    let open = ref(false);
+    function toggleVisibility(){
+        open.value = !open.value;
+
+        if(open.value){
+            container.value.classList.add("open");
+        }else{
+            container.value.classList.remove("open");
+        }
+    }
+
 
     defineExpose({
         carCount,
-        showList,
         saveCar
     });
     defineEmits(['update']);
@@ -47,38 +59,41 @@
     }
 </script>
 
-<template><div class="row">
-    <table v-if="showList()">
-        <tr>
-            <th>Vehicle</th>
-            <th>Tires</th>
-            <th>Wheels</th>
-            <th v-if="trash"></th>
-        </tr>
-        <tr v-for="(info, key, index) in cars">
-            <!-- Car title -->
-            <td class="button" @click="$emit('update', getAppData(key, ad, info));">
-                {{ key }}
-            </td>
-            <!-- Tire Size -->
-            <td class="button" @click="$emit('update', getAppData(key, ad, info));">
-                {{ info.of_section }}/{{ info.of_ratio }}R{{ info.of_diam }}
-            </td>
-            <!-- Wheel size -->
-            <td class="button" @click="$emit('update', getAppData(key, ad, info));">
-                {{ info.of_diameter }}&times;{{ info.of_width }} ET{{ info.of_offset }}
-            </td>
+<template>
+    <div class="menubutton fall" ref="container">
+        <div class="menuflexbox">
+            <div class="step" @click="toggleVisibility()">
+                <div class="iconcircle square">
+                    <img alt="Menu" src="/assets/save.svg" />
+                </div>
+                <div class="steptitle">Menu</div>
+            </div>
+            <div v-if="open" class="menu"><!-- Drop down menu -->
+                <!-- list of saved cars-->
+                <table v-if="showList()">
+                    <tr>
+                        <th :colspan="1 + trash">Load Vehicle</th>
+                    </tr>
+                    <tr v-for="(info, key, index) in cars">
+                        <!-- Car title -->
+                        <td class="button" @click="$emit('update', getAppData(key, ad, info));">
+                            {{ key }}
+                        </td>
 
-            <!-- button options -->
-            <td class="button" v-if="trash" @click="deleteCar(key);refresh();">
-                <img src="/assets/trash.svg">
-            </td>
-        </tr>
-    </table>
-    <div v-else>
-        
+                        <!-- button options -->
+                        <td class="button" v-if="trash" @click="deleteCar(key);refresh();">
+                            <img src="/assets/trash.svg">
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- SAVE button -->
+                <button class="go">Save</button>
+            </div>
+        </div>
     </div>
-</div></template>
+    
+</template>
 
 <style>
     td.button {
