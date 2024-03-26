@@ -144,11 +144,15 @@
 
 	
     const save_manager = ref();
-    function showSaveManagerText(){
-        // show form if no saved cars, if save_manager hasn't loaded yet, OR if it's overridden
-        return save_manager.value==undefined || save_manager.value.showList();
-    }
 	function updateAppData(ad){
+		if(ad==null){
+			// "clear" button
+			appdata.value = { savename: UNSAVED_STRING };
+			cid.value = 1;
+			complete_steps.value = 0;
+			return;
+		}
+		// load car
 		appdata.value = ad;
 		complete_steps.value = 3;
 		cid.value = 4;
@@ -173,7 +177,7 @@
 				/>
 				<img v-if="n+1<pages.length" alt="&gt;" class="svgarrow h_arrow topnavarrow" src="/assets/arrow_right.svg" />
 			</div>
-			<SaveManager :ad="appdata" ref="save_manager" @update="updateAppData" />
+			<SaveManager :ad="appdata" ref="save_manager" @update="updateAppData" :step="cid" />
 			<!--<div class="steptitle current overarch">{{ pages[cid-1].title }}</div>-->
 		</div>
 	</header>
@@ -183,14 +187,6 @@
 			
 			<!-- App "Page" rendered here: -->
 			<component :is="pages[cid-1].comp" ref="childComponentRef" :ad="appdata" />
-
-			<!-- "Save car" button -->
-			<div class="row" v-if="cid==3">
-				<button @click="save_manager.saveCar(
-					appdata.cartitle,
-					appdata
-				);" type="button" class="go double">Save "{{ appdata.cartitle }}"<img class="right" src="/assets/download.svg" /></button>
-			</div>
 
 			<div class="row">
 				<button @click="formback" ref="backRef" v-if="cid>1" type="button" class="single">

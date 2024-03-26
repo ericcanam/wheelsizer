@@ -8,6 +8,10 @@
             type: Object,
             required: true
         },
+        step:{
+            type: Number,
+            required: true
+        },
         // button options:
         trash:{ type: Boolean, default: true }
     });
@@ -32,6 +36,9 @@
     }
 
     function saveCar(name, ad){
+        if(ad.savename!=UNSAVED_STRING && ad.savename!=name){
+            deleteCar(ad.savename);
+        }
         writeCar(name, ad);
         refresh();
     }
@@ -76,7 +83,10 @@
                     </tr>
                     <tr v-for="(info, key, index) in cars">
                         <!-- Car title -->
-                        <td class="button" @click="$emit('update', getAppData(key, ad, info));">
+                        <td class="button" @click="
+                            $emit('update', getAppData(key, ad, info));
+                            toggleVisibility();
+                        ">
                             {{ key }}
                         </td>
 
@@ -88,7 +98,17 @@
                 </table>
 
                 <!-- SAVE button -->
-                <button class="go">Save</button>
+                <button class="go" v-if="step>2" @click="saveCar(
+                    ad.cartitle,
+                    ad
+                );">Save "{{ ad.cartitle }}"</button>
+                <button style="cursor: inherit;" v-else @click="step = 1;">Complete car details to save</button>
+                
+                <!-- CLEAR button -->
+                <button v-if="ad.cartitle!==undefined" class="suggest" @click="
+                    $emit('update', null);
+                    toggleVisibility();
+                ">Clear</button>
             </div>
         </div>
     </div>
