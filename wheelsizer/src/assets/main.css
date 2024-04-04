@@ -90,7 +90,7 @@ input, button, div.multitextfield, div.highlight {
 input:not(.errorlight):not(:focus), button:not(:focus), div.optionslider:not(.errorlight):not(.hasfocus) {
 	outline: 1px dashed transparent;
 }
-input[type="checkbox"], input[type="radio"] {
+div.optwrap input[type="checkbox"], div.optwrap input[type="radio"] {
 	position: absolute;
 	opacity: 0;
 }
@@ -265,7 +265,7 @@ div.fall.menubutton div.step{
 div.fall.menubutton div.iconcircle{
 	background-color: var(--color-accent1);
 }
-div.fall.open div.step.menubutton{
+div.fall.menubutton.open div.step.menubutton{
 	padding-bottom: 24pt;
 }
 div.fall.menubutton.open div.iconcircle{
@@ -296,6 +296,7 @@ div.menuflexbox{
 	justify-content: end;
 }
 div.menu{
+	z-index: 2;
 	width: max-content;
 	padding: 6pt;
 	max-width: calc(5in + 36pt + 4 * (36pt) - 24pt - 12pt);
@@ -304,6 +305,9 @@ div.menu{
 	display: flex;
 	flex-direction: column;
 	row-gap: 6pt;
+}
+div.fall.menubutton:not(.open) div.menu{
+	display: none;
 }
 div.menu button{
 	margin: 0pt;

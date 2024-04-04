@@ -69,13 +69,13 @@
 <template>
     <div class="menubutton fall" ref="container">
         <div class="menuflexbox">
-            <div class="step" @click="toggleVisibility()">
+            <div tabindex="0" class="step" @click="toggleVisibility()">
                 <div class="iconcircle square">
-                    <img alt="Menu" src="/assets/save.svg" />
+                    <img alt="Menu" src="/assets/gear.svg" />
                 </div>
                 <div class="steptitle">Menu</div>
             </div>
-            <div v-if="open" class="menu"><!-- Drop down menu -->
+            <div class="menu"><!-- Drop down menu -->
                 <!-- list of saved cars-->
                 <table v-if="showList()">
                     <tr>

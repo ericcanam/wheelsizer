@@ -4,6 +4,10 @@
         modelValue:{
             required: true
         },
+        neutral:{
+            type: Number,
+            required: false
+        },
         inputname:{
             type: String,
             required: true
@@ -52,13 +56,18 @@
     var minLabelComputed = props.minLabel || props.min.toString();
     var maxLabelComputed = props.maxLabel || props.max.toString();
 
-    var defaultPercentage, gstring;
-    defaultPercentage = 100*(props.modelValue-props.min)/(props.max-props.min);
-    gstring = "linear-gradient(to right, "+props.extremityColor+", "+
-        (props.transitionColor ? props.transitionColor+" "+(defaultPercentage/2)+"%, " : '')+
-        props.defaultColor+" "+defaultPercentage+"%, "+
-        (props.transitionColor ? props.transitionColor+" "+(defaultPercentage*3/2)+"%, " : '')+
-        props.extremityColor+")";
+    function defaultPercentage(){
+        return 100*((props.neutral || props.modelValue)-props.min)/(props.max-props.min);
+    }
+    function gstring() {
+        let dfp = defaultPercentage();
+        return "linear-gradient(to right, "+props.extremityColor+", "+
+            (props.transitionColor ? props.transitionColor+" "+(dfp/2)+"%, " : '')+
+            props.defaultColor+" "+dfp+"%, "+
+            (props.transitionColor ? props.transitionColor+" "+(dfp*3/2)+"%, " : '')+
+            props.extremityColor+")"
+        ;
+    }
 
     // send out updated value (and "round" it to nearest discrete point if applicable)
     function update(event){
@@ -159,7 +168,7 @@
         position: relative;
         top: 6pt;
         width: 100%;
-        background: v-bind('gstring');
+        background: v-bind('gstring()');
     }
     div.slidercontainer {
         height: 26pt;

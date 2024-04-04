@@ -1,5 +1,5 @@
 <script setup>
-	import { ref, watch } from 'vue';
+	import { ref, watch, nextTick } from 'vue';
 	import { UNSAVED_STRING } from './cookies.js';
 
     import Step from './components/Step.vue';
@@ -8,7 +8,6 @@
     import Info from './pages/Info.vue';
     import OEM from './pages/OEM.vue';
 	import DoorCard from './pages/DoorCard.vue';
-	import New from './pages/New.vue';
 	import Calculator from './pages/Calculator.vue';
 
 	import SaveManager from './components/SaveManager.vue';
@@ -101,20 +100,30 @@
 	function formjump(page){
 		// Invalid page jump (too far forward based on progress) or same-page
 		if(page==cid.value || page>complete_steps.value+1){
+			window.scrollTo(0, 0);
 			return;
 		}
-		/* If this is a page that's already previously been completed,
-		   then the form logic depends on this page, so VALIDATE it */
 		if(cid.value <= complete_steps.value){
 			clearErrors();
-			if(!childComponentRef.value.validate()){
-				return;
-			}
 		}
 
 		saveform();
-		window.scrollTo(0, 0);
-		cid.value = page
+		if(page<cid.value){
+			cid.value = page;
+			window.scrollTo(0, 0);
+			return;
+		}
+
+		/* If this is a page that's already previously been completed,
+		   then the form logic depends on this page, so VALIDATE it */
+		if(!childComponentRef.value.validate()){
+			return;
+		}
+		cid.value += 1;
+		nextTick(()=>{
+			// set up a call to re-validate once the next page is loaded
+			formjump(page);
+		});
 	}
 	
 	function saveform(){

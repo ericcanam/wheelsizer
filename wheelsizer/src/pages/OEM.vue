@@ -96,7 +96,7 @@
     
     <!-- Wheel size -->
     <p>What size are the OEM wheels, in inches?</p>
-    <WheelSize inprefix="of" :acprefix="'OEM' +(staggered() ? 'Front' : '')" :ref="fields.fws" autofocus>
+    <WheelSize inprefix="of" :acprefix="'OEM ' +(staggered() ? 'Front' : '')" :ref="fields.fws" autofocus>
         <span class="inputlabel" v-if="staggered()">Front:</span>
     </WheelSize>
     <p v-if="staggered()">
@@ -107,7 +107,7 @@
     
     <!-- Offset -->
     <p>What's the offset of the OEM wheels, in millimeters?</p>
-    <TextBar type="number" :acprefix="'OEM' +(staggered() ? 'Front' : '')" :length=6 inputname="of_offset" errName="Wheel offset (millimeters)" :ref="fields.foff" placeholder="Offset">
+    <TextBar type="number" :acprefix="'OEM ' +(staggered() ? 'Front' : '')" :length=6 inputname="of_offset" errName="Wheel offset (millimeters)" :ref="fields.foff" placeholder="Offset">
         <span class="inputlabel" v-if="staggered()">Front:</span>
     </TextBar>
     <p v-if="staggered()">
@@ -120,7 +120,7 @@
     
     <!-- Bolt pattern -->
     <p>What bolt pattern is used to fasten the wheels to the hubs?</p>
-    <BoltPattern inprefix="of" :acprefix="'OEM' +(staggered() ? 'Front' : '')" :ref="fields.fbp">
+    <BoltPattern inprefix="of" :acprefix="'OEM ' +(staggered() ? 'Front' : '')" :ref="fields.fbp">
         <span class="inputlabel" v-if="staggered()">Front:</span>
     </BoltPattern>
     <p v-if="staggered()">
@@ -131,7 +131,7 @@
     
     <!-- Centre Bore -->
     <p>How big is the Centre bore of the wheels, in millimeters?</p>
-    <TextBar type="number" :acprefix="'OEM' +(staggered() ? 'Front' : '')" min="0" :length=6 inputname="of_cb" errName="Wheel Centre bore (millimeters)" :ref="fields.fcb" placeholder="Centre Bore">
+    <TextBar type="number" :acprefix="'OEM ' +(staggered() ? 'Front' : '')" min="0" :length=6 inputname="of_cb" errName="Wheel Centre bore (millimeters)" :ref="fields.fcb" placeholder="Centre Bore">
         <span class="inputlabel" v-if="staggered()">Front:</span>
     </TextBar>
     <p v-if="staggered()">
@@ -144,7 +144,7 @@
     <h2>Tell us about the OEM tires.</h2>
     <p>These numbers are specified in ISO Metric format, and can be found on your tire sidewall or on a sticker in the driver's side door frame.</p>
     
-    <TireSize inprefix="of" :acprefix="'OEM' +(staggered() ? 'Front' : '')" :ref="fields.fts">
+    <TireSize inprefix="of" :acprefix="'OEM ' +(staggered() ? 'Front' : '')" :ref="fields.fts">
         <span class="inputlabel" v-if="staggered()">Front:</span>
     </TireSize>
     <p v-if="staggered()">

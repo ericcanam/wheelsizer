@@ -152,7 +152,7 @@ function getTireArray(width, diameter, target_height){
         // get closest sidewall to OEM height for each POTENTIALLY valid section width
         let csw = getClosestSidewall(target_height, section, diameter);
         // now work upwards (taller)
-        let sidewall = csw;
+        let sidewall = Math.max(20, csw);
         while(isLegalTire(width, section, sidewall) && sidewall<=95){
             let th = tireHeight(diameter, sidewall, section);
             if(Math.abs(getPctDiffUnform(target_height, th))<=pct_diff_cutoff){
@@ -161,7 +161,7 @@ function getTireArray(width, diameter, target_height){
             sidewall += 5;
         }
         // finally, work downwards
-        sidewall = csw-5;
+        sidewall = Math.min(95, csw-5);
         while(isLegalTire(width, section, sidewall) && sidewall>=20){
             let th = tireHeight(diameter, sidewall, section);
             if(Math.abs(getPctDiffUnform(target_height, th))<=pct_diff_cutoff){

@@ -34,7 +34,7 @@ function getCarList(){
     for(let kvp of kvps){
         let kva = kvp.split("=");
         // skip empty/deleted cookies
-        if(!kva[1].length){
+        if(!kva[1] || !kva[1].length){
             continue;
         }
         // convert from code to object
@@ -58,6 +58,7 @@ const axle_field_names = [
 ];
 const staggered = "staggered";
 const other_vars = [
+    staggered,
     "cartitle",
     "drivewheels"
 ];

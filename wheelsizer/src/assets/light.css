@@ -4,6 +4,7 @@
 		--color-backshade: rgba(199,199,199,0.40);
 		--color-tr1: rgba(199,199,199,0.40);
 		--color-tr2: rgba(199,199,199,0.60);
+		--color-menu-background: #9ba8b9;
 	}
 
     body {
@@ -13,7 +14,7 @@
 	input, button:not(.suggest) {
 		color: var(--color-text-light);
 	}
-	button.suggest{
+	button.suggest, button.go{
 		color: var(--color-text);
 	}
 	input:focus, button:not(.nofocus):focus, div.hasfocus {
