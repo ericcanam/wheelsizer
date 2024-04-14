@@ -37,7 +37,11 @@ function getCarList(){
             continue;
         }
         // convert from code to object
-        car_list[kva[0]] = decompileCar(kva[1]);
+        let kvo = decompileCar(kva[1]);
+        if(kvo.cartitle){
+            // only a cookie relevant to us
+            car_list[kva[0]] = kvo;
+        }
     }
     return car_list;
 }
