@@ -39,7 +39,6 @@
     ];
 	const complete_steps = ref(0);
 
-	
 	var appdata = ref({
 		savename: UNSAVED_STRING
 	});
@@ -125,7 +124,8 @@
 			formjump(page);
 		});
 	}
-	
+
+
 	function saveform(){
 		let form = formRef.value;
 		let formdata = new FormData(form);
@@ -158,6 +158,7 @@
 			// "clear" button
 			appdata.value = { savename: UNSAVED_STRING };
 			cid.value = 1;
+			
 			complete_steps.value = 0;
 			return;
 		}
@@ -167,7 +168,6 @@
 		cid.value = 4;
 	}
 
-
 	const appv = APP_VERSION;
 	const builddate = BUILD_DATE;
 </script>
@@ -175,7 +175,13 @@
 <template>
 	<header>
 		<div v-if="cid==1" class="row">
-			<a href="/"><img alt="Wheelhub" class="logo" src="/assets/logo_t1.svg" /></a>
+			<a href="/">
+				<picture>
+					<source srcset="/assets/logo_t1_light.svg" media="(prefers-color-scheme:light)">
+					<source srcset="/assets/logo_t1_dark.svg"  media="(prefers-color-scheme:dark)">
+					<img src="/assets/logo_t1_neutral.svg" class="logo" alt="Wheelhub" />
+				</picture>
+			</a>
 		</div>
 		<div class="row topnav">
 			<div v-for="(page, n) in pages" class="fall">

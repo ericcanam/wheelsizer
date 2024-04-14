@@ -21,7 +21,11 @@
 	<body>
 		<header>
 			<div class="row">
-				<img alt="Wheelhub" class="logo" src="/assets/logo_t1.svg" />
+				<picture>
+					<source srcset="/assets/logo_t1_light.svg" media="(prefers-color-scheme:light)">
+					<source srcset="/assets/logo_t1_dark.svg"  media="(prefers-color-scheme:dark)">
+					<img src="/assets/logo_t1_neutral.svg" class="logo" alt="Wheelhub" />
+				</picture>
 			</div>
 		</header>
 		<main>
@@ -57,19 +61,6 @@
 					</h2>
 					<p>
 						Get a link to post with your for-sale ad to help buyers quickly verify fitment.
-					</p>
-				</a>
-				
-
-				<!-- Setup Manager -->
-				<a class="menuitem" href="/manager.html">
-					<h2>
-						<div class="iconcircle current">
-							<img alt="Quick Check" src="/assets/notepad.svg" />
-						</div><span>Setup Manager</span>
-					</h2>
-					<p>
-						SKEET
 					</p>
 				</a>
 				

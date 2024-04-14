@@ -76,6 +76,7 @@
                 <div class="steptitle">Menu</div>
             </div>
             <div class="menu"><!-- Drop down menu -->
+                
                 <!-- list of saved cars-->
                 <table v-if="showList()">
                     <tr>
@@ -108,11 +109,11 @@
                 <button v-if="ad.cartitle!==undefined" class="suggest" @click="
                     $emit('update', null);
                     toggleVisibility();
-                ">Clear</button>
+                ">Reset</button>
             </div>
         </div>
     </div>
-    
+    <div class="menusplash" v-if="open" @click="toggleVisibility()"><!-- background to blur the rest of the screen --></div>
 </template>
 
 <style>

@@ -137,7 +137,9 @@
 </script>
 
 <template><div class="row">
+    <!-- Staggered toggle-->
     <OptionToggle inputname="nstagger" :options="['Square', 'Staggered']" v-model="newstagger" />
+    
     <!-- FOR DEBUG<br />
     FRONT: {{ fnts }}/{{ fntr }}R{{ fnwd }}, {{ fnwd }}&times;{{ fnw }} ET{{ fno }}<br />
     REAR: {{ rnts }}/{{ rntr }}R{{ rnwd }}, {{ rnwd }}&times;{{ rnw }} ET{{ rno }}-->
@@ -255,6 +257,7 @@
             />
         </div>
     </div>
+
     <!-- REAR -->
     <div class="tower" v-if="newStagger()">
         <h3>Rear{{ newconfig!='Everything' ? ' '+newconfig : '' }}</h3>

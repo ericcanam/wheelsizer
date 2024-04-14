@@ -93,6 +93,7 @@ input:not(.errorlight):not(:focus), button:not(:focus), div.optionslider:not(.er
 div.optwrap input[type="checkbox"], div.optwrap input[type="radio"] {
 	position: absolute;
 	opacity: 0;
+	cursor: pointer;
 }
 button img, .infoline img, .warningline img {
 	vertical-align: middle;
@@ -254,6 +255,7 @@ div.step {
 	font-weight: 500;
 }
 div.fall.menubutton{
+	z-index: 2;
 	margin-left: 36pt;
 	width: 1in;
 	position: absolute;
@@ -269,7 +271,8 @@ div.fall.menubutton.open div.step.menubutton{
 	padding-bottom: 24pt;
 }
 div.fall.menubutton.open div.iconcircle{
-	background-color: var(--color-accent5);
+	background-color: var(--color-menu-background);
+	outline: 3pt solid var(--color-accent5);
 }
 div.iconcircle {
 	width: 0.75in;
@@ -277,6 +280,7 @@ div.iconcircle {
 	border-radius: 50%;
 	margin: auto;
 	margin-bottom: 0.15in;
+	transition: background-color 0.2s linear;
 }
 div.iconcircle.square{
 	border-radius: 8pt;
@@ -305,6 +309,15 @@ div.menu{
 	display: flex;
 	flex-direction: column;
 	row-gap: 6pt;
+}
+div.menusplash{
+	z-index: 1;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100vw;
+	height: 100vh;
+	background-color: var(--color-menu-background-shade);
 }
 div.fall.menubutton:not(.open) div.menu{
 	display: none;
