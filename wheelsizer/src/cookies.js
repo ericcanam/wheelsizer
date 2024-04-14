@@ -19,7 +19,6 @@ function writeCar(name, ad = null){
     document.cookie = name+"="+cookie_string+";" +
         expiry + ";" + path + ";SameSite=Strict;";
 
-    console.log(document.cookie);
 }
 
 function deleteCar(name){
@@ -63,7 +62,8 @@ const other_vars = [
     "drivewheels"
 ];
 const optional_vars = [
-    "wheelbase"
+    "AdvancedOptions",
+    "o_wheelbase"
 ];
 function appDataToCookieString(ad){
     let properties = [...axle_field_names];
@@ -82,6 +82,12 @@ function appDataToCookieString(ad){
     }
 
     properties.push(...other_vars);
+    for(let o=0; o<optional_vars.length; o++){
+        // check if this property is set
+        if(ad[optional_vars[o]]){
+            properties.push(optional_vars[o]);
+        }
+    }
 
     for(let p=0; p<properties.length; p++){
         // get property values
