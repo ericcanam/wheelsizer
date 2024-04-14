@@ -4,7 +4,8 @@
 		--color-backshade: rgba(199,199,199,0.40);
 		--color-tr1: rgba(199,199,199,0.40);
 		--color-tr2: rgba(199,199,199,0.60);
-		--color-menu-background: #9ba8b9;
+		--color-menu-background: #808d9e;
+		--color-menu-background-shade: rgba(149, 162, 192, 0.473);
 	}
 
     body {

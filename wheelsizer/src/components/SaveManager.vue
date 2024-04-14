@@ -78,7 +78,7 @@
             <div class="menu"><!-- Drop down menu -->
                 
                 <!-- list of saved cars-->
-                <table v-if="showList()">
+                <table v-if="showList()" style="min-width: 100%;">
                     <tr>
                         <th :colspan="1 + trash">Load Vehicle</th>
                     </tr>
@@ -102,7 +102,14 @@
                 <button class="go" v-if="step>2" @click="saveCar(
                     ad.cartitle,
                     ad
-                );">Save "{{ ad.cartitle }}"</button>
+                );">
+                    <template v-if="ad.savename==UNSAVED_STRING || ad.savename.trim()==ad.cartitle">
+                        Save "{{ ad.cartitle }}"
+                    </template>
+                    <template v-else>
+                        Overwrite "{{ ad.savename.trim() }}"
+                    </template>
+                </button>
                 <button style="cursor: inherit;" v-else @click="step = 1;">Complete car details to save</button>
                 
                 <!-- CLEAR button -->
@@ -110,6 +117,7 @@
                     $emit('update', null);
                     toggleVisibility();
                 ">Reset</button>
+
             </div>
         </div>
     </div>
