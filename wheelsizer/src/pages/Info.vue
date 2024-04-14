@@ -17,20 +17,18 @@
         // car title
         return !isEmpty(fields.cartitle);
     }
-
+    
     defineExpose({
         validate,
         fields
     });
-
 </script>
 
 <template><div class="row">
-
-    <h2>Give your car a name:</h2>
+    <!-- Beginning of the calculator form -->
+    <h2>What do you drive?</h2>
     <TextBar inputname="cartitle" :ref="fields.cartitle" :length=20
         placeholder="Year Make Model" autofocus errName="Vehicle name" />
-    <input type="hidden" name="savename" value="-UNSAVED-" />
     <h2>Let's talk shop:</h2>
 
     <!-- Stagger -->
@@ -46,8 +44,4 @@
             Which are the driven wheels?
         </OptionToggle>
     </p>
-
-    <!-- Spare Tire -->
-    <!-- <p>Do you want to consider the spare tire?</p>
-    <OptionToggle inputname="spare" :options="['Yes', 'No']" defaultoption="No" /> -->
 </div></template>

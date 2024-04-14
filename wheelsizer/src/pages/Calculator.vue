@@ -4,6 +4,7 @@
     import Scale from '../components/Scale.vue';
     import WarningBox from '../components/WarningBox.vue';
     import InfoBox from '../components/InfoBox.vue';
+    import OptionToggle from '../components/OptionToggle.vue';
 
     import SpecTable from '../components/SpecTable.vue';
     import VisualPackage from '../components/VisualPackage.vue';
@@ -14,8 +15,10 @@
         isLegalTire, getPctDiff, getNewPctDiff, getTireArray, getTireHeightArray } from './calcs.js';
     
     var props = defineProps(['ad']);
+    const newconfig = ref('Everything');
+    const newstagger = ref(props.ad.nstagger || (oemStagger() ? 'Staggered' : 'Square'))
     function oemStagger(){ return props.ad.staggered=='Yes' };
-    function newStagger(){ return props.ad.nstagger=='Staggered' };
+    function newStagger(){ return newstagger.value=='Staggered' };
     function stagToSquare(){ return oemStagger() && !newStagger(); }
     function anyStagger(){ return oemStagger() || newStagger(); }
 
@@ -23,20 +26,20 @@
         Calculator model variables
     */
     // new wheel widths
-    var fnw = ref((props.ad.nconfig!='Tires' ? props.ad.nf_width : undefined) || props.ad.of_width);
-    var rnw = ref((props.ad.nconfig!='Tires' ? props.ad.nr_width : undefined) || (oemStagger() ? props.ad.or_width : props.ad.of_width));
+    var fnw = ref((newconfig.value!='Tires' ? props.ad.nf_width : undefined) || props.ad.of_width);
+    var rnw = ref((newconfig.value!='Tires' ? props.ad.nr_width : undefined) || (oemStagger() ? props.ad.or_width : props.ad.of_width));
     // new wheel offsets
-    var fno = ref((props.ad.nconfig!='Tires' ? props.ad.nf_offset : undefined) || props.ad.of_offset);
-    var rno = ref((props.ad.nconfig!='Tires' ? props.ad.nr_offset : undefined) || (oemStagger() ? props.ad.or_offset : props.ad.of_offset));
+    var fno = ref((newconfig.value!='Tires' ? props.ad.nf_offset : undefined) || props.ad.of_offset);
+    var rno = ref((newconfig.value!='Tires' ? props.ad.nr_offset : undefined) || (oemStagger() ? props.ad.or_offset : props.ad.of_offset));
     // new tire sections
-    var fnts = ref((props.ad.nconfig!='Wheels' ? props.ad.nf_section : undefined) || (props.ad.of_section));
-    var rnts = ref((props.ad.nconfig!='Wheels' ? props.ad.nr_section : undefined) || (oemStagger() ? props.ad.or_section : props.ad.of_section));
+    var fnts = ref((newconfig.value!='Wheels' ? props.ad.nf_section : undefined) || (props.ad.of_section));
+    var rnts = ref((newconfig.value!='Wheels' ? props.ad.nr_section : undefined) || (oemStagger() ? props.ad.or_section : props.ad.of_section));
     // new tire ratios
-    var fntr = ref((props.ad.nconfig!='Wheels' ? props.ad.nf_ratio : undefined) || (props.ad.of_ratio));
-    var rntr = ref((props.ad.nconfig!='Wheels' ? props.ad.nr_ratio : undefined) || (oemStagger() ? props.ad.or_ratio : props.ad.of_ratio));
+    var fntr = ref((newconfig.value!='Wheels' ? props.ad.nf_ratio : undefined) || (props.ad.of_ratio));
+    var rntr = ref((newconfig.value!='Wheels' ? props.ad.nr_ratio : undefined) || (oemStagger() ? props.ad.or_ratio : props.ad.of_ratio));
     // new wheel diameters
-    var fnwd = ref((props.ad.nconfig=='Everything' ? props.ad.nf_diameter : undefined) || props.ad.of_diameter);
-    var rnwd = ref((props.ad.nconfig=='Everything' ? props.ad.rf_diameter : undefined) || (oemStagger() ? props.ad.or_diameter : props.ad.of_diameter));
+    var fnwd = ref((newconfig.value=='Everything' ? props.ad.nf_diameter : undefined) || props.ad.of_diameter);
+    var rnwd = ref((newconfig.value=='Everything' ? props.ad.nr_diameter : undefined) || (oemStagger() ? props.ad.or_diameter : props.ad.of_diameter));
     // old rear wheel specs
     const row = (oemStagger() ? props.ad.or_width : props.ad.of_width);
     const roo = (oemStagger() ? props.ad.or_offset : props.ad.of_offset);
@@ -48,21 +51,23 @@
     const ros = (oemStagger() ? props.ad.or_section : props.ad.of_section);
     const ror = (oemStagger() ? props.ad.or_ratio : props.ad.of_ratio);
     // legal tires & respective heights for OEM wheels
-    var frontTireArray, fminHeight, fmaxHeight, frontTireHeightArray,
-        rearTireArray,  rminHeight, rmaxHeight, rearTireHeightArray;
+    var frontTireArray, fminHeight, fmaxHeight,
+        rearTireArray,  rminHeight, rmaxHeight;
+    const frontTireHeightArray = ref([]);
+    const rearTireHeightArray = ref([]);
     var fthd = ref(props.ad.nf_tireheight || (foh));
     var rthd = ref(props.ad.nr_tireheight || roh);
     function defineTireArrays(){
         frontTireArray = getTireArray(fnw.value, fnwd.value, foh);
             fminHeight = (frontTireArray.length ? frontTireArray[0].th : foh-1);
             fmaxHeight = (frontTireArray.length ? frontTireArray[frontTireArray.length-1].th : foh+1);
-            frontTireHeightArray = getTireHeightArray(frontTireArray);
+            frontTireHeightArray.value = getTireHeightArray(frontTireArray);
         rearTireArray = (anyStagger() ? getTireArray(rnw.value, rnwd.value, roh) : frontTireArray);
             rminHeight = (rearTireArray.length ? rearTireArray[0].th : roh-1);
             rmaxHeight = (rearTireArray.length ? rearTireArray[rearTireArray.length-1].th : roh+1);
-            rearTireHeightArray = getTireHeightArray(rearTireArray);
+            rearTireHeightArray.value = getTireHeightArray(rearTireArray);
         // target rear wheels as well when coming up with a list of tires: only if square now, staggered OEM
-        if(stagToSquare() && props.ad.nconfig=='Tires'){
+        if(stagToSquare() && newconfig.value=='Tires'){
             frontTireArray = [... new Set([...frontTireArray, ...rearTireArray])];
         }
         
@@ -121,7 +126,6 @@
     watch(rnwd, (new_diam)    => {defineTireArrays(); updateHeight(new_diam, rnts.value, rntr.value, rthd)}); // wheels
     watch(rnw,  (new_width)   => {defineTireArrays(); updateHeight(rnwd.value, rnts.value, rntr.value, rthd)});
 
-
     // nothing to validate before moving on
     function validate(){
         return true;
@@ -133,6 +137,9 @@
 </script>
 
 <template><div class="row">
+    <!-- Staggered toggle-->
+    <OptionToggle inputname="nstagger" :options="['Square', 'Staggered']" v-model="newstagger" />
+    
     <!-- FOR DEBUG<br />
     FRONT: {{ fnts }}/{{ fntr }}R{{ fnwd }}, {{ fnwd }}&times;{{ fnw }} ET{{ fno }}<br />
     REAR: {{ rnts }}/{{ rntr }}R{{ rnwd }}, {{ rnwd }}&times;{{ rnw }} ET{{ rno }}-->
@@ -140,11 +147,11 @@
     <!-- input modules -->
     <!-- FRONT -->
     <div :class="newStagger() ? 'tower' : ''">
-        <h3 v-if="newStagger()">Front{{ props.ad.nconfig!='Everything' ? ' '+props.ad.nconfig : '' }}</h3>
+        <h3 v-if="newStagger()">Front{{ newconfig!='Everything' ? ' '+newconfig : '' }}</h3>
         <div :class="stagToSquare() ? '' :'sidebyside'">
             <!-- front tires -->
-            <div v-if="props.ad.nconfig!='Wheels'">
-                <template v-if="props.ad.nconfig=='Everything' || !newStagger()">
+            <div v-if="newconfig!='Wheels'">
+                <template v-if="newconfig=='Everything' || !newStagger()">
                     <h3 v-if="newStagger()">New Tires</h3>
                     <h2 v-else>New Tires</h2>
                 </template>
@@ -161,7 +168,7 @@
                         :errName="(newStagger() ? 'front ' : '')+'tire sidewall ratio'"
                         v-model="fntr" />
                     R
-                    <span v-if="props.ad.nconfig=='Tires'">{{ props.ad.of_diameter }}</span>
+                    <span v-if="newconfig=='Tires'">{{ props.ad.of_diameter }}</span>
                     <TextBar v-else inputname="nf_diameter" :ref="fields.fwd" :length=3
                         type="number" :min=5 :max=30 :step=1 showControls
                         acprefix="New"
@@ -182,34 +189,34 @@
                 <Scale inputname="nf_tireheight" v-if="frontTireHeightArray.length>1"
                     :min="fminHeight"    :minLabel="fminHeight+'mm\n('+getPctDiff(foh, fminHeight)+')'"
                     :max="fmaxHeight"    :maxLabel="fmaxHeight+'mm\n('+getPctDiff(foh, fmaxHeight)+')'"
-                    v-model="fthd"
+                    v-model="fthd" :neutral="foh"
                     :discreteSnapPoints="frontTireHeightArray"
                     showControls
                     @update:modelValue="fillFrontTire($event)"
                 /><input v-else type="hidden" name="nf_tireheight" v-model="fthd" />
-                <WarningBox v-if="props.ad.nconfig!='Everything' && !isLegalTire(fnw, fnts, fntr)">
+                <WarningBox v-if="newconfig!='Everything' && !isLegalTire(fnw, fnts, fntr)">
                     A tire of size {{ fnts }}/{{ fntr }}R{{ fnwd }} is beyond the limits of a {{ fnw }}&quot;-wide rim,
                     per ISO 4000-1.
                 </WarningBox>
-                <WarningBox v-if="stagToSquare() && props.ad.nconfig=='Tires' && !isLegalTire(rnw , fnts, fntr)">
+                <WarningBox v-if="stagToSquare() && newconfig=='Tires' && !isLegalTire(rnw , fnts, fntr)">
                     A tire of size {{ fnts }}/{{ fntr }}R{{ fnwd }} is beyond the limits of a {{ rnw }}&quot;-wide rim,
                     per ISO 4000-1.
                 </WarningBox>
             </div>
             <!-- front wheels -->
-            <div v-if="props.ad.nconfig!='Tires'">
-                <template v-if="props.ad.nconfig=='Everything' || !newStagger()">
+            <div v-if="newconfig!='Tires'">
+                <template v-if="newconfig=='Everything' || !newStagger()">
                     <h3 v-if="newStagger()">New Wheels</h3>
                     <h2 v-else>New Wheels</h2>
                 </template>
                 <p>
                     Width
-                    <TextBar type="number" :min=2.5 :max=22.5 :length=3
-                        inputname="nf_width" :ref="fields.fww" placeholder="Width" :step=0.5 v-model="fnw" showControls
+                    <TextBar type="number" :min=2.5 :max=22.5 :length=3 showControls
+                        inputname="nf_width" :ref="fields.fww" placeholder="Width" :step=0.5 v-model="fnw"
                         acprefix="New"
                         :errName="(newStagger() ? 'front ' : '')+'Wheel width (inches)'" />
-                    <TextBar type="number" :length=3
-                        inputname="nf_offset" :ref="fields.fwo" placeholder="Offset" v-model="fno" showControls
+                    <TextBar type="number" :length=3 showControls
+                        inputname="nf_offset" :ref="fields.fwo" placeholder="Offset" v-model="fno"
                         acprefix="New"
                         :errName="(newStagger() ? 'front ' : '')+'Wheel offset (millimeters)'" />
                     Offset
@@ -218,7 +225,7 @@
                     This {{ fnw }}&quot;-wide rim is beyond the limits of a tire sized {{ fnts }}/{{ fntr }}R{{ fnwd }},
                     per ISO 4000-1.
                 </WarningBox>
-                <WarningBox v-if="stagToSquare() && props.ad.nconfig=='Wheels' && !isLegalTire(fnw, rnts, rntr)">
+                <WarningBox v-if="stagToSquare() && newconfig=='Wheels' && !isLegalTire(fnw, rnts, rntr)">
                     This {{ fnw }}&quot;-wide rim is beyond the limits of a tire sized {{ rnts }}/{{ rntr }}R{{ rnwd }},
                     per ISO 4000-1.
                 </WarningBox>
@@ -250,13 +257,14 @@
             />
         </div>
     </div>
+
     <!-- REAR -->
     <div class="tower" v-if="newStagger()">
-        <h3>Rear{{ props.ad.nconfig!='Everything' ? ' '+props.ad.nconfig : '' }}</h3>
+        <h3>Rear{{ newconfig!='Everything' ? ' '+newconfig : '' }}</h3>
         <div class="sidebyside">
             <!-- rear tires -->
-            <div v-if="props.ad.nconfig!='Wheels'">
-                <h3 v-if="props.ad.nconfig=='Everything'">New Tires</h3>
+            <div v-if="newconfig!='Wheels'">
+                <h3 v-if="newconfig=='Everything'">New Tires</h3>
                 <p>
                     <TextBar inputname="nr_section" :ref="fields.rts" :length=3
                         type="number" :min=5 :max=605 :step=5 showControls
@@ -270,7 +278,7 @@
                         :errName="'Rear tire sidewall ratio'"
                         v-model="rntr" />
                     R
-                    <span v-if="props.ad.nconfig=='Tires'">{{ rod }}</span>
+                    <span v-if="newconfig=='Tires'">{{ rod }}</span>
                     <TextBar v-else inputname="nr_diameter" :ref="fields.rwd" :length=3
                         type="number" :min=5 :max=30 :step=1 showControls
                         acprefix="New"
@@ -281,27 +289,27 @@
                 <Scale inputname="nr_tireheight" v-if="rearTireHeightArray.length>1"
                     :min="rminHeight"    :minLabel="rminHeight+'mm<br />('+getPctDiff(roh, rminHeight)+')'"
                     :max="rmaxHeight"    :maxLabel="rmaxHeight+'mm<br />('+getPctDiff(roh, rmaxHeight)+')'"
-                    v-model="rthd"
+                    v-model="rthd" :neutral="roh"
                     :discreteSnapPoints="rearTireHeightArray"
                     showControls
                     @update:modelValue="fillRearTire($event)"
                 /><input v-else type="hidden" name="nr_tireheight" v-model="rthd" />
-                <WarningBox v-if="props.ad.nconfig!='Everything' && !isLegalTire(rnw, rnts, rntr)">
+                <WarningBox v-if="newconfig!='Everything' && !isLegalTire(rnw, rnts, rntr)">
                     A tire of size {{ rnts }}/{{ rntr }}R{{ rnwd }} is beyond the limits of a {{ rnw }}&quot;-wide rim,
                     per ISO 4000-1.
                 </WarningBox>
             </div>
             <!-- rear wheels -->
-            <div v-if="props.ad.nconfig!='Tires'">
-                <h3 v-if="props.ad.nconfig=='Everything'">New Wheels</h3>
+            <div v-if="newconfig!='Tires'">
+                <h3 v-if="newconfig=='Everything'">New Wheels</h3>
                 <p>
                     Width
-                    <TextBar type="number" :min=2.5 :max=22.5 :length=3
-                        inputname="nr_width" :ref="fields.rww" placeholder="Width" :step=0.5 v-model="rnw" showControls
+                    <TextBar type="number" :min=2.5 :max=22.5 :length=3 showControls
+                        inputname="nr_width" :ref="fields.rww" placeholder="Width" :step=0.5 v-model="rnw"
                         acprefix="New"
                         errName="Rear wheel width (inches)" />
-                    <TextBar type="number" :length=3
-                        inputname="nr_offset" :ref="fields.rwo" placeholder="Offset" v-model="rno" showControls
+                    <TextBar type="number" :length=3 showControls
+                        inputname="nr_offset" :ref="fields.rwo" placeholder="Offset" v-model="rno"
                         acprefix="New"
                         errName="Rear wheel offset (millimeters)" />
                     Offset
@@ -336,7 +344,7 @@
 
     <h2>Change Table</h2>
     <SpecTable 
-        :config="props.ad.nconfig"
+        :config="newconfig"
         :newstagger="newStagger()"
         :oemstagger="oemStagger()"
         :ow="{ 

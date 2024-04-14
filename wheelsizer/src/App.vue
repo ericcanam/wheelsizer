@@ -1,5 +1,6 @@
 <script setup>
-	import { ref, watch } from 'vue';
+	import { ref, watch, nextTick } from 'vue';
+	import { UNSAVED_STRING } from './cookies.js';
 
     import Step from './components/Step.vue';
 
@@ -7,8 +8,9 @@
     import Info from './pages/Info.vue';
     import OEM from './pages/OEM.vue';
 	import DoorCard from './pages/DoorCard.vue';
-	import New from './pages/New.vue';
 	import Calculator from './pages/Calculator.vue';
+
+	import SaveManager from './components/SaveManager.vue';
 
 	// preload images
 	import { preload } from './preload.js';
@@ -23,19 +25,22 @@
 	const cid = ref(1);
 
     function gs(id, cu){
-        return (cu>id ? "complete" : (cu==id ? "current" : "upcoming"));
+		if(cu==id){
+			return "current";
+		}
+        return (complete_steps.value>=id ? "complete" : "upcoming");
     }
 
     const pages = [
         {comp: Info, title: "Car Setup", svg: "car.svg"},
         {comp: OEM, title: "OEM Specs", svg: "notepad.svg"},
         {comp: DoorCard, title: "Doorcard", svg: "doorcard.svg"},
-        {comp: New, title: "New Setup", svg: "wrench.svg"},
         {comp: Calculator, title: "Calculator", svg: "calculator.svg"}
     ];
+	const complete_steps = ref(0);
 
-	
 	var appdata = ref({
+		savename: UNSAVED_STRING
 	});
 
 	const childComponentRef = ref();
@@ -69,6 +74,7 @@
 
 		if(childComponentRef.value.validate()){
 			saveform();
+			complete_steps.value = Math.max(cid.value, complete_steps.value);
 			cid.value++;
 			window.scrollTo(0, 0);
 		}else{
@@ -88,6 +94,37 @@
 			window.scrollTo(0, 0);
 		}
 	}
+
+	/* Jump to (1-indexed) page from argument. */
+	function formjump(page){
+		// Invalid page jump (too far forward based on progress) or same-page
+		if(page==cid.value || page>complete_steps.value+1){
+			window.scrollTo(0, 0);
+			return;
+		}
+		if(cid.value <= complete_steps.value){
+			clearErrors();
+		}
+
+		saveform();
+		if(page<cid.value){
+			cid.value = page;
+			window.scrollTo(0, 0);
+			return;
+		}
+
+		/* If this is a page that's already previously been completed,
+		   then the form logic depends on this page, so VALIDATE it */
+		if(!childComponentRef.value.validate()){
+			return;
+		}
+		cid.value += 1;
+		nextTick(()=>{
+			// set up a call to re-validate once the next page is loaded
+			formjump(page);
+		});
+	}
+
 
 	function saveform(){
 		let form = formRef.value;
@@ -114,6 +151,23 @@
 		fill();
 	});
 
+	
+    const save_manager = ref();
+	function updateAppData(ad){
+		if(ad==null){
+			// "clear" button
+			appdata.value = { savename: UNSAVED_STRING };
+			cid.value = 1;
+			
+			complete_steps.value = 0;
+			return;
+		}
+		// load car
+		appdata.value = ad;
+		complete_steps.value = 3;
+		cid.value = 4;
+	}
+
 	const appv = APP_VERSION;
 	const builddate = BUILD_DATE;
 </script>
@@ -121,20 +175,28 @@
 <template>
 	<header>
 		<div v-if="cid==1" class="row">
-			<a href="/"><img alt="Wheelhub" class="logo" src="/assets/logo_t1.svg" /></a>
+			<a href="/">
+				<picture>
+					<source srcset="/assets/logo_t1_light.svg" media="(prefers-color-scheme:light)">
+					<source srcset="/assets/logo_t1_dark.svg"  media="(prefers-color-scheme:dark)">
+					<img src="/assets/logo_t1_neutral.svg" class="logo" alt="Wheelhub" />
+				</picture>
+			</a>
 		</div>
-		<div class="row">
+		<div class="row topnav">
 			<div v-for="(page, n) in pages" class="fall">
-				<Step :title="page.title" :svg="page.svg" :status="gs(n+1, cid)" />
+				<Step :title="page.title" :svg="page.svg"
+					:status="gs(n+1, cid)"
+					:style="complete_steps>=n ? 'cursor:pointer;': ''"
+					@click="formjump(n+1)"
+				/>
 				<img v-if="n+1<pages.length" alt="&gt;" class="svgarrow h_arrow topnavarrow" src="/assets/arrow_right.svg" />
 			</div>
+			<SaveManager :ad="appdata" ref="save_manager" @update="updateAppData" :step="cid" />
 			<!--<div class="steptitle current overarch">{{ pages[cid-1].title }}</div>-->
 		</div>
 	</header>
 	<main>
-		<!--<div class="row">
-			<AdBox />
-		</div>-->
 		<form id="sform" @submit="formnext" novalidate ref="formRef">
 			<span ref="ariaAlertRef" role="alert"></span>
 			

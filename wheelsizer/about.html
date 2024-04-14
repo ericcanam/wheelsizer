@@ -21,7 +21,13 @@
 	<body>
 		<header>
 			<div class="row">
-				<a href="/"><img alt="Wheelhub" class="logo" src="/assets/logo_t1.svg" /></a>
+				<a href="/">
+					<picture>
+						<source srcset="/assets/logo_t1_light.svg" media="(prefers-color-scheme:light)">
+						<source srcset="/assets/logo_t1_dark.svg"  media="(prefers-color-scheme:dark)">
+						<img src="/assets/logo_t1_neutral.svg" class="logo" alt="Wheelhub" />
+					</picture>
+				</a>
 			</div>
 		</header>
 		<main>

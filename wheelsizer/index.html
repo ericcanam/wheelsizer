@@ -21,7 +21,11 @@
 	<body>
 		<header>
 			<div class="row">
-				<img alt="Wheelhub" class="logo" src="/assets/logo_t1.svg" />
+				<picture>
+					<source srcset="/assets/logo_t1_light.svg" media="(prefers-color-scheme:light)">
+					<source srcset="/assets/logo_t1_dark.svg"  media="(prefers-color-scheme:dark)">
+					<img src="/assets/logo_t1_neutral.svg" class="logo" alt="Wheelhub" />
+				</picture>
 			</div>
 		</header>
 		<main>
@@ -34,8 +38,9 @@
 
 			<!-- nav button container -->
 			<div class="row flexmenu">
+
+				<!-- MAIN calculator -->
 				<a class="menuitem double" href="/calculator.html">
-					<!-- MAIN calculator -->
 					<h2>
 						<div class="iconcircle complete">
 							<img alt="CALCULATOR" src="/assets/calculator.svg" />
@@ -47,8 +52,8 @@
 					</p>
 				</a>
 
+				<!-- Quick Check -->
 				<a class="menuitem" href="/check.html">
-					<!-- Quick Check -->
 					<h2>
 						<div class="iconcircle current">
 							<img alt="Quick Check" src="/assets/timer.svg" />
@@ -58,6 +63,7 @@
 						Get a link to post with your for-sale ad to help buyers quickly verify fitment.
 					</p>
 				</a>
+				
 			</div>
 
 			<!-- Blurb -->
@@ -106,7 +112,7 @@
 		</main>
 		<footer>
 			<div class="row">
-				Copyright 2023 Wheelhub
+				Copyright 2024 Wheelhub
 				<br />
 				<a href="/about.html">About</a>
 				&mdash;

@@ -11,5 +11,5 @@
         <div :class="'steptitle' + (status=='current' ? ' current' : '')">
             {{ title }}
         </div>
-</div>
+    </div>
 </template>
