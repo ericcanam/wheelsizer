@@ -15,7 +15,7 @@
     });
 </script>
 
-<template><div class="row">
+<template><div class="row body">
     <h2>{{ props.ad.cartitle }}</h2>
     <p>Here's some information about the car's OEM setup that may be useful to you.</p>
     <p>

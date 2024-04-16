@@ -38,7 +38,7 @@
     });
 </script>
 
-<template><div class="row">
+<template><div class="row body">
 
     <h2>New Setup</h2>
     <!-- stagger/square option toggle -->

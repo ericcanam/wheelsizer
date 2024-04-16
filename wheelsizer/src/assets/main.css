@@ -10,9 +10,7 @@ body {
 }
 
 div.row {
-	margin: 0 auto;
-	margin-top: 24pt;
-	margin-bottom: 24pt;
+	margin: 24pt auto;
 	max-width: 10in;
 	display: block;
 }
@@ -62,17 +60,30 @@ div.sidebyside:nth-child(even) {
 	margin-left: 12pt;
 }
 div.tower{
-	border: 2pt solid var(--color-backshade);
-	border-radius: 12pt;
-	margin-bottom: 6pt;
+	display: inline-block;
+	width: fit-content;
+	margin: 8pt;
+	margin-bottom: 8pt;
+	overflow: auto;
+	border-radius: 10pt;
+	box-shadow: 0px 0px 4pt var(--color-backshade);
 }
-.tower>h3 {
-	background-color: var(--color-backshade);
-	margin-top: 0pt;
+div.tower>div{
+	margin: 24pt;
+}
+div.tower.landmark{
+	box-shadow: 0px 0px 4pt var(--color-accent1);
+}
+div.tower>h3:first-child {
+	background-color: var(--color-accent3);
+	margin: 0pt;
 	padding: 4pt;
 	border-top-left-radius: 10pt;
 	border-top-right-radius: 10pt;
-  }
+}
+div.landmark>h3:first-child{
+	background-color: var(--color-accent1);
+}
 
 input, button, div.multitextfield, div.highlight {
 	padding: 6pt;

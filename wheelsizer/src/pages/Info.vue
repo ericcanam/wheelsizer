@@ -24,7 +24,7 @@
     });
 </script>
 
-<template><div class="row">
+<template><div class="row body">
     <!-- Beginning of the calculator form -->
     <h2>What do you drive?</h2>
     <TextBar inputname="cartitle" :ref="fields.cartitle" :length=20

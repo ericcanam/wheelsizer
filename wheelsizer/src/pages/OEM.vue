@@ -90,7 +90,7 @@
     });
 </script>
 
-<template><div class="row">
+<template><div class="row body">
 
     <h2>Tell us about the OEM wheels.</h2>
     
