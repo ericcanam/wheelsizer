@@ -36,6 +36,14 @@
 	div.steptitle.overarch{
 		display: block;
 	}
+
+	div.tower{
+		margin: 0pt;
+		margin-bottom: 8pt;
+	}
+	div.tower>div{
+		margin: 0pt;
+	}
 	div.sidebyside {
 		display: block;
 		width: auto;

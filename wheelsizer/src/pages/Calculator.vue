@@ -138,42 +138,46 @@
 
 <template>
     <div class="body">
-        <!-- Settings Pane -->
-        <div class="tower landmark">
-            <h3>Calculator Setup</h3>
 
-            <div>
-                <!-- Vehicle Details -->
-                <h2>{{ ad.cartitle }}</h2>
-                <p>
-                    {{ ad.of_diameter }}&quot;&times;{{ ad.of_width }}&quot;
-                    <template v-if="oemStagger()">
-                        (F) &mdash; {{ ad.or_diameter }}&quot;&times;{{ ad.or_width }}&quot; (R)
-                    </template>
-
-                    <br />
-
-                    {{ ad.of_section }}/{{ ad.of_ratio }}R{{ ad.of_diam }}
-                    <template v-if="oemStagger()">
-                        (F) &mdash; {{ ad.or_section }}/{{ ad.or_ratio }}R{{ ad.or_diam }} (R)
-                    </template>
-                </p>
-
-                <h2>Settings</h2>
-
-                <!-- Stagger toggle -->
-                <p>
-                    <OptionToggle inputname="nstagger" :options="['Square', 'Staggered']" v-model="newstagger">
-                        New Setup:
-                    </OptionToggle>
-                </p>
-            </div>
-        </div>
-        
-        
         <!-- Tool Panel -->
         <div class="toolgrid">
-            <div class="tower" style="grid-column-end: span 2;">
+            <!-- Settings Pane -->
+            <div class="tower landmark gridtriple">
+                <h3>Calculator Setup</h3>
+
+                <div>
+                    <!-- OEM Details -->
+                    <div>
+                        <!-- Vehicle Details -->
+                        <h2>{{ ad.cartitle }}</h2>
+                        <p>
+                            {{ ad.of_diameter }}&quot; &times; {{ ad.of_width }}&quot;
+                            <template v-if="oemStagger()">
+                                (F) &mdash; {{ ad.or_diameter }}&quot; &times; {{ ad.or_width }}&quot; (R)
+                            </template>
+
+                            <br />
+
+                            {{ ad.of_section }}/{{ ad.of_ratio }}R{{ ad.of_diam }}
+                            <template v-if="oemStagger()">
+                                (F) &mdash; {{ ad.or_section }}/{{ ad.or_ratio }}R{{ ad.or_diam }} (R)
+                            </template>
+                        </p>
+                    </div>
+                    
+                    <!-- Settings Controls -->
+                    <div>
+                        <!-- Stagger toggle -->
+                        <p>
+                            <OptionToggle inputname="nstagger" :options="['Square', 'Staggered']" v-model="newstagger">
+                                New Setup:
+                            </OptionToggle>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tower gridtriple">
                 <h3 v-if="newStagger()">Front{{ newconfig!='Everything' ? ' '+newconfig : '' }}</h3>
                 <div>
                     <div class="sidebyside">
@@ -260,8 +264,9 @@
                         </div>
                     </div>
 
-                    <!-- front diagram -->
                     <div class="sidebyside">
+                        <h3 v-if="stagToSquare()">Front</h3>
+                        <!-- front diagram -->
                         <VisualPackage
                             :diameter="fnwd" :width="fnw" :offset="fno"
                             :section="fnts" :ratio="fntr"
@@ -272,8 +277,9 @@
                                 ratio:       props.ad.of_ratio}"
                         />
                     </div>
-                    <!-- rear diagram (for stag2square) -->
                     <div v-if="stagToSquare()" class="sidebyside">
+                        <h3>Rear</h3>
+                        <!-- rear diagram (for stag2square) -->
                         <VisualPackage nolegend
                             :diameter="fnwd" :width="fnw" :offset="fno"
                             :section="fnts" :ratio="fntr"
@@ -287,7 +293,7 @@
                 </div>
             </div>
 
-            <div class="tower" v-if="newStagger()" style="grid-column-end: span 2;">
+            <div class="tower gridtriple" v-if="newStagger()">
                 <h3>Rear{{ newconfig!='Everything' ? ' '+newconfig : '' }}</h3>
                 <div>
                     <div class="sidebyside">
@@ -430,16 +436,25 @@
     </div>
 </template>
 <style>
-    div.toolgrid{
-        min-width: 40vw;
+    div.toolgrid {
         display: inline-grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(6, calc(12in/6 - 12pt));
         vertical-align: top;
     }
-    div.toolgrid div.tower{
-        width: unset;
-    }
-    div.toolgrid div.sidebyside{
+    
+    div.toolgrid div.tower.gridtriple { grid-column-end: span 6; }
+    div.toolgrid div.tower.griddouble { grid-column-end: span 3; }
+    div.toolgrid div.tower.gridsingle { grid-column-end: span 2; }
+
+    div.toolgrid div.sidebyside {
+        width: max-content;
         vertical-align: middle;
+    }
+
+    /* Mobile */
+    @media screen and (max-width: 10in){
+        div.toolgrid {
+            grid-template-columns: repeat(6, calc(100vw/6 - 6pt));
+        }
     }
 </style>
