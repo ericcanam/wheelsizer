@@ -17,7 +17,6 @@ function getCode(properties_f, properties_r=null){
 Generate the code from a single axle
 */
 function compileCode(properties){
-    console.log(properties);
     let code = "";
     // wheel stuff
     if(properties.wheels != null){

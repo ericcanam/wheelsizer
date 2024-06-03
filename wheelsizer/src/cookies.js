@@ -52,9 +52,6 @@ const axle_field_names = [
     "width",
     "diameter",
     "offset",
-    "holes",
-    "pcd",
-    "cb",
     "diam",
     "section",
     "ratio"
@@ -65,8 +62,12 @@ const other_vars = [
     "cartitle",
     "drivewheels"
 ];
+const optional_axle_vars = [
+    "holes",
+    "pcd",
+    "cb"
+];
 const optional_vars = [
-    "AdvancedOptions",
     "o_wheelbase"
 ];
 function appDataToCookieString(ad){
@@ -86,10 +87,25 @@ function appDataToCookieString(ad){
     }
 
     properties.push(...other_vars);
+
+    // optional non-axle-specific variables:
     for(let o=0; o<optional_vars.length; o++){
         // check if this property is set
         if(ad[optional_vars[o]]){
             properties.push(optional_vars[o]);
+        }
+    }
+
+    // optinal axle-specific variables:
+    for(let o=0; o<optional_axle_vars.length; o++){
+        // check if this property is set
+        if(ad[front_axle_prefix+optional_axle_vars[o]]){
+            // front
+            properties.push(front_axle_prefix+optional_vars[o]);
+        }
+        if(ad[rear_axle_prefix+optional_axle_vars[o]]){
+            // rear
+            properties.push(rear_axle_prefix+optional_vars[o]);
         }
     }
 
