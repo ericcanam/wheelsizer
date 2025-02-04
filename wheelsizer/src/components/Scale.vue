@@ -163,6 +163,7 @@
         cursor: pointer;
         display: block;
         overflow: hidden;
+        margin: 0 4pt;
     }
     div.scalebox input {
         position: relative;

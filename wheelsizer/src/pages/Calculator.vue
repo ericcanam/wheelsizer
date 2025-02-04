@@ -76,7 +76,6 @@
     }
     defineTireArrays();
     
-
     const fields = {
         // wheels only
         fww: ref(),
@@ -162,6 +161,10 @@
                             <template v-if="oemStagger()">
                                 (F) &mdash; {{ ad.or_section }}/{{ ad.or_ratio }}R{{ ad.or_diam }} (R)
                             </template>
+
+                            <br />
+
+                            {{ ad.drivewheels }}-wheel drive
                         </p>
                     </div>
                     
@@ -449,12 +452,20 @@
     div.toolgrid div.sidebyside {
         width: max-content;
         vertical-align: middle;
+        max-width: max(50%, 5in);
     }
 
     /* Mobile */
     @media screen and (max-width: 10in){
         div.toolgrid {
-            grid-template-columns: repeat(6, calc(100vw/6 - 6pt));
+            grid-template-columns: repeat(6, calc(100vw/6 - 3pt));
+        }
+
+        div.toolgrid .tower.griddouble {
+            grid-column-end: span 6;
+        }
+        div.toolgrid .tower.gridsingle {
+            grid-column-end: span 3;
         }
     }
 </style>
