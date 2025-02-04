@@ -7,7 +7,6 @@
     // import pages:
     import Info from './pages/Info.vue';
     import OEM from './pages/OEM.vue';
-	import DoorCard from './pages/DoorCard.vue';
 	import Calculator from './pages/Calculator.vue';
 
 	import SaveManager from './components/SaveManager.vue';
@@ -34,7 +33,6 @@
     const pages = [
         {comp: Info, title: "Car Setup", svg: "car.svg"},
         {comp: OEM, title: "OEM Specs", svg: "notepad.svg"},
-        {comp: DoorCard, title: "Doorcard", svg: "doorcard.svg"},
         {comp: Calculator, title: "Calculator", svg: "calculator.svg"}
     ];
 	const complete_steps = ref(0);
@@ -164,8 +162,8 @@
 		}
 		// load car
 		appdata.value = ad;
-		complete_steps.value = 3;
-		cid.value = 4;
+		complete_steps.value = pages.length-1;
+		cid.value = pages.length;
 	}
 
 	const appv = APP_VERSION;

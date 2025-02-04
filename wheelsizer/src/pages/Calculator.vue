@@ -151,9 +151,9 @@
                         <!-- Vehicle Details -->
                         <h2>{{ ad.cartitle }}</h2>
                         <p>
-                            {{ ad.of_diameter }}&quot; &times; {{ ad.of_width }}&quot;
+                            {{ ad.of_diameter }}&quot; &times; {{ ad.of_width }}&quot; ET{{ ad.of_offset }}
                             <template v-if="oemStagger()">
-                                (F) &mdash; {{ ad.or_diameter }}&quot; &times; {{ ad.or_width }}&quot; (R)
+                                (F) &mdash; {{ ad.or_diameter }}&quot; &times; {{ ad.or_width }}&quot; (R) ET{{ ad.or_offset }}
                             </template>
 
                             <br />
@@ -377,74 +377,74 @@
                     </div>
                 </div>
             </div>
-        </div>
         
-
-        <!--<h2>Change Table</h2>
-        <SpecTable 
-            :config="newconfig"
-            :newstagger="newStagger()"
-            :oemstagger="oemStagger()"
-            :ow="{ 
-                front:{ // front wheels
-                    diameter: props.ad.of_diameter,
-                    width:  props.ad.of_width,
-                    offset: props.ad.of_offset
-                },
-                rear:{ // rear wheels
-                    diameter: rod,
-                    width:  row,
-                    offset: roo
-                }
-            }"
-            :ot="{
-                front:{
-                    section: props.ad.of_section,
-                    ratio: props.ad.of_ratio
-                },
-                rear:{ // rear tires
-                    section: ros,
-                    ratio: ror
-                }
-            }"
-            :nw="{ 
-                front:{ // front wheels
-                    diameter: fnwd,
-                    width:  fnw,
-                    offset: fno
-                },
-                rear:{ // rear wheels
-                    diameter: rnwd,
-                    width:  rnw,
-                    offset: rno
-                }
-            }"
-            :nt="{
-                front:{
-                    section: fnts,
-                    ratio: fntr
-                },
-                rear:{ // rear tires
-                    section: rnts,
-                    ratio: rntr
-                }
-            }"
-            :advanced="{
-                wheelbase: props.ad.o_wheelbase
-            }"
-        />-->
+            <div class="tower gridtriple">
+                <SpecTable style="width:100%;"
+                    :config="newconfig"
+                    :newstagger="newStagger()"
+                    :oemstagger="oemStagger()"
+                    :ow="{ 
+                        front:{ // front wheels
+                            diameter: props.ad.of_diameter,
+                            width:  props.ad.of_width,
+                            offset: props.ad.of_offset
+                        },
+                        rear:{ // rear wheels
+                            diameter: rod,
+                            width:  row,
+                            offset: roo
+                        }
+                    }"
+                    :ot="{
+                        front:{
+                            section: props.ad.of_section,
+                            ratio: props.ad.of_ratio
+                        },
+                        rear:{ // rear tires
+                            section: ros,
+                            ratio: ror
+                        }
+                    }"
+                    :nw="{ 
+                        front:{ // front wheels
+                            diameter: fnwd,
+                            width:  fnw,
+                            offset: fno
+                        },
+                        rear:{ // rear wheels
+                            diameter: rnwd,
+                            width:  rnw,
+                            offset: rno
+                        }
+                    }"
+                    :nt="{
+                        front:{
+                            section: fnts,
+                            ratio: fntr
+                        },
+                        rear:{ // rear tires
+                            section: rnts,
+                            ratio: rntr
+                        }
+                    }"
+                    :advanced="{
+                        wheelbase: props.ad.o_wheelbase
+                    }"
+                />
+            </div>
+        </div>
     </div>
 </template>
 <style>
     div.toolgrid {
         display: inline-grid;
-        grid-template-columns: repeat(6, calc(12in/6 - 12pt));
+        grid-template-columns: repeat(6, min(calc(12in/6 - 12pt), calc(100vw/6 - 6pt)));
         vertical-align: top;
     }
     
-    div.toolgrid div.tower.gridtriple { grid-column-end: span 6; }
-    div.toolgrid div.tower.griddouble { grid-column-end: span 3; }
-    div.toolgrid div.tower.gridsingle { grid-column-end: span 2; }
+    div.toolgrid .tower.gridtriple { grid-column-end: span 6; }
+    div.toolgrid .tower.griddouble { grid-column-end: span 3; }
+    div.toolgrid .tower.gridsingle { grid-column-end: span 2; }
 
     div.toolgrid div.sidebyside {
         width: max-content;

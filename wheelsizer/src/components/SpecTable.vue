@@ -7,7 +7,7 @@
 
     const props = defineProps({
         config:         {type: String,      default: 'Both'},
-        singular:        {type: Boolean,     default: false},
+        singular:       {type: Boolean,     default: false},
         newstagger:     {type: Boolean,     default: false},
         oemstagger:     {type: Boolean,     default: false},
         advanced:       {type: Object,      default: null},
@@ -81,7 +81,7 @@
             </tr>
             <!-- Ride height -->
             <tr v-if="!singular">
-                <td>Ride Height Diff</td><td :colspan="1+(!anyStagger())">{{ fpm((fthd()-foh())/2) + ' mm' }}</td>
+                <td>Ride Height Diff</td><td>{{ fpm((fthd()-foh())/2) + ' mm' }}</td>
                 <td v-if="anyStagger()">{{ fpm(((newstagger ? rthd() : fthd())-roh())/2) + ' mm' }}</td>
             </tr>
         </template>
@@ -107,7 +107,7 @@
             </tr>
         </template>
         <!-- advanced stuff -->
-        <template v-if="advanced">
+        <template v-if="advanced && !singular">
             <template v-if="anyStagger() && advanced.wheelbase && config!='Wheels'">
                 <!-- wheelbase -->
                 <tr>
