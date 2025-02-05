@@ -7,7 +7,7 @@
 
     const props = defineProps({
         config:         {type: String,      default: 'Both'},
-        singular:        {type: Boolean,     default: false},
+        singular:       {type: Boolean,     default: false},
         newstagger:     {type: Boolean,     default: false},
         oemstagger:     {type: Boolean,     default: false},
         advanced:       {type: Object,      default: null},
@@ -37,6 +37,8 @@
         }
 
     }
+
+    function pitch(){return getPythagAngle(((props.newstagger ? rthd() : fthd()) - fthd())/2, hypotenuse)-hypAngle;}
 </script>
 
 <template>
@@ -81,7 +83,7 @@
             </tr>
             <!-- Ride height -->
             <tr v-if="!singular">
-                <td>Ride Height Diff</td><td :colspan="1+(!anyStagger())">{{ fpm((fthd()-foh())/2) + ' mm' }}</td>
+                <td>Ride Height Diff</td><td>{{ fpm((fthd()-foh())/2) + ' mm' }}</td>
                 <td v-if="anyStagger()">{{ fpm(((newstagger ? rthd() : fthd())-roh())/2) + ' mm' }}</td>
             </tr>
         </template>
@@ -107,7 +109,7 @@
             </tr>
         </template>
         <!-- advanced stuff -->
-        <template v-if="advanced">
+        <template v-if="advanced && !singular">
             <template v-if="anyStagger() && advanced.wheelbase && config!='Wheels'">
                 <!-- wheelbase -->
                 <tr>
@@ -116,8 +118,8 @@
                 </tr>
                 <!-- body pitch -->
                 <tr>
-                    <td>Pitch {{ rthd()>fthd() ? '(forward)' : (fthd()>rthd() ? '(rearward)' : '') }}</td>
-                    <td colspan="2">{{ niceNumber(getPythagAngle(((newstagger ? rthd() : fthd()) - fthd())/2, hypotenuse)-hypAngle) }} &deg;</td>
+                    <td>Pitch {{ pitch()>0 ? '(forward)' : (pitch()<0 ? '(rearward)' : '') }}</td>
+                    <td colspan="2">{{ niceNumber(pitch()) }} &deg;</td>
                 </tr>
             </template>
         </template>

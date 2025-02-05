@@ -9,7 +9,7 @@
 
     import Collapsible from '../components/Collapsible.vue';
 
-    import { optional, allNumeric, isNumeric } from './validator.js';
+    import { optional, allOptional, allNumeric, isNumeric } from './validator.js';
     import BoltPattern from '../components/fields/BoltPattern.vue';
 
     var props = defineProps(['ad']);
@@ -27,14 +27,14 @@
         roff: ref(),
         fts: ref(),
         rts: ref(),
-        fbp: ref(),
-        rbp: ref(),
         fcb: ref(),
         rcb: ref()
     }
     const optionalFields = {
         // advanced options
-        owb: ref()
+        owb: ref(),
+        fbp: ref(),
+        rbp: ref()
     };
 
     function validate(){
@@ -49,10 +49,6 @@
         // tire size
         let ftsCheck = allNumeric(fields.fts);
         let rtsCheck = (staggered() ? allNumeric(fields.rts) : true);
-
-        // bolt pattern
-        let fbpCheck = allNumeric(fields.fbp);
-        let rbpCheck = (staggered() ? allNumeric(fields.rbp) : true);
 
         // tire/wheel diameter match
         let fwm = true; // front
@@ -72,15 +68,21 @@
             rwm = false;
         }
 
-        let owb = true;
+
+        let owb = true; // wheelbase
+        let fbp =  true; // bolt pattern
+        let rbp = true;
+
         if(advancedOptions.value.isToggled()){
-        // wheelbase
             owb = optional(optionalFields.owb, isNumeric);
+            fbp = allOptional(optionalFields.fbp, allNumeric);
+            rbp = (staggered() ? allOptional(optionalFields.rbp, allNumeric) : true);
         }
 
-        return fwsCheck && rwsCheck && foffCheck && roffCheck && ftsCheck && rtsCheck && fbpCheck && rbpCheck && fwm && rwm
+        return fwsCheck && rwsCheck && foffCheck && roffCheck && ftsCheck && rtsCheck && fwm && rwm
             // optional stuff
-            && owb;
+            && owb
+            && fbp && rbp;
     }
 
     defineExpose({
@@ -90,7 +92,7 @@
     });
 </script>
 
-<template><div class="row">
+<template><div class="row body">
 
     <h2>Tell us about the OEM wheels.</h2>
     
@@ -117,28 +119,6 @@
     </p>
 
     <InfoBox>Wheel size and offset can usually be found stamped on the spokes of your wheels.</InfoBox>
-    
-    <!-- Bolt pattern -->
-    <p>What bolt pattern is used to fasten the wheels to the hubs?</p>
-    <BoltPattern inprefix="of" :acprefix="'OEM ' +(staggered() ? 'Front' : '')" :ref="fields.fbp">
-        <span class="inputlabel" v-if="staggered()">Front:</span>
-    </BoltPattern>
-    <p v-if="staggered()">
-        <BoltPattern inprefix="or" acprefix="OEM Rear" :ref="fields.rbp">
-            <span class="inputlabel">Rear:</span>
-        </BoltPattern>
-    </p>
-    
-    <!-- Centre Bore -->
-    <p>How big is the Centre bore of the wheels, in millimeters?</p>
-    <TextBar type="number" :acprefix="'OEM ' +(staggered() ? 'Front' : '')" min="0" :length=6 inputname="of_cb" errName="Wheel Centre bore (millimeters)" :ref="fields.fcb" placeholder="Centre Bore">
-        <span class="inputlabel" v-if="staggered()">Front:</span>
-    </TextBar>
-    <p v-if="staggered()">
-        <TextBar type="number" acprefix="OEM Rear" min="0" :length=6 inputname="or_cb" errName="Wheel Centre bore (millimeters)" :ref="fields.rcb" placeholder="Centre Bore">
-            <span class="inputlabel">Rear:</span>
-        </TextBar>
-    </p>
 
     <!-- Tire size -->
     <h2>Tell us about the OEM tires.</h2>
@@ -156,6 +136,33 @@
     <!-- Advanced Options -->
     <Collapsible prompt="Advanced Options" ref="advancedOptions">
         <p>These values are optional, but may offer additional insight into potential setup changes.</p>
+    
+
+        <h3>Wheel Properties</h3>
+
+        <!-- Bolt pattern -->
+        <p>What bolt pattern is used to fasten the wheels to the hubs?</p>
+        <BoltPattern inprefix="of" :acprefix="'OEM ' +(staggered() ? 'Front' : '')" :ref="optionalFields.fbp">
+            <span class="inputlabel" v-if="staggered()">Front:</span>
+        </BoltPattern>
+        <p v-if="staggered()">
+            <BoltPattern inprefix="or" acprefix="OEM Rear" :ref="optionalFields.rbp">
+                <span class="inputlabel">Rear:</span>
+            </BoltPattern>
+        </p>
+        
+        <!-- Centre Bore -->
+        <p>How big is the centre bore of the wheels, in millimeters?</p>
+        <TextBar type="number" :acprefix="'OEM ' +(staggered() ? 'Front' : '')" min="0" :length=6 inputname="of_cb" errName="Wheel Centre bore (millimeters)" :ref="fields.fcb" placeholder="Centre Bore">
+            <span class="inputlabel" v-if="staggered()">Front:</span>
+        </TextBar>
+        <p v-if="staggered()">
+            <TextBar type="number" acprefix="OEM Rear" min="0" :length=6 inputname="or_cb" errName="Wheel Centre bore (millimeters)" :ref="fields.rcb" placeholder="Centre Bore">
+                <span class="inputlabel">Rear:</span>
+            </TextBar>
+        </p>
+
+        <h3>Vehicle Dynamics</h3>
 
         <!-- Wheelbase -->
         <p>What is your car's wheelbase in millimeters?</p>

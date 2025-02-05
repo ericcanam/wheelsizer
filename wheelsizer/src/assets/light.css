@@ -15,7 +15,7 @@
 	input, button:not(.suggest) {
 		color: var(--color-text-light);
 	}
-	button.suggest, button.go{
+	button.suggest, button.go, div.landmark>h3:first-child{
 		color: var(--color-text);
 	}
 	input:focus, button:not(.nofocus):focus, div.hasfocus {

@@ -4,7 +4,27 @@ For fields that are optional, but must be correctly formatted if they are specif
 function optional(field, func){
     return isEmpty(field, false) || func(field);
 }
+function allOptional(field, func){
+    return allEmpty(field, false) || func(field);
+}
 
+/*
+For multi-field text inputs
+*/
+function allEmpty(field, setError = true){
+    let vals = field.value.getValues();
+    let empty = true;
+    for(const formval in vals){
+        let nvy = vals[formval];
+        if(nvy.validity.badInput || nvy.value.trim().length>0){
+            empty = false;
+        }
+    }
+    if(empty && setError){
+        // TODO: implement this
+    }
+    return empty;
+}
 /*
 For single-field text inputs
 */
@@ -53,6 +73,9 @@ function allNumeric(field){
     return !err;
 }
 
+/*
+For single-field text inputs
+*/
 function isNumeric(field){
     let val = field.value.getValue();
     let nv = val.value;
@@ -78,4 +101,4 @@ function isNumeric(field){
 }
 
 
-export { optional, isEmpty, allNumeric, isNumeric };
+export { optional, allOptional, isEmpty, allNumeric, isNumeric };

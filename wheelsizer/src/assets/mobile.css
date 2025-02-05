@@ -1,4 +1,8 @@
 @media screen and (max-width: 10in){
+	body {
+		padding-left: 9pt;
+		padding-right: 9pt;
+	}
     /* modify nav/progress indicator */
     .topnavarrow{
         display:none;
@@ -35,6 +39,14 @@
 	}
 	div.steptitle.overarch{
 		display: block;
+	}
+
+	div.tower{
+		margin: 0pt;
+		margin-bottom: 8pt;
+	}
+	div.tower>div{
+		margin: 6pt;
 	}
 	div.sidebyside {
 		display: block;

@@ -10,9 +10,7 @@ body {
 }
 
 div.row {
-	margin: 0 auto;
-	margin-top: 24pt;
-	margin-bottom: 24pt;
+	margin: 24pt auto;
 	max-width: 10in;
 	display: block;
 }
@@ -55,24 +53,42 @@ p {
 div.sidebyside {
 	display: inline-block;
 	vertical-align: top;
-	width: calc(50% - 6pt);
 	margin-bottom: 6pt;
+	min-width: 2.5in;
+	max-width: 100%;
 }
 div.sidebyside:nth-child(even) {
 	margin-left: 12pt;
 }
-div.tower{
-	border: 2pt solid var(--color-backshade);
-	border-radius: 12pt;
-	margin-bottom: 6pt;
+.tower {
+	display: inline-block;
+	margin: 8pt;
+	border-radius: 10pt;
+	box-shadow: 0px 0px 4pt var(--color-backshade);
 }
-.tower>h3 {
-	background-color: var(--color-backshade);
-	margin-top: 0pt;
+.tower>div{
+	margin: 24pt;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+	align-items: center;
+}
+.tower>div>*{
+	flex-grow: 1.5;
+}
+.tower.landmark{
+	box-shadow: 0px 0px 4pt var(--color-accent1);
+}
+.tower>h3:first-child {
+	background-color: var(--color-accent3);
+	margin: 0pt;
 	padding: 4pt;
 	border-top-left-radius: 10pt;
 	border-top-right-radius: 10pt;
-  }
+}
+.landmark>h3:first-child{
+	background-color: var(--color-accent1);
+}
 
 input, button, div.multitextfield, div.highlight {
 	padding: 6pt;
@@ -237,10 +253,10 @@ table td, table th {
 	outline: 1pt solid transparent;
 }
 table th { background-color: var(--color-accent1); font-weight: 500; color: var(--color-text); }
-table tr th:first-child, table tr:first-child td:first-child{ border-top-left-radius: 8pt; }
-table tr th:last-child, table tr:first-child td:last-child{ border-top-right-radius: 8pt; }
-table tr:last-child td:first-child{ border-bottom-left-radius: 8pt; }
-table tr:last-child td:last-child{ border-bottom-right-radius: 8pt; }
+table tr th:first-child, table tr:first-child td:first-child{ border-top-left-radius: 10pt; }
+table tr th:last-child, table tr:first-child td:last-child{ border-top-right-radius: 10pt; }
+table tr:last-child td:first-child{ border-bottom-left-radius: 10pt; }
+table tr:last-child td:last-child{ border-bottom-right-radius: 10pt; }
 
 
 /* #region Menus & Steps */
@@ -306,6 +322,7 @@ div.menu{
 	max-width: calc(5in + 36pt + 4 * (36pt) - 24pt - 12pt);
 	border-radius: 12pt;
 	background-color: var(--color-menu-background);
+	box-shadow: 0px 0px 4pt var(--color-menu-background);
 	display: flex;
 	flex-direction: column;
 	row-gap: 6pt;
