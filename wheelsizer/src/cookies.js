@@ -16,7 +16,7 @@ function writeCar(name, ad = null){
 
     let cookie_string = ad==null ? "" : appDataToCookieString(ad);
     
-    document.cookie = name+"="+cookie_string+";" +
+    document.cookie = name.trim()+"="+cookie_string+";" +
         expiry + ";" + path + ";SameSite=Strict;";
 
 }
@@ -101,11 +101,11 @@ function appDataToCookieString(ad){
         // check if this property is set
         if(ad[front_axle_prefix+optional_axle_vars[o]]){
             // front
-            properties.push(front_axle_prefix+optional_vars[o]);
+            properties.push(front_axle_prefix+optional_axle_vars[o]);
         }
         if(ad[rear_axle_prefix+optional_axle_vars[o]]){
             // rear
-            properties.push(rear_axle_prefix+optional_vars[o]);
+            properties.push(rear_axle_prefix+optional_axle_vars[o]);
         }
     }
 

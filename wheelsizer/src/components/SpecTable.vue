@@ -37,6 +37,8 @@
         }
 
     }
+
+    function pitch(){return getPythagAngle(((props.newstagger ? rthd() : fthd()) - fthd())/2, hypotenuse)-hypAngle;}
 </script>
 
 <template>
@@ -116,8 +118,8 @@
                 </tr>
                 <!-- body pitch -->
                 <tr>
-                    <td>Pitch {{ rthd()>fthd() ? '(forward)' : (fthd()>rthd() ? '(rearward)' : '') }}</td>
-                    <td colspan="2">{{ niceNumber(getPythagAngle(((newstagger ? rthd() : fthd()) - fthd())/2, hypotenuse)-hypAngle) }} &deg;</td>
+                    <td>Pitch {{ pitch()>0 ? '(forward)' : (pitch()<0 ? '(rearward)' : '') }}</td>
+                    <td colspan="2">{{ niceNumber(pitch()) }} &deg;</td>
                 </tr>
             </template>
         </template>

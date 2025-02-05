@@ -39,7 +39,9 @@
         if(ad.savename!=UNSAVED_STRING && ad.savename!=name){
             deleteCar(ad.savename);
         }
+        ad.cartitle = ad.cartitle.trim();
         writeCar(name, ad);
+        ad.savename = name.trim();
         refresh();
     }
 
@@ -102,9 +104,9 @@
                 <button class="go" v-if="step>2" @click="saveCar(
                     ad.cartitle,
                     ad
-                );">
-                    <template v-if="ad.savename==UNSAVED_STRING || ad.savename.trim()==ad.cartitle">
-                        Save "{{ ad.cartitle }}"
+                );toggleVisibility();">
+                    <template v-if="ad.savename==UNSAVED_STRING || ad.savename.trim()==ad.cartitle.trim()">
+                        Save "{{ ad.cartitle.trim() }}"
                     </template>
                     <template v-else>
                         Overwrite "{{ ad.savename.trim() }}"

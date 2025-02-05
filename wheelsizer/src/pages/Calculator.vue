@@ -152,7 +152,7 @@
                         <p>
                             {{ ad.of_diameter }}&quot; &times; {{ ad.of_width }}&quot; ET{{ ad.of_offset }}
                             <template v-if="oemStagger()">
-                                (F) &mdash; {{ ad.or_diameter }}&quot; &times; {{ ad.or_width }}&quot; (R) ET{{ ad.or_offset }}
+                                (F) &mdash; {{ ad.or_diameter }}&quot; &times; {{ ad.or_width }}&quot; ET{{ ad.or_offset }} (R)
                             </template>
 
                             <br />

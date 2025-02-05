@@ -76,7 +76,7 @@
         if(advancedOptions.value.isToggled()){
             owb = optional(optionalFields.owb, isNumeric);
             fbp = allOptional(optionalFields.fbp, allNumeric);
-            rbp = (staggered() ? allOptional(fields.rbp, allNumeric) : true);
+            rbp = (staggered() ? allOptional(optionalFields.rbp, allNumeric) : true);
         }
 
         return fwsCheck && rwsCheck && foffCheck && roffCheck && ftsCheck && rtsCheck && fwm && rwm
