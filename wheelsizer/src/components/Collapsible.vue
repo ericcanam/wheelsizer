@@ -40,7 +40,7 @@
             prompt
         }}<!--<div class="headingsub">Click to {{
             isToggled() ? 'Collapse' : 'Expand'
-        }}</div>--></span><img class="right" :src="'/assets/'+(isToggled() ? 'up' : 'down')+'_chevron.svg'" /></button></h2>
+        }}</div>--></span><img class="right" :src="'./assets/'+(isToggled() ? 'up' : 'down')+'_chevron.svg'" /></button></h2>
     </p>
     <p :class="'collapsible' + (isToggled() ? ' expanded' : '')">
         <div style="overflow: hidden;">

@@ -6,7 +6,7 @@
 <template>
     <div class="step">
         <div :class="status" class="iconcircle">
-            <img :alt="title" :src="'/assets/'+svg" />
+            <img :alt="title" :src="'./assets/'+svg" />
         </div>
         <div :class="'steptitle' + (status=='current' ? ' current' : '')">
             {{ title }}

@@ -15,10 +15,10 @@
 	import { preload } from './preload.js';
 	preload(
 		// chevrons
-		'/assets/down_chevron.svg',
-		'/assets/up_chevron.svg',
-		'/assets/left_chevron.svg',
-		'/assets/right_chevron.svg'
+		'./assets/down_chevron.svg',
+		'./assets/up_chevron.svg',
+		'./assets/left_chevron.svg',
+		'./assets/right_chevron.svg'
 	);
 
 	const cid = ref(1);
@@ -173,7 +173,7 @@
 <template>
 	<header>
 		<div v-if="cid==1" class="row">
-			<a href="/">
+			<a href="./">
 				<picture>
 					<source srcset="/assets/logo_t1_light.svg" media="(prefers-color-scheme:light)">
 					<source srcset="/assets/logo_t1_dark.svg"  media="(prefers-color-scheme:dark)">
@@ -214,9 +214,9 @@
         <div class="row">
             {{ appv }} &mdash; Copyright {{ builddate }} Wheelhub
             <br />
-            <a href="/">Homepage</a>
+            <a href="./">Homepage</a>
             &mdash;
-            <a href="/about.html#contact">Contact</a>
+            <a href="./about.html#contact">Contact</a>
         </div>
     </footer>
 </template>
