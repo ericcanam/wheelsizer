@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50">
+    <defs>
+        <style>
+            line {
+                stroke:white; stroke-width:10px;
+            }
+            polygon {
+                fill:white;
+            }
+            @media (prefers-color-scheme: light) {
+                line {
+                    stroke:black;
+                }
+                polygon {
+                    fill:black;
+                }
+            }
+        </style>
+    </defs>
+    <line x1="5" y1="25" x2="195" y2="25" />
+    <polygon points="200,25 175,0 175,50" />
+</svg>
