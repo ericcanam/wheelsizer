@@ -13,6 +13,7 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
+  base: './',
   define: {
     APP_VERSION: JSON.stringify("Version "+version),
     BUILD_DATE: JSON.stringify(cdate.getFullYear())
